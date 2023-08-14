@@ -1,0 +1,44 @@
+@import 'variables.css';
+@import 'layout.css';
+@import 'header.css';
+@import 'tabs.css';
+@import 'card.css';
+
+/* Fix to support markdown file */
+.reset-styles {
+	& code {
+		display: inline-block;
+	}
+
+	& ul {
+		margin-left: 1em;
+		margin-right: 1em;
+		padding-left: 40px;
+		list-style: initial;
+
+		& li {
+			line-height: 1.6;
+		}
+	}
+}
+
+.spinner-wrap-overlay {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: #ffffffa1;
+}
+
+.components-snackbar-list {
+	position: fixed;
+	top: 32px;
+	right: 32px;
+	display: flex;
+	flex-direction: column-reverse;
+	align-items: flex-end;
+}
