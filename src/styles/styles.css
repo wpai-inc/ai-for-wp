@@ -3,6 +3,7 @@
 @import 'header.css';
 @import 'tabs.css';
 @import 'card.css';
+@import 'utilities.css';
 
 /* Fix to support markdown file */
 .reset-styles {
