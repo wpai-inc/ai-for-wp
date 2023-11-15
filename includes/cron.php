@@ -6,7 +6,7 @@
  */
 function cwpai_add_cron_job() {
 	if ( ! wp_next_scheduled( 'cwpai_cron_synchronizer' ) ) {
-		wp_schedule_event( time(), 'hourly', 'cwpai_cron_synchronizer' );
+		wp_schedule_event( time(), 'daily', 'cwpai_cron_synchronizer' );
 	}
 }
 
