@@ -122,9 +122,6 @@ cwpai_register_ajax_method(
 	'cwpai-settings/notice-hide',
 	/**
 	 * Save the auto synchronize option
-	 *
-	 * @throws ImagickException
-	 * @throws Exception
 	 */
 	function () {
 

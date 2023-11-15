@@ -1,13 +1,13 @@
-import $ from 'jquery';
 import type {CwpaiSettings} from 'types';
 
+declare const jQuery: any;
 declare const ajaxurl: string;
 declare const CWPAI_SETTINGS: CwpaiSettings;
 
 const cwpaiRequest = async ({action, data, addNotification}) => {
 
     try {
-        const response = await $.ajax(
+        const response = await jQuery.ajax(
             {
                 type: 'POST',
                 url: ajaxurl,

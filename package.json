@@ -10,11 +10,6 @@
     "fix:prettier": "prettier --write \"**/*.*\""
   },
   "dependencies": {
-    "clsx": "1.2.1",
-    "effector": "^22.5.0",
-    "effector-react": "^22.4.0",
-    "immer": "^9.0.19",
-    "jquery": "3.6.1",
     "mini-css-extract-plugin": "^2.7.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
