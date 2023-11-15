@@ -62,52 +62,57 @@
 			text-shadow: 0px 0px 1px #1d2327;
 			/* font-weight: 600; */
 		}
-.components-card-footer--sticky {
-	position: sticky;
-	bottom: 0;
-	background: white;
-	z-index: 200;
+.cwpai-components-card-footer--sticky {
+    position: sticky;
+    bottom: 0;
+    background: white;
+    z-index: 200;
 }
-.mb-1\.5 {
+.cwpai-mb-1\.5 {
     margin-bottom: 0.4rem;
 }
-.text-gray {
+.cwpai-text-gray {
     color: #646970;
 }
-.text-sm {
+.cwpai-text-sm {
     font-size: 0.8rem;
 }
 /* Fix to support markdown file */
-.reset-styles code {
-		display: inline-block;
-	}
-.reset-styles ul {
-		margin-left: 1em;
-		margin-right: 1em;
-		padding-left: 40px;
-		list-style: disc outside none;
-		list-style: initial;
-	}
-.reset-styles ul li {
-			line-height: 1.6;
-		}
-.spinner-wrap-overlay {
-	position: absolute;
-	left: 0;
-	right: 0;
-	top: 0;
-	bottom: 0;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	background: rgba(255,255,255,0.63137);
+.cwpai-reset-styles code {
+        display: inline-block;
+    }
+.cwpai-reset-styles ul {
+        margin-left: 1em;
+        margin-right: 1em;
+        padding-left: 40px;
+        list-style: disc outside none;
+        list-style: initial;
+    }
+.cwpai-reset-styles ul li {
+            line-height: 1.6;
+        }
+.cwpai-spinner-wrap-overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.63137);
 }
-.components-snackbar-list {
-	position: fixed;
-	top: 32px;
-	right: 32px;
-	display: flex;
-	flex-direction: column-reverse;
-	align-items: flex-end;
+.cwpai-components-snackbar-list {
+    position: fixed;
+    top: 32px;
+    right: 32px;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: flex-end;
 }
-
+.cwpai-error-notification {
+    background: #ab0909;
+}
+.cwpai-default-notification {
+    background: #0E876A;
+}

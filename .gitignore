@@ -5,3 +5,4 @@ vendor
 .env
 .env.*
 !.env.example
+/codewp-helper.zip
