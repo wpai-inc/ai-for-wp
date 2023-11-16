@@ -10,9 +10,9 @@
  * Author:            WPAI, Inc.
  * Author URI:        https://codewp.ai
  *
- * Version:           0.0.1
- * Requires at least: 5.8
- * Tested up to:      6.1.1
+ * Version:           0.1.0
+ * Requires at least: 5.8.1
+ * Tested up to:      6.4.1
  * Requires PHP:      7.1
  *
  * @package           CodeWP Helper
@@ -33,25 +33,14 @@ if ( ! defined( 'CWPAI_API_SERVER' ) ) {
 }
 
 
+
+
 require 'includes/utils/register-ajax-method.php';
 require 'includes/utils/api-key-functions.php';
 require 'includes/utils/enqueue-scripts-from-asset-file.php';
 require 'includes/admin-page.php';
-require 'includes/plugin-links.php';
 require 'includes/ajax.php';
 require 'includes/cron.php';
 require 'includes/filters.php';
 
-add_filter(
-	'cwpai_settings_variables',
-	function ( $variables ) {
-		$current_user = wp_get_current_user();
 
-		$variables['codewp_server']  = CWPAI_API_SERVER;
-		$variables['user']['name']   = $current_user->display_name;
-		$variables['project']        = cwpai_get_api_key_form_data();
-		$variables['notice_visible'] = get_option( 'cwpai-settings/notice_visible', 1 );
-
-		return $variables;
-	}
-);

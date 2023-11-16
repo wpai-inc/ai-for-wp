@@ -38,10 +38,7 @@ function cwpai_enqueue_scripts() {
  */
 function cwpai_admin_page_load() {
 	add_action( 'admin_enqueue_scripts', 'cwpai_enqueue_scripts' );
-	// remove_all_filters( 'admin_footer_text' );
-	// remove_filter( 'update_footer', 'core_update_footer' );
 	add_filter( 'update_footer', 'cwpai_update_footer' );
-	// add_filter( 'admin_footer_text', 'cwpai_admin_footer_text' );
 	add_filter( 'admin_body_class', 'cwpai_admin_body_class' );
 
 	$screen = get_current_screen();
@@ -83,15 +80,6 @@ function cwpai_admin_body_class( string $classes ): string {
  */
 function cwpai_update_footer(): string {
 	return '<div style="float: right;">Made with love 💚 by the <a href="https://codewp.ai/" target="_blank">CodeWP Team</a></div>';
-}
-
-/**
- * Admin footer text
- *
- * @return string
- */
-function cwpai_admin_footer_text(): string {
-	return '';
 }
 
 /**

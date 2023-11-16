@@ -51,7 +51,7 @@ export const Home = ({handleTabChange}) => {
                 </CardBody>
                 <CardFooter className="cwpai-components-card-footer--sticky">
                     <Text>{__('Ready to get started?', 'wp-cwpai-settings-page')}</Text>
-                    <Button variant="secondary" onClick={() => handleTabChange('settings')}>
+                    <Button className="is-secondary" variant="secondary" onClick={() => handleTabChange('settings')}>
                         {__('Set API Key', 'wp-cwpai-settings-page')}
                     </Button>
                 </CardFooter>

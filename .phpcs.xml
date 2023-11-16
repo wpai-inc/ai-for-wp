@@ -1,31 +1,42 @@
 <?xml version="1.0"?>
-<ruleset name="Coding standards">
-    <config name="testVersion" value="7.1-"/>
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="WPCS"
+         xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/squizlabs/PHP_CodeSniffer/master/phpcs.xsd">
 
-    <file>codewp-helper.php</file>
-    <exclude-pattern>build/*</exclude-pattern>
+    <description>A custom set of rules to check for CodeWp Helper Plugin</description>
+
+    Exclude WP Core folders and files from being checked.
+    <exclude-pattern>wp-admin/*</exclude-pattern>
+    <exclude-pattern>wp-includes/*</exclude-pattern>
+    <exclude-pattern>wp-*.php</exclude-pattern>
+    <exclude-pattern>index.php</exclude-pattern>
+    <exclude-pattern>xmlrpc.php</exclude-pattern>
+    <exclude-pattern>wp-content/plugins/*</exclude-pattern>
+
+    Exclude the Composer Vendor directory.
     <exclude-pattern>vendor/*</exclude-pattern>
+
+    Exclude the Node Modules directory.
     <exclude-pattern>node_modules/*</exclude-pattern>
 
-    <arg name="basepath" value="."/>
-    <arg value="ps"/>
-    <arg name="colors"/>
-    <arg name="parallel" value="100"/>
-    <arg name="extensions" value="php"/>
-    <arg name="cache" value="node_modules/.phpcs.cache"/>
+    Exclude minified Javascript files.
+    <exclude-pattern>*.min.js</exclude-pattern>
 
-    <rule ref="PHPCompatibility"/>
-    <rule ref="WordPress"/>
+    <!-- Check up to 8 files simultaneously. -->
+    <arg name="parallel" value="8"/>
 
-    <rule ref="Generic.Metrics.NestingLevel">
-        <properties>
-            <property name="absoluteNestingLevel" value="5"/>
-        </properties>
-    </rule>
+    <config name="minimum_wp_version" value="6.2"/>
 
-    <!-- Allow short array syntax -->
     <rule ref="WordPress">
+        <exclude name="WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedNamespaceFound"/>
+        <exclude name="WordPress.Files.FileName.InvalidClassFileName"/>
+        <exclude name="WordPress.Files.FileName.NotHyphenatedLowercase"/>
+        <exclude name="WordPress.DB.DirectDatabaseQuery.NoCaching"/>
+        <exclude name="WordPress.DB.DirectDatabaseQuery.DirectQuery"/>
+        <exclude name="Universal.Operators.DisallowShortTernary.Found"/>
+        <exclude name="Squiz.PHP.CommentedOutCode.Found"/>
         <exclude name="Universal.Arrays.DisallowShortArraySyntax.Found"/>
-        <exclude name="Squiz.Commenting.FileComment.Missing"/>
+        <exclude name="WordPress.DB.DirectDatabaseQuery.SchemaChange"/>
+        <exclude name="Squiz.Commenting.ClassComment.Missing.SchemaChange"/>
     </rule>
+
 </ruleset>

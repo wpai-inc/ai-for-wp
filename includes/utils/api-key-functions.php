@@ -3,26 +3,30 @@
  * Returns the debug data from the current WordPress installation
  *
  * @return array
- * @throws ImagickException If the Imagick extension is not loaded.
  */
 function cwpai_get_debug_data(): array {
-	if ( ! class_exists( '\WP_Debug_Data' ) ) {
-		require_once ABSPATH . 'wp-admin/includes/class-wp-debug-data.php';
-	}
-	if ( ! class_exists( '\WP_Site_Health' ) ) {
-		require_once ABSPATH . 'wp-admin/includes/class-wp-site-health.php';
-	}
-	if ( ! function_exists( '\get_core_updates' ) ) {
-		require_once ABSPATH . 'wp-admin/includes/update.php';
-	}
-	if ( ! function_exists( '\get_dropins' ) ) {
-		require_once ABSPATH . 'wp-admin/includes/plugin.php';
-	}
-	if ( ! function_exists( '\got_url_rewrite' ) ) {
-		require_once ABSPATH . 'wp-admin/includes/misc.php';
-	}
+	try {
 
-	return \WP_Debug_Data::debug_data();
+		if ( ! class_exists( '\WP_Debug_Data' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/class-wp-debug-data.php';
+		}
+		if ( ! class_exists( '\WP_Site_Health' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/class-wp-site-health.php';
+		}
+		if ( ! function_exists( '\get_core_updates' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/update.php';
+		}
+		if ( ! function_exists( '\get_dropins' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+		if ( ! function_exists( '\got_url_rewrite' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/misc.php';
+		}
+
+		return \WP_Debug_Data::debug_data();
+	} catch ( Exception $error ) {
+		return [ 'error' => $error->getMessage() ];
+	}
 }
 
 /**
@@ -34,17 +38,7 @@ function cwpai_get_debug_data(): array {
  * @return array
  */
 function cwpai_get_api_key_form_data( bool $show_token = false, string $message = '' ): array {
-	$api_token_settings = get_option(
-		'cwpai-settings/api-token',
-		array(
-			'token'             => '',
-			'token_placeholder' => '',
-			'project_id'        => '',
-			'project_name'      => '',
-			'auto_syncronize'   => '',
-			'synchronized_at'   => '',
-		)
-	);
+	$api_token_settings = cwpai_get_token_settings();
 
 	if ( ! empty( $api_token_settings['token'] ) ) {
 		$api_token_settings['token_placeholder'] = '************************************************';
@@ -52,7 +46,6 @@ function cwpai_get_api_key_form_data( bool $show_token = false, string $message 
 	if ( ! empty( $api_token_settings['token'] ) && ! $show_token ) {
 		$api_token_settings['token'] = '';
 	}
-
 
 	if ( ! empty( $api_token_settings['synchronized_at'] ) ) {
 		$api_token_settings['synchronized_at'] = gmdate( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime( $api_token_settings['synchronized_at'] ) );
@@ -69,7 +62,11 @@ function cwpai_get_api_key_form_data( bool $show_token = false, string $message 
 /**
  * Send data to CodeWP
  *
- * @throws ImagickException If the Imagick extension is not loaded.
+ * @param string $method The method.
+ * @param null   $token The token.
+ *
+ * @return mixed
+ * @throws \Exception If the token is invalid.
  */
 function cwpai_send_data_to_codewp( $method = 'POST', $token = null ) {
 	$api_key_settings = cwpai_get_api_key_form_data( true );
@@ -82,6 +79,7 @@ function cwpai_send_data_to_codewp( $method = 'POST', $token = null ) {
 		'url'         => home_url(),
 	);
 
+//    $body['project'] = '';
 	if ( isset( $api_key_settings['project_id'] ) && $api_key_settings['project_id'] ) {
 		$body['project'] = $api_key_settings['project_id'];
 	}
@@ -91,19 +89,45 @@ function cwpai_send_data_to_codewp( $method = 'POST', $token = null ) {
 		'headers' => array(
 			'Authorization' => 'Bearer ' . ( $token ?: $api_key_settings['token'] ),
 			'Accept'        => 'application/json',
+            'Content-Type'  => 'application/json',
+            'referer'       => null, // Older version of WP are automatically adding this
 		),
-		'body'    => $body,
+		'body'    => json_encode($body),
 	);
 
+    $url = CWPAI_API_SERVER . '/api/' . 'wp-site-project-synchronize';
+    if($method === 'POST') {
+        $url = CWPAI_API_SERVER . '/api/' . 'wp-site-projects';
+    }
+
 	$response = wp_remote_request(
-		CWPAI_API_SERVER . '/api/' . ( 'POST' === $method ? 'wp-site-projects' : 'wp-site-project-synchronize' ),
+        $url,
 		$request
 	);
 
-	@ray('cwpai_helper_cron_synchronizer_job', $response);
+	if ( is_a( $response, 'WP_Error' ) ) {
+		throw new \Exception( esc_html( $response->get_error_message() ) );
+	} elseif ( 401 === $response['response']['code'] ) {
+		throw new \Exception( esc_html( __( 'Your token is invalid. Please add a new one!', 'wp-cwpai-settings-page' ) ) );
+	} elseif ( ! in_array( $response['response']['code'], [ 200, 201 ], true ) ) {
+		$body = json_decode( $response['body'], true );
+        error_log(print_r($body, true));
+		if ( ! empty( $body['errors'] ) ) {
+			$messages = array();
+			array_walk_recursive(
+                $body['errors'],
+				function ( $a ) use ( &$messages ) {
+					$messages[] = $a;
+				}
+			);
+			throw new \Exception( esc_html( implode( ', ', $messages ) ) );
+		}
 
+        throw new \Exception( esc_html( $body['response']['message'] ?? $body['message'] ?? 'Error' ) );
 
-	return $response;
+	}
+
+	return json_decode( $response['body'], true );
 }
 
 
@@ -115,12 +139,32 @@ function cwpai_send_data_to_codewp( $method = 'POST', $token = null ) {
  * @return void
  */
 function cwpai_save_settings( array $data ) {
-	$options = get_option( 'cwpai-settings/api-token' );
-	$data    = array_merge( $options, $data );
+	$api_token_settings = cwpai_get_token_settings();;
+	$data    = array_merge( $api_token_settings, $data );
 
 	update_option(
 		'cwpai-settings/api-token',
 		$data,
 		false
 	);
+}
+
+
+function cwpai_get_token_settings(): array {
+    $settings = get_option(
+        'cwpai-settings/api-token'
+    );
+
+    if ( ! $settings ) {
+        $settings = array(
+            'token'             => '',
+            'token_placeholder' => '',
+            'project_id'        => '',
+            'project_name'      => '',
+            'auto_syncronize'   => true,
+            'synchronized_at'   => '',
+        );
+    }
+
+    return $settings;
 }

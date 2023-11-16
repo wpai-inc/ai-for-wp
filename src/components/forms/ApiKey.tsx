@@ -31,7 +31,7 @@ export const TokenApiForm = () => {
 
     const onClickSaveToken = async () => {
         const data = await cwpaiRequest({
-            action: 'cwpai-settings/api-auto-synchronize-save',
+            action: 'cwpai-settings/api-token-save',
             data: {
                 token: project.token,
                 autoSynchronize: project.auto_syncronize,
@@ -43,21 +43,23 @@ export const TokenApiForm = () => {
 
     const onAutoSynchronizeChanged = async (value: boolean) => {
         setProject({...project, auto_syncronize: value});
-        const data = await cwpaiRequest({
-            action: 'cwpai-settings/api-auto-synchronize-save',
-            data: {
-                autoSynchronize: value
-            },
-            addNotification
-        })
-        setProject({...project, ...data});
+        if(project.token_placeholder) {
+            const data = await cwpaiRequest({
+                action: 'cwpai-settings/api-auto-synchronize-save',
+                data: {
+                    autoSynchronize: value
+                },
+                addNotification
+            })
+            setProject({...project, ...data});
+        }
     };
 
     return (
         <Card>
             <CardHeader>
                 <Heading>{__('API Key', 'wp-cwpai-settings-page')}</Heading>
-                <Button variant="primary" target='_blank' href={pageProps.codewp_server + '/user/api-tokens'}>
+                <Button className="is-primary" variant="primary" target='_blank' href={pageProps.codewp_server + '/user/api-tokens'}>
                     {__('Get your api key', 'wp-cwpai-settings-page')}
                 </Button>
             </CardHeader>
@@ -73,12 +75,13 @@ export const TokenApiForm = () => {
                                 label={__('CodeWP Project API Key', 'wp-cwpai-settings-page')}
                                 onChange={(value) => onTokenChanged(value)}
                                 value={project.token}
+                                disabled={isSaving}
                                 placeholder={project.token_placeholder}
                                 type="text"
                             />
                         </FlexBlock>
-                        <Button variant="primary" className="cwpai-mb-1.5" onClick={onClickSaveToken}
-                                disabled={isSaving}>
+                        <Button className="is-primary cwpai-mb-1.5" variant="primary" onClick={onClickSaveToken}
+                                disabled={isSaving || !project.token}>
                             {__('Save', 'wp-cwpai-settings-page')}
                         </Button>
                     </Flex>
