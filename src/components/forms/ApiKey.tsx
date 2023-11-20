@@ -60,11 +60,11 @@ export const TokenApiForm = () => {
             <CardHeader>
                 <Heading>{__('API Key', 'cwpai-helper')}</Heading>
                 <Button className="is-primary" variant="primary" target='_blank' href={pageProps.codewp_server + '/user/api-tokens'}>
-                    {__('Get your api key', 'cwpai-helper')}
+                    {__('Get Your API key', 'cwpai-helper')}
                 </Button>
             </CardHeader>
             <CardBody>
-                <p>{__('Click the button above to get you API key. You can use this API key to sync your project with CodeWP.', 'cwpai-helper')}</p>
+                <p>{__('Click the button above to get you API key. You can use this key to connect your website to a CodeWP project.', 'cwpai-helper')}</p>
                 <p>{__('After you get your API key, add it on the field below and click save', 'cwpai-helper')}</p>
             </CardBody>
             <CardBody>
@@ -78,9 +78,10 @@ export const TokenApiForm = () => {
                                 disabled={isSaving}
                                 placeholder={project.token_placeholder}
                                 type="text"
+                                className="cwpai-api-key-field"
                             />
                         </FlexBlock>
-                        <Button className="is-primary cwpai-mb-1.5" variant="primary" onClick={onClickSaveToken}
+                        <Button className="is-primary cwpai-api-key-button" variant="primary" onClick={onClickSaveToken}
                                 disabled={isSaving || !project.token}>
                             {__('Save', 'cwpai-helper')}
                         </Button>

@@ -51,3 +51,10 @@
 .cwpai-default-notification {
     background: #0E876A;
 }
+
+.cwpai-api-key-field  input[type="text"] {
+    height: 36px;
+}
+.cwpai-api-key-button {
+    margin-bottom: 8px
+}
