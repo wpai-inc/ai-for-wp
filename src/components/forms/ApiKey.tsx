@@ -31,10 +31,10 @@ export const TokenApiForm = () => {
 
     const onClickSaveToken = async () => {
         const data = await cwpaiRequest({
-            action: 'cwpai-settings/api-token-save',
+            action: 'cwpai-helper/save-api-token',
             data: {
                 token: project.token,
-                autoSynchronize: project.auto_syncronize,
+                autoSynchronize: project.auto_synchronize,
             },
             addNotification
         })
@@ -42,10 +42,10 @@ export const TokenApiForm = () => {
     }
 
     const onAutoSynchronizeChanged = async (value: boolean) => {
-        setProject({...project, auto_syncronize: value});
+        setProject({...project, auto_synchronize: value});
         if(project.token_placeholder) {
             const data = await cwpaiRequest({
-                action: 'cwpai-settings/api-auto-synchronize-save',
+                action: 'cwpai-helper/api-auto-synchronize-save',
                 data: {
                     autoSynchronize: value
                 },
@@ -58,21 +58,21 @@ export const TokenApiForm = () => {
     return (
         <Card>
             <CardHeader>
-                <Heading>{__('API Key', 'wp-cwpai-settings-page')}</Heading>
+                <Heading>{__('API Key', 'cwpai-helper')}</Heading>
                 <Button className="is-primary" variant="primary" target='_blank' href={pageProps.codewp_server + '/user/api-tokens'}>
-                    {__('Get your api key', 'wp-cwpai-settings-page')}
+                    {__('Get your api key', 'cwpai-helper')}
                 </Button>
             </CardHeader>
             <CardBody>
-                <p>{__('Click the button above to get you API key. You can use this API key to sync your project with CodeWP.', 'wp-cwpai-settings-page')}</p>
-                <p>{__('After you get your API key, add it on the field below and click save', 'wp-cwpai-settings-page')}</p>
+                <p>{__('Click the button above to get you API key. You can use this API key to sync your project with CodeWP.', 'cwpai-helper')}</p>
+                <p>{__('After you get your API key, add it on the field below and click save', 'cwpai-helper')}</p>
             </CardBody>
             <CardBody>
                 <Disabled isDisabled={isSaving}>
                     <Flex align='end' className="cwpai-mb-1.5">
                         <FlexBlock>
                             <TextControl
-                                label={__('CodeWP Project API Key', 'wp-cwpai-settings-page')}
+                                label={__('CodeWP Project API Key', 'cwpai-helper')}
                                 onChange={(value) => onTokenChanged(value)}
                                 value={project.token}
                                 disabled={isSaving}
@@ -82,15 +82,15 @@ export const TokenApiForm = () => {
                         </FlexBlock>
                         <Button className="is-primary cwpai-mb-1.5" variant="primary" onClick={onClickSaveToken}
                                 disabled={isSaving || !project.token}>
-                            {__('Save', 'wp-cwpai-settings-page')}
+                            {__('Save', 'cwpai-helper')}
                         </Button>
                     </Flex>
 
                     {(project.token || project.token_placeholder) && (
                         <ToggleControl
-                            label="Auto syncronize"
-                            help={__('If enabled, the plugin will automatically synchronize your project with CodeWP.', 'wp-cwpai-settings-page')}
-                            checked={project.auto_syncronize}
+                            label="Auto synchronize"
+                            help={__('If enabled, the plugin will automatically synchronize your project with CodeWP.', 'cwpai-helper')}
+                            checked={project.auto_synchronize}
                             onChange={(value) => onAutoSynchronizeChanged(value)}
                         />
                     )}
@@ -106,7 +106,7 @@ export const TokenApiForm = () => {
 
                 <Flex direction='column' gap="2">
                     {project.project_id && project.project_name && (
-                        <div>{__('Project', 'wp-cwpai-settings-page')}: <a
+                        <div>{__('Project', 'cwpai-helper')}: <a
                             href={pageProps.codewp_server + '/projects/' + project.project_id}
                             target="_blank"><strong>{project.project_name}</strong> <span
                             className="text-gray text-sm">({project.project_id})</span></a>
@@ -114,7 +114,7 @@ export const TokenApiForm = () => {
                     )}
 
                     {project.synchronized_at && (
-                        <div>{__('Last synchronized', 'wp-cwpai-settings-page')}: {project.synchronized_at}</div>
+                        <div>{__('Last synchronized', 'cwpai-helper')}: {project.synchronized_at}</div>
                     )}
                 </Flex>
             </CardBody>

@@ -3,7 +3,7 @@ export type Project = {
     project_name: string | null;
     token: string | null;
     token_placeholder: string | null;
-    auto_syncronize: boolean;
+    auto_synchronize: boolean;
     synchronized_at: string | null;
 }
 export type CwpaiSettings = {

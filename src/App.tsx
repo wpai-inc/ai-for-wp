@@ -16,15 +16,15 @@ const App = () => {
         <PagePropsContext.Provider value={CWPAI_SETTINGS}>
             <NotificationsProvider>
                 <Layout
-                    title={__('CodeWP Helper', 'wp-cwpai-settings-page')}
+                    title={__('CodeWP Helper', 'cwpai-helper')}
                     tabs={[
                         {
                             name: 'home',
-                            title: __('Home', 'wp-cwpai-settings-page')
+                            title: __('Home', 'cwpai-helper')
                         },
                         {
                             name: 'settings',
-                            title: __('Settings', 'wp-cwpai-settings-page'),
+                            title: __('Settings', 'cwpai-helper'),
                         },
                     ]}
                     selectedTab={selectedTab}

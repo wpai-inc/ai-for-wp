@@ -11,7 +11,7 @@ export const ClosableNotice = () => {
     const [noticeVisible, setNoticeVisible] = useState(notice_visible);
     const doHideNotice = () => {
         cwpaiRequest({
-            action: 'cwpai-settings/notice-hide',
+            action: 'cwpai-helper/notice-hide',
             data: {},
             addNotification: () => {
             }
@@ -24,7 +24,7 @@ export const ClosableNotice = () => {
             {noticeVisible === "1" && (
                 <>
                     <Notice onRemove={doHideNotice}>
-                        {__("Welcome to CodeWP. We're glad you'e here.", 'wp-cwpai-settings-page')}
+                        {__("Welcome to CodeWP. We're glad you'e here.", 'cwpai-helper')}
                     </Notice>
                     <Spacer marginBottom={6}/>
                 </>

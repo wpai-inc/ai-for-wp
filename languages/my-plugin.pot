@@ -1,0 +1,59 @@
+# Copyright (C) 2023 WPAI, Inc.
+# This file is distributed under the same license as the CodeWP Helper plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: CodeWP Helper 0.1.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/cwp-helper-plugin\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2023-11-19T10:08:08+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.9.0\n"
+"X-Domain: cwpai-helper\n"
+
+#. Plugin Name of the plugin
+msgid "CodeWP Helper"
+msgstr ""
+
+#. Plugin URI of the plugin
+msgid "https://github.com/wpai/codewp-helper"
+msgstr ""
+
+#. Description of the plugin
+msgid "Connect with the CodeWP platform for instant troubleshooting and personalized code generation."
+msgstr ""
+
+#. Author of the plugin
+msgid "WPAI, Inc."
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://codewp.ai"
+msgstr ""
+
+#: includes/Ajax.php:37
+msgid "Please enter a valid token"
+msgstr ""
+
+#: includes/Filters.php:36
+msgid "Settings"
+msgstr ""
+
+#: includes/Filters.php:39
+msgid "Docs"
+msgstr ""
+
+#: includes/Filters.php:42
+msgid "App"
+msgstr ""
+
+#: includes/Settings.php:126
+msgid "Your token is invalid. Please add a new one!"
+msgstr ""
+
+#: includes/Utils/RegisterAjaxMethod.php:49
+msgid "Security check"
+msgstr ""

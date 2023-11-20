@@ -6,7 +6,7 @@ export const Tab = ({children, name = ''}) => {
     const isActive = value === name;
     return (
         <button
-            className={'cwpai-settings-tab ' + (isActive ? 'cwpai-settings-tab--active' : '')}
+            className={'cwpai-helper-tab ' + (isActive ? 'cwpai-helper-tab--active' : '')}
             aria-current="true"
             onClick={() => onChange(name)}
         >

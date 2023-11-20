@@ -9,9 +9,9 @@ import {Icon} from './Icon';
 
 export const Layout = ({title, children, tabs = [], selectedTab, setSelectedTab}) => {
     return (
-        <div className="cwpai-settings-layout">
-            <div className="cwpai-settings-header">
-                <div className="cwpai-settings-title-section">
+        <div className="cwpai-helper-layout">
+            <div className="cwpai-helper-header">
+                <div className="cwpai-helper-title-section">
                     <Icon/>
                     <Heading as="h1">{title}</Heading>
                 </div>
@@ -23,7 +23,7 @@ export const Layout = ({title, children, tabs = [], selectedTab, setSelectedTab}
                     ))}
                 </Tabs>
             </div>
-            <div className="cwpai-settings-layout-body hide-if-no-js">
+            <div className="cwpai-helper-layout-body hide-if-no-js">
                 {useMemo(() => children({selectedTab}), [selectedTab])}
             </div>
             <Notifications/>
