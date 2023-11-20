@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-11-19T10:08:08+00:00\n"
+"POT-Creation-Date: 2023-11-20T18:59:10+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.9.0\n"
 "X-Domain: cwpai-helper\n"
@@ -38,19 +38,19 @@ msgstr ""
 msgid "Please enter a valid token"
 msgstr ""
 
-#: includes/Filters.php:36
+#: includes/Filters.php:17
 msgid "Settings"
 msgstr ""
 
-#: includes/Filters.php:39
+#: includes/Filters.php:20
 msgid "Docs"
 msgstr ""
 
-#: includes/Filters.php:42
+#: includes/Filters.php:23
 msgid "App"
 msgstr ""
 
-#: includes/Settings.php:126
+#: includes/Settings.php:124
 msgid "Your token is invalid. Please add a new one!"
 msgstr ""
 
