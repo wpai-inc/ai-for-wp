@@ -16,10 +16,10 @@ class Filters
         $links[] = '<a href="'.esc_url(admin_url('options-general.php?page=cwpai-helper')).'">'
                    .__('Settings', 'cwpai-helper')
                    .'</a>';
-        $links[] = '<a href="https://codewp.ai/docs/wordpress-plugin/" target="_blank">'
+        $links[] = '<a href="https://codewp.ai/plugin-docs" target="_blank">'
                    .__('Docs', 'cwpai-helper')
                    .'</a>';
-        $links[] = '<a style="font-weight:bold;" href="https://app.codewp.ai/" target="_blank">'
+        $links[] = '<a style="font-weight:bold;" href="https://codewp.ai/dashboard" target="_blank">'
                    .__('App', 'cwpai-helper')
                    .'</a>';
 
