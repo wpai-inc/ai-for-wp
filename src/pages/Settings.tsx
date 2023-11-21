@@ -1,12 +1,12 @@
 import { __experimentalSpacer as Spacer } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import { APIForm } from '../components/forms/API';
+import { TokenApiForm } from '../components/forms/ApiKey';
 
 export const Settings = () => {
 	return (
 		<>
 			<Spacer marginBottom={6} />
-			<APIForm />
+			<TokenApiForm />
 			<Spacer marginBottom={6} />
 		</>
 	);
