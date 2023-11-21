@@ -3,6 +3,7 @@
 /node_modules
 /src
 /tests
+/.git
 
 #Files
 .env.example
