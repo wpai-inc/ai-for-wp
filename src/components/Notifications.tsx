@@ -11,9 +11,6 @@ export const Notifications = () => {
 };
 export const NotificationsBody = () => {
     const notificationsContext = useNotificationsContext();
-    useEffect(() => {
-        console.log('theNotifications', notificationsContext.notifications);
-    }, [notificationsContext.notifications]);
 
     return <SnackbarList notices={notificationsContext.notifications}
                          className="cwpai-components-snackbar-list"
