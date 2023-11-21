@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:       CodeWP Helper
+ * Plugin Name:       WPAI
  * Plugin URI:        https://github.com/wpai/codewp-helper
  * Description:       Connect with the CodeWP platform for instant troubleshooting and personalized code generation.
  *
