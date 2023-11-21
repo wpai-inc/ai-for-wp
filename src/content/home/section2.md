@@ -1,4 +1,4 @@
-![image](https://user-images.githubusercontent.com/31767378/215863909-84b2b49c-66ac-4836-b3e7-36b3f9769445.png)
+![CodeWP Intro Image](https://wp.codewp.ai/wp-content/uploads/2023/11/Ilustracion-2-Large.jpeg)
 
 ## How To Use
 
@@ -6,8 +6,10 @@
 
 1. Create a new project
 2. Add your website by entering the URL
-3. Go to the settings page of your project
-4. Copy the API key
+3. Go to the settings page of the platform
+4. Make a new API key, and copy it
+
+Please note, the project URL must match this website's url, or the connection will not work.
 
 **On This Settings Page**
 
@@ -27,7 +29,11 @@ On a predefined schedule, this plugin will send information about your website t
 - WordPress version
 And a few other things. Essentially, this plugin will send the same information that you see on the "Site Help" tab of the CodeWP platform.
 
-If you have WooCommerce installed, you can also choose to send the ["Status Report"](https://statusreport.com) to the CodeWP platform. 
-## How It Works
+When generating code or chatting, you can select the relevant project. The AI will then access that project's information, allowing it to generate more accurate and aligned suggestions for your work.
 
-## Privacy & Security
+## What's On The Way
+
+This is an early version of the CodeWP Helper Plugin. Soon, we'll add testing features, push/pull from CodeWP, conversational troubleshooting, and more.
+
+## Get Help
+Access the user documentation for this plugin [here](https://intercom.help/wpai/en/).
