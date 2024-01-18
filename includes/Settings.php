@@ -1,8 +1,8 @@
 <?php
 
-namespace CodeWpAi\CodewpHelper;
+namespace WpAi\CodeWpHelper;
 
-class CodeWpAiSettings
+class Settings
 {
     /**
      * Returns the debug data from the current WordPress installation
@@ -80,9 +80,9 @@ class CodeWpAiSettings
      */
     public static function sendDataToCodewp($method = 'POST', $token = null)
     {
-        $api_key_settings = CodeWpAiSettings::getSettingsFormData(true);
+        $api_key_settings = Settings::getSettingsFormData(true);
 
-        $debug_data = CodeWpAiSettings::getDebugData();
+        $debug_data = Settings::getDebugData();
         $body       = array(
             'name'        => get_bloginfo('name'),
             'description' => get_bloginfo('description'),
@@ -106,7 +106,7 @@ class CodeWpAiSettings
             'body'    => json_encode($body),
         );
 
-        $domain = rtrim(CODEWPAI_API_SERVER, '/');
+        $domain = rtrim(Main::API_HOST, '/');
 
         $url = $domain.'/api/'.'wp-site-project-synchronize';
         if ($method === 'POST') {
@@ -121,7 +121,7 @@ class CodeWpAiSettings
         if (is_a($response, 'WP_Error')) {
             throw new \Exception(esc_html($response->get_error_message()));
         } elseif (401 === $response['response']['code']) {
-            throw new \Exception(esc_html(__('Your token is invalid. Please add a new one!', 'codewpai')));
+            throw new \Exception(esc_html(__('Your token is invalid. Please add a new one!', Main::TEXT_DOMAIN)));
         } elseif (! in_array($response['response']['code'], [200, 201], true)) {
             $body = json_decode($response['body'], true);
             error_log(print_r($body, true));

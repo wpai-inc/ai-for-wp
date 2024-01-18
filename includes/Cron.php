@@ -1,8 +1,8 @@
 <?php
 
-namespace CodeWpAi\CodewpHelper;
+namespace WpAi\CodeWpHelper;
 
-class CodeWpAiCron
+class Cron
 {
     public function __construct()
     {
@@ -15,9 +15,9 @@ class CodeWpAiCron
     public function synchronizerJob()
     {
 
-        $response_body = CodeWpAiSettings::sendDataToCodewp('PATCH');
+        $response_body = Settings::sendDataToCodewp('PATCH');
 
-        CodeWpAiSettings::save(
+        Settings::save(
             array(
                 'project_id'       => $response_body['id'],
                 'project_name'     => $response_body['name'],

@@ -1,11 +1,14 @@
 <?php
 
-namespace CodeWpAi\CodewpHelper;
+namespace WpAi\CodeWpHelper;
 
-class CodeWpAiAdminPage
+class AdminPage
 {
-    public function __construct()
+    private $plugin_dir;
+
+    public function __construct($plugin_dir)
     {
+        $this->plugin_dir = $plugin_dir;
         add_action('admin_menu', [$this, 'adminMenu'], 100);
     }
 
@@ -13,10 +16,10 @@ class CodeWpAiAdminPage
     {
         $hook_name = add_submenu_page(
             'options-general.php',
-            __('CodeWP Helper', 'codewpai'),
-            __('CodeWP Helper', 'codewpai'),
+            __('CodeWP Helper', Main::TEXT_DOMAIN),
+            __('CodeWP Helper', Main::TEXT_DOMAIN),
             'manage_options',
-            'codewpai',
+            Main::TEXT_DOMAIN,
             [$this, 'adminPage']
         );
 
@@ -31,7 +34,7 @@ class CodeWpAiAdminPage
                 <?php
                 echo esc_html__(
                     'Warning: This options panel will not work properly without JavaScript, please enable it.',
-                    'codewpai'
+                    Main::TEXT_DOMAIN
                 );
                 ?>
             </div>
@@ -44,7 +47,7 @@ class CodeWpAiAdminPage
                 justify-content: center;
             }
         </style>
-        <div id="codewpai-ui-loading"><?php echo esc_html__('Loading…', 'codewpai'); ?></div>
+        <div id="codewpai-ui-loading"><?php echo esc_html__('Loading…', Main::TEXT_DOMAIN); ?></div>
         <div id="codewpai-ui-settings"></div>
         <?php
     }
@@ -60,13 +63,13 @@ class CodeWpAiAdminPage
         $screen->add_help_tab(
             array(
                 'id'      => 'codewpai_400_error_help_tab',
-                'title'   => __('400 Error?', 'codewpai'),
+                'title'   => __('400 Error?', Main::TEXT_DOMAIN),
                 /* translators: %s: will be replaced by current site URL */
                 'content' => '<p>'
                              .sprintf(
                                  __(
                                      'Ensure that the site url, <strong>%s</strong>, is equal to the Project URL in CodeWP.',
-                                     'codewpai'
+                                     Main::TEXT_DOMAIN
                                  ),
                                  get_site_url()
                              )
@@ -76,11 +79,11 @@ class CodeWpAiAdminPage
         $screen->add_help_tab(
             array(
                 'id'      => 'codewpai_pro_user_help_tab',
-                'title'   => __('CodeWP Pro User?', 'codewpai'),
+                'title'   => __('CodeWP Pro User?', Main::TEXT_DOMAIN),
                 'content' => '<p>'
                              .__(
                                  'Contact us and we\'ll walk you through the setup of this plugin.',
-                                 'codewpai'
+                                 Main::TEXT_DOMAIN
                              )
                              .'</p>',
             )
@@ -89,7 +92,7 @@ class CodeWpAiAdminPage
 
     public function enqueueScripts()
     {
-        $this->enqueueScriptsFromAssetFile('settings', CODEWPAI_HELPER_PLUGIN_FILE);
+        $this->enqueueScriptsFromAssetFile('settings');
         $this->attachDataToSettings();
     }
 
@@ -107,9 +110,9 @@ Made with love 💚 by the <a href="https://codewp.ai/" target="_blank">CodeWP T
         return $classes;
     }
 
-    public function enqueueScriptsFromAssetFile(string $name, string $plugin_file)
+    public function enqueueScriptsFromAssetFile(string $name)
     {
-        $script_asset_path = dirname($plugin_file)."/build/$name.asset.php";
+        $script_asset_path = $this->plugin_dir."/build/$name.asset.php";
         if (file_exists($script_asset_path)) {
             $script_asset        = include $script_asset_path;
             $script_dependencies = $script_asset['dependencies'] ?? array();
@@ -152,10 +155,10 @@ Made with love 💚 by the <a href="https://codewp.ai/" target="_blank">CodeWP T
     {
         $current_user = wp_get_current_user();
 
-        $variables['nonce']          = wp_create_nonce(CODEWPAI_NONCE_ACTION);
-        $variables['codewp_server']  = CODEWPAI_API_SERVER;
+        $variables['nonce']          = wp_create_nonce(Main::nonce());
+        $variables['codewp_server']  = Main::API_HOST;
         $variables['user']['name']   = $current_user->display_name;
-        $variables['project']        = CodeWpAiSettings::getSettingsFormData();
+        $variables['project']        = Settings::getSettingsFormData();
         $variables['notice_visible'] = get_option('codewpai/notice_visible', 1);
 
         return $variables;

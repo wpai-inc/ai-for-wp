@@ -1,13 +1,15 @@
 <?php
 
-namespace CodeWpAi\CodewpHelper\Utils;
+namespace WpAi\CodeWpHelper\Utils;
+
+use WpAi\CodeWpHelper\Main;
 
 /**
  * Class RegisterAjaxMethod
  *
  * This class is used to register a new AJAX method in WordPress.
  */
-class CodeWpAiRegisterAjaxMethod
+class RegisterAjaxMethod
 {
     /**
      * RegisterAjaxMethod constructor.
@@ -44,9 +46,9 @@ class CodeWpAiRegisterAjaxMethod
     private function registerAjaxMethod(callable $method): void
     {
         if (! isset($_REQUEST['_wpnonce'])
-            || ! wp_verify_nonce(sanitize_key($_REQUEST['_wpnonce']), CODEWPAI_NONCE_ACTION)
+            || ! wp_verify_nonce(sanitize_key($_REQUEST['_wpnonce']), Main::nonce())
         ) {
-            die(esc_html__('Security check', 'codewpai'));
+            die(esc_html__('Security check', Main::TEXT_DOMAIN));
         }
 
         try {

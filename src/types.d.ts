@@ -6,7 +6,7 @@ export type Project = {
     auto_synchronize: boolean;
     synchronized_at: string | null;
 }
-export type CodeWpAiSettings = {
+export type Settings = {
     nonce: string;
     codewp_server: string;
     notice_visible: string;
