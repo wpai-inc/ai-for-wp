@@ -28,7 +28,13 @@ class Settings
                 require_once ABSPATH.'wp-admin/includes/misc.php';
             }
 
-            return \WP_Debug_Data::debug_data();
+            $debug_data = \WP_Debug_Data::debug_data();
+
+            $debug_data['cpts'] = self::getCpts();
+            $debug_data['taxonomies'] = self::getTaxonomies();
+
+            return $debug_data;
+
         } catch (\Exception $error) {
             return ['error' => $error->getMessage()];
         }
@@ -182,5 +188,55 @@ class Settings
         }
 
         return $settings;
+    }
+
+    /**
+     * return an array containing all the custom post types
+     *
+     * @return array
+     */
+    public static function getCpts()
+    {
+        $args = array(
+            'public'   => true,
+            '_builtin' => false,
+        );
+
+        $post_types = get_post_types($args, 'objects');
+
+        $post_types = array_map(
+            function ($post_type) {
+                unset($post_type->labels);
+                return $post_type;
+            },
+            $post_types
+        );
+
+        return $post_types;
+    }
+    /**
+     * return an array containing all the custom taxonomies
+     *
+     * @return array
+     */
+    public static function getTaxonomies()
+    {
+        $args = array(
+            'public'   => true,
+            '_builtin' => false,
+        );
+
+        $taxonomies = get_taxonomies($args, 'objects');
+
+        $taxonomies = array_map(
+            function ($taxonomy) {
+                unset($taxonomy->labels);
+
+                return $taxonomy;
+            },
+            $taxonomies
+        );
+
+        return $taxonomies;
     }
 }
