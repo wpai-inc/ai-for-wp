@@ -30,55 +30,55 @@ msgstr ""
 msgid "https://codewp.ai"
 msgstr ""
 
-#: includes/CodeWpAiAdminPage.php:16
-#: includes/CodeWpAiAdminPage.php:17
+#: includes/AdminPage.php:16
+#: includes/AdminPage.php:17
 msgid "CodeWP Helper"
 msgstr ""
 
-#: includes/CodeWpAiAdminPage.php:32
+#: includes/AdminPage.php:32
 msgid "Warning: This options panel will not work properly without JavaScript, please enable it."
 msgstr ""
 
-#: includes/CodeWpAiAdminPage.php:47
+#: includes/AdminPage.php:47
 msgid "Loading…"
 msgstr ""
 
-#: includes/CodeWpAiAdminPage.php:63
+#: includes/AdminPage.php:63
 msgid "400 Error?"
 msgstr ""
 
-#: includes/CodeWpAiAdminPage.php:67
+#: includes/AdminPage.php:67
 msgid "Ensure that the site url, <strong>%s</strong>, is equal to the Project URL in CodeWP."
 msgstr ""
 
-#: includes/CodeWpAiAdminPage.php:79
+#: includes/AdminPage.php:79
 msgid "CodeWP Pro User?"
 msgstr ""
 
-#: includes/CodeWpAiAdminPage.php:81
+#: includes/AdminPage.php:81
 msgid "Contact us and we'll walk you through the setup of this plugin."
 msgstr ""
 
-#: includes/CodeWpAiAjax.php:37
+#: includes/Ajax.php:37
 msgid "Please enter a valid token"
 msgstr ""
 
-#: includes/CodeWpAiFilters.php:17
+#: includes/Filters.php:17
 msgid "Settings"
 msgstr ""
 
-#: includes/CodeWpAiFilters.php:20
+#: includes/Filters.php:20
 msgid "Docs"
 msgstr ""
 
-#: includes/CodeWpAiFilters.php:23
+#: includes/Filters.php:23
 msgid "App"
 msgstr ""
 
-#: includes/CodeWpAiSettings.php:124
+#: includes/Settings.php:124
 msgid "Your token is invalid. Please add a new one!"
 msgstr ""
 
-#: includes/Utils/CodeWpAiRegisterAjaxMethod.php:49
+#: includes/Utils/RegisterAjaxMethod.php:49
 msgid "Security check"
 msgstr ""

@@ -22,13 +22,13 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-use CodeWpAi\CodewpHelper\CodeWpAiCodewpHelper;
+use WpAi\CodeWpHelper\Main;
 
-if (! class_exists(CodeWpAiCodewpHelper::class)) {
+if (! class_exists(Main::class)) {
     $autoload_packages = __DIR__ . '/vendor/autoload_packages.php';
     if (is_file($autoload_packages)) {
         require_once $autoload_packages;
     }
 }
 
-new CodeWpAiCodewpHelper();
+new Main(__FILE__);

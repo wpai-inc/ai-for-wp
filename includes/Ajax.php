@@ -1,23 +1,23 @@
 <?php
 
-namespace CodeWpAi\CodewpHelper;
+namespace WpAi\CodeWpHelper;
 
-class CodeWpAiAjax
+class Ajax
 {
 
     public function __construct()
     {
-        new \CodeWpAi\CodewpHelper\Utils\CodeWpAiRegisterAjaxMethod(
+        new \CodeWpAi\CodewpHelper\Utils\RegisterAjaxMethod(
             'codewpai/save-api-token',
             [$this, 'saveApiToken']
         );
 
-        new \CodeWpAi\CodewpHelper\Utils\CodeWpAiRegisterAjaxMethod(
+        new \CodeWpAi\CodewpHelper\Utils\RegisterAjaxMethod(
             'codewpai/api-auto-synchronize-save',
             [$this, 'saveAutoSynchronize']
         );
 
-        new \CodeWpAi\CodewpHelper\Utils\CodeWpAiRegisterAjaxMethod(
+        new \CodeWpAi\CodewpHelper\Utils\RegisterAjaxMethod(
             'codewpai/notice-hide',
             /**
              * Save the auto synchronize option
@@ -31,15 +31,15 @@ class CodeWpAiAjax
 
         $token = sanitize_text_field(wp_unslash($_POST['token'] ?? ''));
 
-        $api_key_settings = CodeWpAiSettings::getSettingsFormData(true);
+        $api_key_settings = Settings::getSettingsFormData(true);
 
         if (empty($api_key_settings['token']) && (empty($token) || 48 !== strlen($token))) {
-            throw new \Exception(esc_html(__('Please enter a valid token', 'codewpai')));
+            throw new \Exception(esc_html(__('Please enter a valid token', Main::TEXT_DOMAIN)));
         }
 
-        $response = CodeWpAiSettings::sendDataToCodewp('POST', $token);
+        $response = Settings::sendDataToCodewp('POST', $token);
 
-        CodeWpAiSettings::save(
+        Settings::save(
             array(
                 'token'            => $token,
                 'project_id'       => $response['id'],
@@ -48,9 +48,9 @@ class CodeWpAiAjax
                 'synchronized_at'  => gmdate('Y-m-d H:i:s'),
             )
         );
-        CodeWpAiCron::addCronJob();
+        Cron::addCronJob();
 
-        return CodeWpAiSettings::getSettingsFormData();
+        return Settings::getSettingsFormData();
     }
 
     /**
@@ -64,9 +64,9 @@ class CodeWpAiAjax
         $auto_synchronize = 'true' === (sanitize_text_field(wp_unslash($_POST['autoSynchronize'] ?? '')));
 
         if (true === $auto_synchronize) {
-            $response = CodeWpAiSettings::sendDataToCodewp('PATCH');
+            $response = Settings::sendDataToCodewp('PATCH');
 
-            CodeWpAiSettings::save(
+            Settings::save(
                 array(
                     'project_id'       => $response['id'],
                     'project_name'     => $response['name'],
@@ -75,19 +75,19 @@ class CodeWpAiAjax
                 )
             );
 
-            CodeWpAiCron::addCronJob();
+            Cron::addCronJob();
 
-            return CodeWpAiSettings::getSettingsFormData(false, 'Your project will be synchronized with CodeWP');
+            return Settings::getSettingsFormData(false, 'Your project will be synchronized with CodeWP');
         }
-        CodeWpAiSettings::save(
+        Settings::save(
             array(
                 'auto_synchronize' => false,
             )
         );
 
-        CodeWpAiCron::removeCronJob();
+        Cron::removeCronJob();
 
-        return CodeWpAiSettings::getSettingsFormData(false, 'Your project will not be synchronized with CodeWP anymore');
+        return Settings::getSettingsFormData(false, 'Your project will not be synchronized with CodeWP anymore');
     }
 
 

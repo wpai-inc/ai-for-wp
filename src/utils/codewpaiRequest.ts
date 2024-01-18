@@ -1,8 +1,8 @@
-import type {CodeWpAiSettings} from 'types';
+import type {Settings} from 'types';
 
 declare const jQuery: any;
 declare const ajaxurl: string;
-declare const CODEWPAI_SETTINGS: CodeWpAiSettings;
+declare const CODEWPAI_SETTINGS: Settings;
 
 const codewpaiRequest = async ({action, data, addNotification}) => {
 
