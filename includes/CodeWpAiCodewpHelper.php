@@ -21,7 +21,7 @@ class CodeWpAiCodewpHelper
         define('CODEWPAI_HELPER_PLUGIN_FILE', CODEWPAI_HELPER_PATH . 'codewpai.php');
         define('CODEWPAI_NONCE_ACTION', 'codewpai');
         if (! defined('CODEWPAI_API_SERVER')) {
-            define('CODEWPAI_API_SERVER', 'https://codewp.ai');
+            define('CODEWPAI_API_SERVER', 'https://app.codewp.ai');
         }
     }
 
