@@ -112,11 +112,13 @@ class Settings
             'body'    => json_encode($body),
         );
 
-        $domain = rtrim(Main::API_HOST, '/');
+        $api_host = defined('CODEWPAI_API_HOST') ? CODEWPAI_API_HOST : Main::API_HOST;
+        $api_host = rtrim($api_host, '/');
 
-        $url = $domain.'/api/'.'wp-site-project-synchronize';
+
+        $url = $api_host.'/api/'.'wp-site-project-synchronize';
         if ($method === 'POST') {
-            $url = $domain.'/api/'.'wp-site-projects';
+            $url = $api_host.'/api/'.'wp-site-projects';
         }
 
         $response = wp_remote_request(

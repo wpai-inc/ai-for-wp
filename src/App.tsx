@@ -5,10 +5,10 @@ import {Home} from './pages/Home';
 import {Settings} from './pages/Settings';
 import './styles/styles.css';
 import {PagePropsContext} from './hooks/usePagePropsContext';
-import {Settings} from "./types";
+import {SettingsType} from "./types";
 import {NotificationsProvider} from "./hooks/useNotificationsContext";
 
-declare const CODEWPAI_SETTINGS: Settings;
+declare const CODEWPAI_SETTINGS: SettingsType;
 
 const App = () => {
     const [selectedTab, setSelectedTab] = useState('home'); // Initial tab is 'home'

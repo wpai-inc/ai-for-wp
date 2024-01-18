@@ -42,7 +42,7 @@ class Main
         // do something on plugin bootstrap
         new Filters();
         new Ajax();
-        new AdminPage($this->plugin_dir);
+        new AdminPage($this->plugin_dir, $this->plugin_file);
         new Cron();
     }
 }

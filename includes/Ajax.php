@@ -2,22 +2,24 @@
 
 namespace WpAi\CodeWpHelper;
 
+use WpAi\CodeWpHelper\Utils\RegisterAjaxMethod;
+
 class Ajax
 {
 
     public function __construct()
     {
-        new \CodeWpAi\CodewpHelper\Utils\RegisterAjaxMethod(
+        new RegisterAjaxMethod(
             'codewpai/save-api-token',
             [$this, 'saveApiToken']
         );
 
-        new \CodeWpAi\CodewpHelper\Utils\RegisterAjaxMethod(
+        new RegisterAjaxMethod(
             'codewpai/api-auto-synchronize-save',
             [$this, 'saveAutoSynchronize']
         );
 
-        new \CodeWpAi\CodewpHelper\Utils\RegisterAjaxMethod(
+        new RegisterAjaxMethod(
             'codewpai/notice-hide',
             /**
              * Save the auto synchronize option

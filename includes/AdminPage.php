@@ -5,10 +5,12 @@ namespace WpAi\CodeWpHelper;
 class AdminPage
 {
     private $plugin_dir;
+    private $plugin_file;
 
-    public function __construct($plugin_dir)
+    public function __construct($plugin_dir, $plugin_file)
     {
         $this->plugin_dir = $plugin_dir;
+        $this->plugin_file = $plugin_file;
         add_action('admin_menu', [$this, 'adminMenu'], 100);
     }
 
@@ -19,7 +21,7 @@ class AdminPage
             __('CodeWP Helper', Main::TEXT_DOMAIN),
             __('CodeWP Helper', Main::TEXT_DOMAIN),
             'manage_options',
-            Main::TEXT_DOMAIN,
+            'ai-for-wp',
             [$this, 'adminPage']
         );
 
@@ -129,7 +131,7 @@ Made with love 💚 by the <a href="https://codewp.ai/" target="_blank">CodeWP T
 
             wp_enqueue_script(
                 "codewpai-$name",
-                plugins_url("build/$name.js", $plugin_file),
+                plugins_url("build/$name.js", $this->plugin_file),
                 $script_dependencies,
                 $script_asset['version'],
                 true
@@ -143,7 +145,7 @@ Made with love 💚 by the <a href="https://codewp.ai/" target="_blank">CodeWP T
 
             wp_enqueue_style(
                 "codewpai-$name",
-                plugins_url("build/$name.css", $plugin_file),
+                plugins_url("build/$name.css", $this->plugin_file),
                 $style_dependencies,
                 $script_asset['version'],
                 'all'
@@ -155,8 +157,11 @@ Made with love 💚 by the <a href="https://codewp.ai/" target="_blank">CodeWP T
     {
         $current_user = wp_get_current_user();
 
+        $api_host = defined('CODEWPAI_API_HOST') ? CODEWPAI_API_HOST : Main::API_HOST;
+        $api_host = rtrim($api_host, '/');
+
         $variables['nonce']          = wp_create_nonce(Main::nonce());
-        $variables['codewp_server']  = Main::API_HOST;
+        $variables['codewp_server']  = $api_host;
         $variables['user']['name']   = $current_user->display_name;
         $variables['project']        = Settings::getSettingsFormData();
         $variables['notice_visible'] = get_option('codewpai/notice_visible', 1);
