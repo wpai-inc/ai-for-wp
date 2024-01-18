@@ -1,12 +1,12 @@
 <?php
 
-namespace WpaiInc\CodewpHelper;
+namespace CodeWpAi\CodewpHelper;
 
-class Cron
+class CodeWpAiCron
 {
     public function __construct()
     {
-        add_action('cwpai_cron_synchronizer', [$this, 'synchronizerJob']);
+        add_action('codewpai_cron_synchronizer', [$this, 'synchronizerJob']);
     }
 
     /**
@@ -15,9 +15,9 @@ class Cron
     public function synchronizerJob()
     {
 
-        $response_body = Settings::sendDataToCodewp('PATCH');
+        $response_body = CodeWpAiSettings::sendDataToCodewp('PATCH');
 
-        Settings::save(
+        CodeWpAiSettings::save(
             array(
                 'project_id'       => $response_body['id'],
                 'project_name'     => $response_body['name'],
@@ -29,13 +29,13 @@ class Cron
 
     public static function addCronJob()
     {
-        if (! wp_next_scheduled('cwpai_cron_synchronizer')) {
-            wp_schedule_event(time(), 'daily', 'cwpai_cron_synchronizer');
+        if (! wp_next_scheduled('codewpai_cron_synchronizer')) {
+            wp_schedule_event(time(), 'daily', 'codewpai_cron_synchronizer');
         }
     }
 
     public static function removeCronJob()
     {
-        wp_clear_scheduled_hook('cwpai_cron_synchronizer');
+        wp_clear_scheduled_hook('codewpai_cron_synchronizer');
     }
 }

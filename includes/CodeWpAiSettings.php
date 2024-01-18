@@ -1,8 +1,8 @@
 <?php
 
-namespace WpaiInc\CodewpHelper;
+namespace CodeWpAi\CodewpHelper;
 
-class Settings
+class CodeWpAiSettings
 {
     /**
      * Returns the debug data from the current WordPress installation
@@ -80,9 +80,9 @@ class Settings
      */
     public static function sendDataToCodewp($method = 'POST', $token = null)
     {
-        $api_key_settings = Settings::getSettingsFormData(true);
+        $api_key_settings = CodeWpAiSettings::getSettingsFormData(true);
 
-        $debug_data = Settings::getDebugData();
+        $debug_data = CodeWpAiSettings::getDebugData();
         $body       = array(
             'name'        => get_bloginfo('name'),
             'description' => get_bloginfo('description'),
@@ -106,7 +106,7 @@ class Settings
             'body'    => json_encode($body),
         );
 
-        $domain = rtrim(CWPAI_API_SERVER, '/');
+        $domain = rtrim(CODEWPAI_API_SERVER, '/');
 
         $url = $domain.'/api/'.'wp-site-project-synchronize';
         if ($method === 'POST') {
@@ -121,7 +121,7 @@ class Settings
         if (is_a($response, 'WP_Error')) {
             throw new \Exception(esc_html($response->get_error_message()));
         } elseif (401 === $response['response']['code']) {
-            throw new \Exception(esc_html(__('Your token is invalid. Please add a new one!', 'cwpai-helper')));
+            throw new \Exception(esc_html(__('Your token is invalid. Please add a new one!', 'codewpai')));
         } elseif (! in_array($response['response']['code'], [200, 201], true)) {
             $body = json_decode($response['body'], true);
             error_log(print_r($body, true));
@@ -157,7 +157,7 @@ class Settings
         $data = array_merge($api_token_settings, $data);
 
         update_option(
-            'cwpai-helper/api-token',
+            'codewpai/api-token',
             $data,
             false
         );
@@ -167,7 +167,7 @@ class Settings
     public static function get(): array
     {
         $settings = get_option(
-            'cwpai-helper/api-token'
+            'codewpai/api-token'
         );
 
         if (! $settings) {

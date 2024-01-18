@@ -1,13 +1,13 @@
 {
-  "name": "@cwpai/codewp-helper",
-  "version": "0.0.1",
+  "name": "@codewpai/codewpai",
+  "version": "0.1.0",
   "private": false,
   "homepage": "https://github.com/fnpen/wp-modern-settings-page-boilerplate",
   "scripts": {
     "build": "wp-scripts build --config webpack.config.mjs",
     "start": "wp-scripts start --config webpack.config.mjs",
     "hot": "wp-scripts start --config webpack.config.mjs --hot",
-    "make-pot": "wp i18n make-pot . --include=\"src,includes\" languages/my-plugin.pot",
+    "make-pot": "wp i18n make-pot . --include=\"src,includes\" --domain=\"codewpai\" languages/codewpai.pot",
     "fix:prettier": "prettier --write \"**/*.*\"",
     "wp-dist-archive": "./bin/wp-dist-archive.sh"
   },

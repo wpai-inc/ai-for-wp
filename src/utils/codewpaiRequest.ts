@@ -1,10 +1,10 @@
-import type {CwpaiSettings} from 'types';
+import type {CodeWpAiSettings} from 'types';
 
 declare const jQuery: any;
 declare const ajaxurl: string;
-declare const CWPAI_SETTINGS: CwpaiSettings;
+declare const CODEWPAI_SETTINGS: CodeWpAiSettings;
 
-const cwpaiRequest = async ({action, data, addNotification}) => {
+const codewpaiRequest = async ({action, data, addNotification}) => {
 
     try {
         const response = await jQuery.ajax(
@@ -14,7 +14,7 @@ const cwpaiRequest = async ({action, data, addNotification}) => {
                 data: {
                     action,
                     ...data,
-                    _wpnonce: CWPAI_SETTINGS.nonce,
+                    _wpnonce: CODEWPAI_SETTINGS.nonce,
                 },
             }
         );
@@ -34,4 +34,4 @@ const cwpaiRequest = async ({action, data, addNotification}) => {
     }
 };
 
-export default cwpaiRequest;
+export default codewpaiRequest;

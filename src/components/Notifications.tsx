@@ -13,6 +13,6 @@ export const NotificationsBody = () => {
     const notificationsContext = useNotificationsContext();
 
     return <SnackbarList notices={notificationsContext.notifications}
-                         className="cwpai-components-snackbar-list"
+                         className="codewpai-components-snackbar-list"
                          onRemove={notificationsContext.removeNotification}/>;
 };

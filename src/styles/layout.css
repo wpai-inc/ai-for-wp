@@ -1,11 +1,11 @@
-.cwpai-helper {
+.codewpai {
     & #wpcontent,
     &.auto-fold #wpcontent {
         padding-left: 0;
     }
 
-    & .cwpai-helper-layout {
-        & .cwpai-helper-layout-body {
+    & .codewpai-layout {
+        & .codewpai-layout-body {
             max-width: 800px;
             margin: 0 auto;
         }

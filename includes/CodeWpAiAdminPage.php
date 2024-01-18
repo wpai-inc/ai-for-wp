@@ -1,8 +1,8 @@
 <?php
 
-namespace WpaiInc\CodewpHelper;
+namespace CodeWpAi\CodewpHelper;
 
-class AdminPage
+class CodeWpAiAdminPage
 {
     public function __construct()
     {
@@ -13,10 +13,10 @@ class AdminPage
     {
         $hook_name = add_submenu_page(
             'options-general.php',
-            __('CodeWP Helper', 'codewp-helper'),
-            __('CodeWP Helper', 'codewp-helper'),
+            __('CodeWP Helper', 'codewpai'),
+            __('CodeWP Helper', 'codewpai'),
             'manage_options',
-            'cwpai-helper',
+            'codewpai',
             [$this, 'adminPage']
         );
 
@@ -31,21 +31,21 @@ class AdminPage
                 <?php
                 echo esc_html__(
                     'Warning: This options panel will not work properly without JavaScript, please enable it.',
-                    'codewp-helper'
+                    'codewpai'
                 );
                 ?>
             </div>
         </noscript>
         <style>
-            #cwpai-ui-loading {
+            #codewpai-ui-loading {
                 height: calc(100vh - 100px);
                 display: flex;
                 align-items: center;
                 justify-content: center;
             }
         </style>
-        <div id="cwpai-ui-loading"><?php echo esc_html__('Loading…', 'codewp-helper'); ?></div>
-        <div id="cwpai-ui-settings"></div>
+        <div id="codewpai-ui-loading"><?php echo esc_html__('Loading…', 'codewpai'); ?></div>
+        <div id="codewpai-ui-settings"></div>
         <?php
     }
 
@@ -59,14 +59,14 @@ class AdminPage
 
         $screen->add_help_tab(
             array(
-                'id'      => 'cwpai_400_error_help_tab',
-                'title'   => __('400 Error?', 'codewp-helper'),
+                'id'      => 'codewpai_400_error_help_tab',
+                'title'   => __('400 Error?', 'codewpai'),
                 /* translators: %s: will be replaced by current site URL */
                 'content' => '<p>'
                              .sprintf(
                                  __(
                                      'Ensure that the site url, <strong>%s</strong>, is equal to the Project URL in CodeWP.',
-                                     'codewp-helper'
+                                     'codewpai'
                                  ),
                                  get_site_url()
                              )
@@ -75,12 +75,12 @@ class AdminPage
         );
         $screen->add_help_tab(
             array(
-                'id'      => 'cwpai_pro_user_help_tab',
-                'title'   => __('CodeWP Pro User?', 'codewp-helper'),
+                'id'      => 'codewpai_pro_user_help_tab',
+                'title'   => __('CodeWP Pro User?', 'codewpai'),
                 'content' => '<p>'
                              .__(
                                  'Contact us and we\'ll walk you through the setup of this plugin.',
-                                 'codewp-helper'
+                                 'codewpai'
                              )
                              .'</p>',
             )
@@ -89,7 +89,7 @@ class AdminPage
 
     public function enqueueScripts()
     {
-        $this->enqueueScriptsFromAssetFile('settings', CWPAI_HELPER_PLUGIN_FILE);
+        $this->enqueueScriptsFromAssetFile('settings', CODEWPAI_HELPER_PLUGIN_FILE);
         $this->attachDataToSettings();
     }
 
@@ -102,7 +102,7 @@ Made with love 💚 by the <a href="https://codewp.ai/" target="_blank">CodeWP T
 
     public function bodyClass(string $classes)
     {
-        $classes .= ' cwpai-helper';
+        $classes .= ' codewpai';
 
         return $classes;
     }
@@ -125,7 +125,7 @@ Made with love 💚 by the <a href="https://codewp.ai/" target="_blank">CodeWP T
             }
 
             wp_enqueue_script(
-                "cwpai-helper-$name",
+                "codewpai-$name",
                 plugins_url("build/$name.js", $plugin_file),
                 $script_dependencies,
                 $script_asset['version'],
@@ -139,7 +139,7 @@ Made with love 💚 by the <a href="https://codewp.ai/" target="_blank">CodeWP T
             }
 
             wp_enqueue_style(
-                "cwpai-helper-$name",
+                "codewpai-$name",
                 plugins_url("build/$name.css", $plugin_file),
                 $style_dependencies,
                 $script_asset['version'],
@@ -152,11 +152,11 @@ Made with love 💚 by the <a href="https://codewp.ai/" target="_blank">CodeWP T
     {
         $current_user = wp_get_current_user();
 
-        $variables['nonce']          = wp_create_nonce(NONCE_ACTION);
-        $variables['codewp_server']  = CWPAI_API_SERVER;
+        $variables['nonce']          = wp_create_nonce(CODEWPAI_NONCE_ACTION);
+        $variables['codewp_server']  = CODEWPAI_API_SERVER;
         $variables['user']['name']   = $current_user->display_name;
-        $variables['project']        = Settings::getSettingsFormData();
-        $variables['notice_visible'] = get_option('cwpai-helper/notice_visible', 1);
+        $variables['project']        = CodeWpAiSettings::getSettingsFormData();
+        $variables['notice_visible'] = get_option('codewpai/notice_visible', 1);
 
         return $variables;
     }
@@ -168,8 +168,8 @@ Made with love 💚 by the <a href="https://codewp.ai/" target="_blank">CodeWP T
     {
         $variables = $this->settingsVariables([]);
         wp_localize_script(
-            'cwpai-helper-settings',
-            'CWPAI_SETTINGS',
+            'codewpai-settings',
+            'CODEWPAI_SETTINGS',
             $variables
         );
     }

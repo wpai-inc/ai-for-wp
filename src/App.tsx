@@ -5,26 +5,26 @@ import {Home} from './pages/Home';
 import {Settings} from './pages/Settings';
 import './styles/styles.css';
 import {PagePropsContext} from './hooks/usePagePropsContext';
-import {CwpaiSettings} from "./types";
+import {CodeWpAiSettings} from "./types";
 import {NotificationsProvider} from "./hooks/useNotificationsContext";
 
-declare const CWPAI_SETTINGS: CwpaiSettings;
+declare const CODEWPAI_SETTINGS: CodeWpAiSettings;
 
 const App = () => {
     const [selectedTab, setSelectedTab] = useState('home'); // Initial tab is 'home'
     return (
-        <PagePropsContext.Provider value={CWPAI_SETTINGS}>
+        <PagePropsContext.Provider value={CODEWPAI_SETTINGS}>
             <NotificationsProvider>
                 <Layout
-                    title={__('CodeWP Helper', 'cwpai-helper')}
+                    title={__('CodeWP Helper', 'codewpai')}
                     tabs={[
                         {
                             name: 'home',
-                            title: __('Home', 'cwpai-helper')
+                            title: __('Home', 'codewpai')
                         },
                         {
                             name: 'settings',
-                            title: __('Settings', 'cwpai-helper'),
+                            title: __('Settings', 'codewpai'),
                         },
                     ]}
                     selectedTab={selectedTab}

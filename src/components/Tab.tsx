@@ -6,7 +6,7 @@ export const Tab = ({children, name = ''}) => {
     const isActive = value === name;
     return (
         <button
-            className={'cwpai-helper-tab ' + (isActive ? 'cwpai-helper-tab--active' : '')}
+            className={'codewpai-tab ' + (isActive ? 'codewpai-tab--active' : '')}
             aria-current="true"
             onClick={() => onChange(name)}
         >

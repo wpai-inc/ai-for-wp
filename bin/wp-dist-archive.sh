@@ -18,4 +18,3 @@ rm -rf vendor
 
 # run composer in development mode
 composer install --prefer-dist
-

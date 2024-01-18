@@ -1,7 +1,7 @@
 import {createContext, useContext} from "react";
-import {CwpaiSettings} from "../types";
+import {CodeWpAiSettings} from "../types";
 
-export const PagePropsContext = createContext<CwpaiSettings | undefined>(undefined);
+export const PagePropsContext = createContext<CodeWpAiSettings | undefined>(undefined);
 
 export function usePagePropsContext() {
     const pageProps = useContext(PagePropsContext);

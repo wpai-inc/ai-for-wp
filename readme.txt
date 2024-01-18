@@ -1,11 +1,12 @@
-=== CodeWP Helper - Connect AI Code and Chat tools to your WordPress Website ===
-Contributors: codewp
+=== AI for WP - Connect CodeWP's AI Code and Chat tools to your Website ===
+Contributors: codewp, ovidiu-galatan, freshbrewedweb
 Donate link: https://codewp.ai
 Tags: code, chat, ai, wordpress ai
 Requires at least: 6.0
-Tested up to: 6.4
+Tested up to: 6.4.2
 Requires PHP: 7.2
 License: GPLv3
+Stable tag: 0.1.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 Connect your website to a CodeWP project, unlocking accurate AI code generation and chat features. 

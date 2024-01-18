@@ -31,12 +31,12 @@ export const Home = ({handleTabChange}) => {
             <ClosableNotice/>
             <Card>
                 <CardHeader>
-                    <Heading>{__('Welcome to CodeWP, ' + user.name, 'cwpai-helper')}</Heading>
+                    <Heading>{__('Welcome to CodeWP, ' + user.name, 'codewpai')}</Heading>
                 </CardHeader>
 
                 <CardBody>
                     <ReactMarkdown
-                        className="cwpai-reset-styles"
+                        className="codewpai-reset-styles"
                         children={section1}
                         remarkPlugins={[remarkGfm]}
                     />
@@ -44,15 +44,15 @@ export const Home = ({handleTabChange}) => {
                 <CardDivider/>
                 <CardBody>
                     <ReactMarkdown
-                        className="cwpai-reset-styles"
+                        className="codewpai-reset-styles"
                         children={section2}
                         remarkPlugins={[remarkGfm]}
                     />
                 </CardBody>
-                <CardFooter className="cwpai-components-card-footer--sticky">
-                    <Text>{__('Ready to get started?', 'cwpai-helper')}</Text>
+                <CardFooter className="codewpai-components-card-footer--sticky">
+                    <Text>{__('Ready to get started?', 'codewpai')}</Text>
                     <Button className="is-secondary" variant="secondary" onClick={() => handleTabChange('settings')}>
-                        {__('Set API Key', 'cwpai-helper')}
+                        {__('Set API Key', 'codewpai')}
                     </Button>
                 </CardFooter>
             </Card>

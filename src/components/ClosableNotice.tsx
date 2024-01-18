@@ -1,7 +1,7 @@
 import {__experimentalSpacer as Spacer, Notice} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 import {useState} from 'react';
-import cwpaiRequest from '../utils/cwpaiRequest';
+import codewpaiRequest from '../utils/codewpaiRequest';
 import {usePagePropsContext} from "../hooks/usePagePropsContext";
 
 
@@ -10,8 +10,8 @@ export const ClosableNotice = () => {
     const {notice_visible} = usePagePropsContext();
     const [noticeVisible, setNoticeVisible] = useState(notice_visible);
     const doHideNotice = () => {
-        cwpaiRequest({
-            action: 'cwpai-helper/notice-hide',
+        codewpaiRequest({
+            action: 'codewpai/notice-hide',
             data: {},
             addNotification: () => {
             }
@@ -24,7 +24,7 @@ export const ClosableNotice = () => {
             {noticeVisible === "1" && (
                 <>
                     <Notice onRemove={doHideNotice}>
-                        {__("Welcome to CodeWP. We're glad you'e here.", 'cwpai-helper')}
+                        {__("Welcome to CodeWP. We're glad you'e here.", 'codewpai')}
                     </Notice>
                     <Spacer marginBottom={6}/>
                 </>

@@ -17,9 +17,9 @@ export const NotificationsProvider = ({children}) => {
     const [notifications, setNotifications] = useState<Notifications>([]);
 
     const addNotification = (notification: string, type: string = 'default') => {
-        let className = 'cwpai-default-notification';
+        let className = 'codewpai-default-notification';
         if (type === 'error') {
-            className = 'cwpai-error-notification';
+            className = 'codewpai-error-notification';
         }
 
         setNotifications([
