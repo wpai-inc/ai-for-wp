@@ -24,7 +24,7 @@ export const ClosableNotice = () => {
             {noticeVisible === "1" && (
                 <>
                     <Notice onRemove={doHideNotice}>
-                        {__("Welcome to CodeWP. We're glad you'e here.", 'codewpai')}
+                        {__("Welcome to CodeWP. We're glad you're here.", 'codewpai')}
                     </Notice>
                     <Spacer marginBottom={6}/>
                 </>

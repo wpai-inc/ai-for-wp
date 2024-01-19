@@ -40,7 +40,7 @@ class Main
     public function bootstrap()
     {
         // do something on plugin bootstrap
-        new Filters();
+        new Filters($this->plugin_file);
         new Ajax();
         new AdminPage($this->plugin_dir, $this->plugin_file);
         new Cron();
