@@ -6,7 +6,7 @@
 @import 'utilities.css';
 
 /* Fix to support markdown file */
-.cwpai-reset-styles {
+.codewpai-reset-styles {
     & code {
         display: inline-block;
     }
@@ -23,7 +23,7 @@
     }
 }
 
-.cwpai-spinner-wrap-overlay {
+.codewpai-spinner-wrap-overlay {
     position: absolute;
     left: 0;
     right: 0;
@@ -35,7 +35,7 @@
     background: #ffffffa1;
 }
 
-.cwpai-components-snackbar-list {
+.codewpai-components-snackbar-list {
     position: fixed;
     top: 32px;
     right: 32px;
@@ -44,17 +44,17 @@
     align-items: flex-end;
 }
 
-.cwpai-error-notification {
+.codewpai-error-notification {
     background: #ab0909;
 }
 
-.cwpai-default-notification {
+.codewpai-default-notification {
     background: #0E876A;
 }
 
-.cwpai-api-key-field  input[type="text"] {
+.codewpai-api-key-field  input[type="text"] {
     height: 36px;
 }
-.cwpai-api-key-button {
+.codewpai-api-key-button {
     margin-bottom: 8px
 }

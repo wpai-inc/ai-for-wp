@@ -1,6 +1,6 @@
 <?php
 
-namespace WpaiInc\CodewpHelper;
+namespace WpAi\CodeWpHelper;
 
 class Settings
 {
@@ -28,7 +28,13 @@ class Settings
                 require_once ABSPATH.'wp-admin/includes/misc.php';
             }
 
-            return \WP_Debug_Data::debug_data();
+            $debug_data = \WP_Debug_Data::debug_data();
+
+            $debug_data['cpts'] = self::getCpts();
+            $debug_data['taxonomies'] = self::getTaxonomies();
+
+            return $debug_data;
+
         } catch (\Exception $error) {
             return ['error' => $error->getMessage()];
         }
@@ -106,11 +112,13 @@ class Settings
             'body'    => json_encode($body),
         );
 
-        $domain = rtrim(CWPAI_API_SERVER, '/');
+        $api_host = defined('CODEWPAI_API_HOST') ? CODEWPAI_API_HOST : Main::API_HOST;
+        $api_host = rtrim($api_host, '/');
 
-        $url = $domain.'/api/'.'wp-site-project-synchronize';
+
+        $url = $api_host.'/api/'.'wp-site-project-synchronize';
         if ($method === 'POST') {
-            $url = $domain.'/api/'.'wp-site-projects';
+            $url = $api_host.'/api/'.'wp-site-projects';
         }
 
         $response = wp_remote_request(
@@ -121,7 +129,7 @@ class Settings
         if (is_a($response, 'WP_Error')) {
             throw new \Exception(esc_html($response->get_error_message()));
         } elseif (401 === $response['response']['code']) {
-            throw new \Exception(esc_html(__('Your token is invalid. Please add a new one!', 'cwpai-helper')));
+            throw new \Exception(esc_html(__('Your token is invalid. Please add a new one!', Main::TEXT_DOMAIN)));
         } elseif (! in_array($response['response']['code'], [200, 201], true)) {
             $body = json_decode($response['body'], true);
             error_log(print_r($body, true));
@@ -157,7 +165,7 @@ class Settings
         $data = array_merge($api_token_settings, $data);
 
         update_option(
-            'cwpai-helper/api-token',
+            'codewpai/api-token',
             $data,
             false
         );
@@ -167,7 +175,7 @@ class Settings
     public static function get(): array
     {
         $settings = get_option(
-            'cwpai-helper/api-token'
+            'codewpai/api-token'
         );
 
         if (! $settings) {
@@ -182,5 +190,55 @@ class Settings
         }
 
         return $settings;
+    }
+
+    /**
+     * return an array containing all the custom post types
+     *
+     * @return array
+     */
+    public static function getCpts()
+    {
+        $args = array(
+            'public'   => true,
+            '_builtin' => false,
+        );
+
+        $post_types = get_post_types($args, 'objects');
+
+        $post_types = array_map(
+            function ($post_type) {
+                unset($post_type->labels);
+                return $post_type;
+            },
+            $post_types
+        );
+
+        return $post_types;
+    }
+    /**
+     * return an array containing all the custom taxonomies
+     *
+     * @return array
+     */
+    public static function getTaxonomies()
+    {
+        $args = array(
+            'public'   => true,
+            '_builtin' => false,
+        );
+
+        $taxonomies = get_taxonomies($args, 'objects');
+
+        $taxonomies = array_map(
+            function ($taxonomy) {
+                unset($taxonomy->labels);
+
+                return $taxonomy;
+            },
+            $taxonomies
+        );
+
+        return $taxonomies;
     }
 }

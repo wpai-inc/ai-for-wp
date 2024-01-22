@@ -1,25 +1,21 @@
-# Copyright (C) 2023 WPAI, Inc.
-# This file is distributed under the same license as the CodeWP Helper plugin.
+# Copyright (C) 2024 WPAI, Inc.
+# This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: CodeWP Helper 0.1.0\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/cwp-helper-plugin\n"
+"Project-Id-Version: AI for WP 0.1.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/codewpai\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-11-20T18:59:10+00:00\n"
+"POT-Creation-Date: 2024-01-17T21:37:47+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.9.0\n"
-"X-Domain: cwpai-helper\n"
+"X-Domain: codewpai\n"
 
 #. Plugin Name of the plugin
-msgid "CodeWP Helper"
-msgstr ""
-
-#. Plugin URI of the plugin
-msgid "https://github.com/wpai/codewp-helper"
+msgid "AI for WP"
 msgstr ""
 
 #. Description of the plugin
@@ -32,6 +28,35 @@ msgstr ""
 
 #. Author URI of the plugin
 msgid "https://codewp.ai"
+msgstr ""
+
+#: includes/AdminPage.php:16
+#: includes/AdminPage.php:17
+msgid "CodeWP Helper"
+msgstr ""
+
+#: includes/AdminPage.php:32
+msgid "Warning: This options panel will not work properly without JavaScript, please enable it."
+msgstr ""
+
+#: includes/AdminPage.php:47
+msgid "Loading…"
+msgstr ""
+
+#: includes/AdminPage.php:63
+msgid "400 Error?"
+msgstr ""
+
+#: includes/AdminPage.php:67
+msgid "Ensure that the site url, <strong>%s</strong>, is equal to the Project URL in CodeWP."
+msgstr ""
+
+#: includes/AdminPage.php:79
+msgid "CodeWP Pro User?"
+msgstr ""
+
+#: includes/AdminPage.php:81
+msgid "Contact us and we'll walk you through the setup of this plugin."
 msgstr ""
 
 #: includes/Ajax.php:37

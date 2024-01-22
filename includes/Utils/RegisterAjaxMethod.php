@@ -1,6 +1,8 @@
 <?php
 
-namespace WpaiInc\CodewpHelper\Utils;
+namespace WpAi\CodeWpHelper\Utils;
+
+use WpAi\CodeWpHelper\Main;
 
 /**
  * Class RegisterAjaxMethod
@@ -44,9 +46,9 @@ class RegisterAjaxMethod
     private function registerAjaxMethod(callable $method): void
     {
         if (! isset($_REQUEST['_wpnonce'])
-            || ! wp_verify_nonce(sanitize_key($_REQUEST['_wpnonce']), NONCE_ACTION)
+            || ! wp_verify_nonce(sanitize_key($_REQUEST['_wpnonce']), Main::nonce())
         ) {
-            die(esc_html__('Security check', 'cwpai-helper'));
+            die(esc_html__('Security check', Main::TEXT_DOMAIN));
         }
 
         try {

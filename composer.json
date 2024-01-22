@@ -1,5 +1,5 @@
 {
-  "name": "cwpai/codewp-helper",
+  "name": "wpai/codewp-helper",
   "description": "",
   "type": "wordpress-plugin",
   "license": "GPL-3.0-or-later",
@@ -19,15 +19,14 @@
   },
   "autoload": {
     "psr-4": {
-      "WpaiInc\\CodewpHelper\\": "includes"
+      "WpAi\\CodeWpHelper\\": "includes"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "WpaiInc\\CodewpHelper\\Tests\\": "tests"
+      "WpAi\\CodeWpHelper\\Tests\\": "tests"
     }
   },
-
   "scripts": {
     "format": "vendor/bin/php-cs-fixer fix --allow-risky=yes",
     "test": "vendor/bin/phpunit"

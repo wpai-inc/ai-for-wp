@@ -1,8 +1,8 @@
-.cwpai-helper-tabs-wrapper {
+.codewpai-tabs-wrapper {
     display: flex;
     justify-content: center;
 
-    & .cwpai-helper-tab {
+    & .codewpai-tab {
         display: block;
         cursor: pointer;
         border: none;
@@ -19,7 +19,7 @@
             box-shadow: none;
         }
 
-        &.cwpai-helper-tab--active {
+        &.codewpai-tab--active {
             box-shadow: inset 0 -3px #3582c4;
             text-shadow: 0 0 1px #1d2327;
             /* font-weight: 600; */

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # remove the cwp-helper-plugin zip file if it exists
-rm ../cwp-helper-plugin.*.zip
+rm ../ai-for-wp.*.zip
 
 # remove the vendor directory
 rm -rf vendor
@@ -18,4 +18,3 @@ rm -rf vendor
 
 # run composer in development mode
 composer install --prefer-dist
-

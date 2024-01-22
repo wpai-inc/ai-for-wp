@@ -1,24 +1,26 @@
 <?php
 
-namespace WpaiInc\CodewpHelper;
+namespace WpAi\CodeWpHelper;
+
+use WpAi\CodeWpHelper\Utils\RegisterAjaxMethod;
 
 class Ajax
 {
 
     public function __construct()
     {
-        new \WpaiInc\CodewpHelper\Utils\RegisterAjaxMethod(
-            'cwpai-helper/save-api-token',
+        new RegisterAjaxMethod(
+            'codewpai/save-api-token',
             [$this, 'saveApiToken']
         );
 
-        new \WpaiInc\CodewpHelper\Utils\RegisterAjaxMethod(
-            'cwpai-helper/api-auto-synchronize-save',
+        new RegisterAjaxMethod(
+            'codewpai/api-auto-synchronize-save',
             [$this, 'saveAutoSynchronize']
         );
 
-        new \WpaiInc\CodewpHelper\Utils\RegisterAjaxMethod(
-            'cwpai-helper/notice-hide',
+        new RegisterAjaxMethod(
+            'codewpai/notice-hide',
             /**
              * Save the auto synchronize option
              */
@@ -34,7 +36,7 @@ class Ajax
         $api_key_settings = Settings::getSettingsFormData(true);
 
         if (empty($api_key_settings['token']) && (empty($token) || 48 !== strlen($token))) {
-            throw new \Exception(esc_html(__('Please enter a valid token', 'cwpai-helper')));
+            throw new \Exception(esc_html(__('Please enter a valid token', Main::TEXT_DOMAIN)));
         }
 
         $response = Settings::sendDataToCodewp('POST', $token);
@@ -94,7 +96,7 @@ class Ajax
     public function hideNotice(): array
     {
 
-        update_option('cwpai-helper/notice_visible', 0, false);
+        update_option('codewpai/notice_visible', 0, false);
 
         return [
             'notice_visible' => false,
