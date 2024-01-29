@@ -6,7 +6,7 @@ Requires at least: 6.0
 Tested up to: 6.4.2
 Requires PHP: 7.2
 License: GPLv3
-Stable tag: 0.1.0
+Stable tag: 0.2.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 Connect your website to a CodeWP project, unlocking accurate AI code generation and chat features. 
@@ -38,3 +38,6 @@ When you connect your WordPress site to CodeWP using the Projects feature, it se
 == Changelog ==
 = 0.1.0 =
 - Initial public release of the plugin.
+
+= 0.2.0 =
+- Snippets runner added.

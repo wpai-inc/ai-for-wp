@@ -16,6 +16,7 @@ class AdminPage
 
     public function adminMenu()
     {
+        
         $hook_name = add_submenu_page(
             'options-general.php',
             __('CodeWP Helper', Main::TEXT_DOMAIN),
