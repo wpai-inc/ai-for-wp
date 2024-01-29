@@ -7,6 +7,8 @@ import './styles/styles.css';
 import {PagePropsContext} from './hooks/usePagePropsContext';
 import {SettingsType} from "./types";
 import {NotificationsProvider} from "./hooks/useNotificationsContext";
+import { Snippets } from './pages/Snippets';
+import { Logs } from './pages/Logs';
 
 declare const CODEWPAI_SETTINGS: SettingsType;
 
@@ -26,6 +28,14 @@ const App = () => {
                             name: 'settings',
                             title: __('Settings', 'codewpai'),
                         },
+                        {
+                            name: 'snippets',
+                            title: __('Snippets', 'codewpai'),
+                        },
+                        {
+                            name: 'logs',
+                            title: __('Logs', 'codewpai'),
+                        },
                     ]}
                     selectedTab={selectedTab}
                     setSelectedTab={setSelectedTab}
@@ -34,6 +44,8 @@ const App = () => {
                         <>
                             {selectedTab === 'home' && <Home handleTabChange={setSelectedTab}/>}
                             {selectedTab === 'settings' && <Settings/>}
+                            {selectedTab === 'snippets' && <Snippets/>}
+                            {selectedTab === 'logs' && <Logs/>}
                         </>
                     )}
                 </Layout>

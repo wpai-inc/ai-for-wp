@@ -10,7 +10,7 @@
  * Author:            WPAI, Inc.
  * Author URI:        https://codewp.ai
  *
- * Version:           0.1.0
+ * Version:           0.2.0
  * Requires at least: 5.8.1
  * Tested up to:      6.4.1
  * Requires PHP:      7.4
@@ -31,4 +31,4 @@ if (! class_exists(Main::class)) {
     }
 }
 
-new Main(__FILE__);
+$codewpai = new Main(__FILE__);
