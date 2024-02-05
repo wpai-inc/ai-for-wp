@@ -10,23 +10,23 @@ class Snippets
     {
         $this->plugin_dir = $plugin_dir;
 
-        do_action('codewpai_snippets', [ $this ]);
+        do_action('codewpai_snippets', [$this]);
 
-        add_action('wp_ajax_codewpai_get_snippets', [ $this, 'getSnippets' ]);
-        add_action('wp_ajax_codewpai_enable_snippet', [ $this, 'enableSnippet' ]);
+        add_action('wp_ajax_codewpai_get_snippets', [$this, 'getSnippets']);
+        add_action('wp_ajax_codewpai_enable_snippet', [$this, 'enableSnippet']);
 
         $this->includeEnabledSnippets();
     }
 
     public function availableSnippets(): array
     {
-        return glob($this->plugin_dir . 'snippets/*.php');
+        return glob($this->plugin_dir.'snippets/*.php');
     }
 
     public function enabledSnippets(): array
     {
         $enabled_snippets = get_option('codewpai_enabled_snippets');
-        if (! $enabled_snippets) {
+        if ( ! $enabled_snippets) {
             return [];
         }
 
@@ -35,12 +35,12 @@ class Snippets
 
     public function allSnippets(): array
     {
-        $all_snippets = $this->availableSnippets();
+        $all_snippets     = $this->availableSnippets();
         $enabled_snippets = $this->enabledSnippets();
-        $all_snippets = array_map(function ($snippet) use ($enabled_snippets) {
+        $all_snippets     = array_map(function ($snippet) use ($enabled_snippets) {
             return [
                 'name'    => basename($snippet),
-                'enabled' => $enabled_snippets[ $snippet ] ?? false,
+                'enabled' => $enabled_snippets[$snippet] ?? false,
                 'code'    => file_get_contents($snippet),
             ];
         }, $all_snippets);
@@ -50,11 +50,8 @@ class Snippets
 
     public function enableSnippet(string $snippet): void
     {
-        $enabled_snippets             = $this->enabledSnippets();
-        $enabled_snippets[ $snippet ] = true;
-
-        error_log('Enabled snippets: ' . print_r($enabled_snippets, true) . "\n");
-
+        $enabled_snippets           = $this->enabledSnippets();
+        $enabled_snippets[$snippet] = true;
 
         // update options codewpai_enabled_snippets
         update_option('codewpai_enabled_snippets', $enabled_snippets);
@@ -62,8 +59,8 @@ class Snippets
 
     public function disableSnippet(string $snippet): void
     {
-        $enabled_snippets             = $this->enabledSnippets();
-        $enabled_snippets[ $snippet ] = false;
+        $enabled_snippets           = $this->enabledSnippets();
+        $enabled_snippets[$snippet] = false;
         // update options codewpai_enabled_snippets
         update_option('codewpai_enabled_snippets', $enabled_snippets);
     }
@@ -79,6 +76,8 @@ class Snippets
     private function includeEnabledSnippets(): void
     {
         $enabled_snippets = $this->enabledSnippets();
+        // print_r($enabled_snippets);
+        // exit;
         foreach ($enabled_snippets as $snippet => $enabled) {
             if ($enabled) {
                 include_once $snippet;
@@ -99,12 +98,9 @@ class Snippets
 
     public function addStringSnippet($snippet_name, $snippet_code)
     {
-
-        $snippet_code = json_decode($snippet_code, true);
-
+        $snippet_code = base64_decode($snippet_code);
         $snippet_path = $this->plugin_dir . 'snippets/' . $snippet_name;
-        error_log('New snippet added: ' . $snippet_path . "\n");
-        file_put_contents($snippet_path, $snippet_code['file_content']);
+        file_put_contents($snippet_path, $snippet_code);
         $this->enableSnippet($snippet_path);
     }
 
