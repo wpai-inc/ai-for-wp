@@ -22,4 +22,5 @@ composer-plugin.json
 postcss.config.js
 psalm.xml
 README.md
+README-DEV.md
 webpack.config.mjs
