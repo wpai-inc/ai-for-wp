@@ -1,6 +1,6 @@
 {
   "name": "@codewpai/codewpai",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": false,
   "homepage": "https://github.com/fnpen/wp-modern-settings-page-boilerplate",
   "scripts": {
@@ -16,6 +16,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-markdown": "^8.0.5",
+    "react-syntax-highlighter": "^15.5.0",
     "remark-gfm": "^3.0.1"
   },
   "devDependencies": {

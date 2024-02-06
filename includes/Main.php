@@ -4,7 +4,7 @@ namespace WpAi\CodeWpHelper;
 
 class Main
 {
-    public const VERSION = '0.2.0';
+    public const VERSION = '0.2.1';
 
     public const TEXT_DOMAIN = 'codewpai';
 
@@ -47,15 +47,15 @@ class Main
         register_shutdown_function(function () {
             $error = error_get_last();
 
-            if (! defined('WP_CONTENT_DIR')) {
+            if (! defined('WP_CONTENT_DIR') && defined('CWP_PLAGROUND') && CWP_PLAGROUND === true) {
                 define('WP_CONTENT_DIR', '/wordpress/wp-content');
-                error_log(WP_CONTENT_DIR);
             }
 
-            $errors = file_exists(WP_CONTENT_DIR . '/debug.json')
+            if ($error) {
+                $errors = file_exists(WP_CONTENT_DIR . '/debug.json')
                 ? json_decode(file_get_contents(WP_CONTENT_DIR . '/debug.json'), true)
                 : [];
-            if ($error) {
+
                 // Get the existing errors
                 $errors = file_exists(WP_CONTENT_DIR . '/debug.json') ? json_decode(file_get_contents(WP_CONTENT_DIR . '/debug.json'), true) : [];
 
@@ -69,6 +69,21 @@ class Main
 
                 // Save the errors
                 file_put_contents(WP_CONTENT_DIR . '/debug.json', json_encode($errors));
+
+                // If the error is from a snippet, disable it
+                // TODO: only disable the snippet if it's a fatal error
+                // TODO: display a message to the user that the snippet has been disabled
+                if (strpos($error['file'], 'snippets') !== false) {
+                    // get file name
+                    $snippet_file = pathinfo($error['file'], PATHINFO_BASENAME);
+                    $snippets = get_option('codewpai_enabled_snippets', []);
+                    if (!empty($snippets[$snippet_file])) {
+                        $snippets[$snippet_file] = false;
+                        update_option('codewpai_enabled_snippets', $snippets);
+                        // redirect to snippets page using JS
+                        echo '<script>window.location.href = "' . admin_url('options-general.php?page=ai-for-wp&tab=snippets') . '";</script>';
+                    }
+                }
             }
         });
     }

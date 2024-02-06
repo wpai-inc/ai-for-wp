@@ -3,7 +3,10 @@
 @import 'header.css';
 @import 'tabs.css';
 @import 'card.css';
+@import 'table.css';
 @import 'utilities.css';
+@import 'guide.css';
+@import 'preview-modal.css';
 
 /* Fix to support markdown file */
 .codewpai-reset-styles {
@@ -54,7 +57,4 @@
 
 .codewpai-api-key-field  input[type="text"] {
     height: 36px;
-}
-.codewpai-api-key-button {
-    margin-bottom: 8px
 }

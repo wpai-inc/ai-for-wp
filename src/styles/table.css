@@ -1,0 +1,11 @@
+.codewpai-layout {
+    .wp-list-table {
+        td:first-child {
+            width: 100%;
+        }
+        td {
+            vertical-align: middle;
+        }
+    }
+}
+

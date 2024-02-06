@@ -1,0 +1,7 @@
+.codewpai-snippet-preview {
+	width: 100vw;
+	max-width: 960px;
+	.components-modal__content, code {
+		background: rgb(40, 44, 52);
+	}
+}

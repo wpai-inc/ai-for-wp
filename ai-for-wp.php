@@ -10,7 +10,7 @@
  * Author:            WPAI, Inc.
  * Author URI:        https://codewp.ai
  *
- * Version:           0.2.0
+ * Version:           0.2.1
  * Requires at least: 5.8.1
  * Tested up to:      6.4.1
  * Requires PHP:      7.4
@@ -20,7 +20,9 @@
  * @package           CodeWP Helper
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if (! defined('ABSPATH')) {
+    exit; // Exit if accessed directly
+}
 
 use WpAi\CodeWpHelper\Main;
 

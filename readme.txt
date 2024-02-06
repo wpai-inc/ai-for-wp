@@ -41,3 +41,13 @@ When you connect your WordPress site to CodeWP using the Projects feature, it se
 
 = 0.2.0 =
 - Snippets runner added.
+
+= 0.2.1 =
+- Added playground mode (The settings page is disabled and on the snippets page a guilde will be displayed).
+- The snippets that are throwing a fatal error will be automatically disabled.
+- Added support for CSS and JS files. The CSS file will be added to the header and the JS file will be added to the footer.
+- Bugfixes and improvments on the snippets runner.
+- Tabs navigation will be persistent on the snippets page. A query parameter will be added to the URL to keep the selected tab.
+- Logs page and functionality implemented. 
+- Improvements on the snippets page UI.
+- Added code preview for the snippets.

@@ -69,14 +69,14 @@ class AdminPage
                 'title'   => __('400 Error?', Main::TEXT_DOMAIN),
                 /* translators: %s: will be replaced by current site URL */
                 'content' => '<p>'
-                             .sprintf(
+                             . sprintf(
                                  __(
                                      'Ensure that the site url, <strong>%s</strong>, is equal to the Project URL in CodeWP.',
                                      Main::TEXT_DOMAIN
                                  ),
                                  get_site_url()
                              )
-                             .'</p>',
+                             . '</p>',
             )
         );
         $screen->add_help_tab(
@@ -84,11 +84,11 @@ class AdminPage
                 'id'      => 'codewpai_pro_user_help_tab',
                 'title'   => __('CodeWP Pro User?', Main::TEXT_DOMAIN),
                 'content' => '<p>'
-                             .__(
+                             . __(
                                  'Contact us and we\'ll walk you through the setup of this plugin.',
                                  Main::TEXT_DOMAIN
                              )
-                             .'</p>',
+                             . '</p>',
             )
         );
     }
@@ -115,7 +115,7 @@ Made with love 💚 by the <a href="https://codewp.ai/" target="_blank">CodeWP T
 
     public function enqueueScriptsFromAssetFile(string $name)
     {
-        $script_asset_path = $this->plugin_dir."/build/$name.asset.php";
+        $script_asset_path = $this->plugin_dir . "/build/$name.asset.php";
         if (file_exists($script_asset_path)) {
             $script_asset        = include $script_asset_path;
             $script_dependencies = $script_asset['dependencies'] ?? array();
@@ -124,7 +124,8 @@ Made with love 💚 by the <a href="https://codewp.ai/" target="_blank">CodeWP T
                 wp_enqueue_media();
             }
 
-            if (in_array('wp-react-refresh-runtime', $script_asset['dependencies'], true)
+            if (
+in_array('wp-react-refresh-runtime', $script_asset['dependencies'], true)
                 && ! constant('SCRIPT_DEBUG')
             ) {
                 wp_die(esc_html('SCRIPT_DEBUG should be true. You use `hot` mode, it requires `wp-react-refresh-runtime` which available only when SCRIPT_DEBUG is enabled.'));
@@ -166,6 +167,7 @@ Made with love 💚 by the <a href="https://codewp.ai/" target="_blank">CodeWP T
         $variables['user']['name']   = $current_user->display_name;
         $variables['project']        = Settings::getSettingsFormData();
         $variables['notice_visible'] = get_option('codewpai/notice_visible', 1);
+        $variables['playground_mode'] = defined('CWP_PLAYGROUND') && CWP_PLAYGROUND === true;
 
         return $variables;
     }
