@@ -1,0 +1,13 @@
+.codewpai-preview-guide {
+	.components-guide__footer {
+		width: auto;
+	}
+	.components-guide__page {
+		padding: 0 16px;
+	}
+
+	.components-modal__content {
+		width: 100vw;
+		max-width: 560px;
+	}
+}
