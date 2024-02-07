@@ -32,6 +32,7 @@ When you connect your WordPress site to CodeWP using the Projects feature, it se
 [CodeWP Website](https://codewp.ai/)
 [CodeWP App](https://codewp.ai/app)
 [Plugin Docs](https://intercom.help/wpai/en/)
+[Source code of this plugin](https://github.com/wpai-inc/ai-for-wp)
 
 == Installation ==
 
