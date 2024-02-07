@@ -129,7 +129,7 @@ class Settings
         if (is_a($response, 'WP_Error')) {
             throw new \Exception(esc_html($response->get_error_message()));
         } elseif (401 === $response['response']['code']) {
-            throw new \Exception(esc_html(__('Your token is invalid. Please add a new one!', Main::TEXT_DOMAIN)));
+            throw new \Exception(esc_html(__('Your token is invalid. Please add a new one!', 'ai-for-wp')));
         } elseif (! in_array($response['response']['code'], [200, 201], true)) {
             $body = json_decode($response['body'], true);
             error_log(print_r($body, true));

@@ -5,7 +5,7 @@ namespace WpAi\CodeWpHelper;
 class Main
 {
     const VERSION = '0.1.0';
-    const TEXT_DOMAIN = 'codewpai';
+    const TEXT_DOMAIN = 'ai-for-wp';
     const API_HOST = 'https://app.codewp.ai';
     
     private $plugin_file;

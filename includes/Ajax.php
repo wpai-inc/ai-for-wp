@@ -36,7 +36,7 @@ class Ajax
         $api_key_settings = Settings::getSettingsFormData(true);
 
         if (empty($api_key_settings['token']) && (empty($token) || 48 !== strlen($token))) {
-            throw new \Exception(esc_html(__('Please enter a valid token', Main::TEXT_DOMAIN)));
+            throw new \Exception(esc_html(__('Please enter a valid token', 'ai-for-wp')));
         }
 
         $response = Settings::sendDataToCodewp('POST', $token);

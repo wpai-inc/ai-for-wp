@@ -48,7 +48,7 @@ class RegisterAjaxMethod
         if (! isset($_REQUEST['_wpnonce'])
             || ! wp_verify_nonce(sanitize_key($_REQUEST['_wpnonce']), Main::nonce())
         ) {
-            die(esc_html__('Security check', Main::TEXT_DOMAIN));
+            die(esc_html__('Security check', 'ai-for-wp'));
         }
 
         try {
