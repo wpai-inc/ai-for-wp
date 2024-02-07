@@ -33,8 +33,13 @@ When you connect your WordPress site to CodeWP using the Projects feature, it se
 [CodeWP App](https://codewp.ai/app)
 [Plugin Docs](https://intercom.help/wpai/en/)
 [Source code of this plugin](https://github.com/wpai-inc/ai-for-wp)
+Want to report a bug? Create an issue at the [wpai-inc/ai-for-wp](https://github.com/wpai-inc/ai-for-wp/issues) repo.
 
 == Installation ==
+
+1. Upload the plugin files to the `/wp-content/plugins/ai-for-wp` directory, or install the plugin through the WordPress plugins screen directly.
+2. Activate the plugin through the 'Plugins' screen in WordPress
+3. Use the "Settings" -> "AI for WP" screen to configure the plugin
 
 == Changelog ==
 = 0.1.0 =
