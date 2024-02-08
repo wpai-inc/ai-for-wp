@@ -8,6 +8,8 @@ rm -rf vendor
 
 # run composer in production mode
 composer install --no-dev --prefer-dist --optimize-autoloader
+npm run build
+npm run make-pot
 
 # create the dist archive
 echo "Creating dist archive..."

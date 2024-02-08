@@ -6,11 +6,13 @@ class AdminPage
 {
     private $plugin_dir;
     private $plugin_file;
+    private $plugin_url;
 
     public function __construct($plugin_dir, $plugin_file)
     {
         $this->plugin_dir = $plugin_dir;
         $this->plugin_file = $plugin_file;
+        $this->plugin_url = plugins_url('', $this->plugin_file);
         add_action('admin_menu', [$this, 'adminMenu'], 100);
     }
 
@@ -66,7 +68,7 @@ class AdminPage
             array(
                 'id'      => 'codewpai_400_error_help_tab',
                 'title'   => __('400 Error?', 'ai-for-wp'),
-                /* translators: %s: will be replaced by current site URL */
+                // translators: %s: will be replaced by current site URL
                 'content' => '<p>'
                              . sprintf(
                                  __(
@@ -123,7 +125,7 @@ Made with love 💚 by the <a href="https://codewp.ai/" target="_blank">CodeWP T
                 wp_enqueue_media();
             }
 
-            if (in_array('wp-react-refresh-runtime', $script_asset['dependencies'], true)
+            if (            in_array('wp-react-refresh-runtime', $script_asset['dependencies'], true)
                 && ! constant('SCRIPT_DEBUG')
             ) {
                 wp_die(esc_html('SCRIPT_DEBUG should be true. You use `hot` mode, it requires `wp-react-refresh-runtime` which available only when SCRIPT_DEBUG is enabled.'));
@@ -166,6 +168,7 @@ Made with love 💚 by the <a href="https://codewp.ai/" target="_blank">CodeWP T
         $variables['project']        = Settings::getSettingsFormData();
         $variables['notice_visible'] = get_option('codewpai_notice_visible', 1);
         $variables['playground_mode'] = defined('CWP_PLAYGROUND') && CWP_PLAYGROUND === true;
+        $variables['plugin_url'] = plugins_url('', $this->plugin_file);
 
         return $variables;
     }

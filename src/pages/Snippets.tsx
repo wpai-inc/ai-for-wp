@@ -7,18 +7,15 @@ import {
 	CardBody,
 	CardHeader,
 	ToggleControl,
-	Guide,
 	Modal,
 } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import { PagePropsContext } from '../hooks/usePagePropsContext';
-import { useContext, useEffect, useState } from 'react';
+import CwpGuide from '../components/CwpGuide';
+import { useEffect, useState } from 'react';
 import { LightAsync as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { atomOneDark } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 
 export const Snippets = () => {
-	const pageProps = useContext(PagePropsContext);
-	const [playgroundGuideOpen, setPlaygroundGuideOpen] = useState(pageProps.playground_mode);
 	const [snippets, setSnippets] = useState([]);
 	const [previewingCode, setPreviewingCode] = useState(false);
 	const [previewSnippet, setPreviewSnippet] = useState({});
@@ -97,67 +94,7 @@ export const Snippets = () => {
 					)}
 				</CardBody>
 			</Card>
-			{playgroundGuideOpen && (
-				<Guide
-					onFinish={() => setPlaygroundGuideOpen(false)}
-					className="codewpai-preview-guide"
-					pages={[
-						{
-							content: (
-								<div>
-									<h3>Welcome to CodeWP's Preview Feature</h3>
-									<p>
-										We have spun up a live WordPress instance and added an
-										index.php file to the website. Now, you can verify that your
-										code works as expected before installing it on a staging or
-										production website.
-									</p>
-								</div>
-							),
-						},
-						{
-							content: (
-								<div>
-									<h3>Manually Test the Features Your Code Adds</h3>
-									<p>
-										Manually test the features that your code adds to WordPress
-										here, and see if any errors occur.
-									</p>
-								</div>
-							),
-						},
-						{
-							content: (
-								<div>
-									<h3>Use CodeWP's AI Testing Feature</h3>
-									<p>
-										In the right panel, go to the Testing tab. This uses the
-										WordPress instance, runs your code, and checks for any fatal
-										errors. If any exist, CodeWP's AI can automatically fix them
-										for you.
-									</p>
-								</div>
-							),
-						},
-						{
-							content: (
-								<div>
-									<h3>Future Additions to the Preview</h3>
-									<p>
-										We'll be adding more features to the Preview, like dependent
-										plugins based on mode, automatic navigation for AI testing,
-										and more. If you have any suggestions, please make a feature{' '}
-										<a href="https://codewp.canny.io/feature-requests">
-											request here.
-										</a>
-									</p>
-								</div>
-							),
-						},
-					]}
-					contentLabel={''}
-				/>
-			)}
+			<CwpGuide />
 			<Spacer marginBottom={6} />
 
 			{previewingCode && previewSnippet && (
