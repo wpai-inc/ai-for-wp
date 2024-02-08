@@ -11,7 +11,7 @@ export const ClosableNotice = () => {
     const [noticeVisible, setNoticeVisible] = useState(notice_visible);
     const doHideNotice = () => {
         codewpaiRequest({
-            action: 'codewpai/notice-hide',
+            action: 'codewpai_notice_hide',
             data: {},
             addNotification: () => {
             }

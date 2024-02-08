@@ -27,23 +27,23 @@ const App = () => {
 		<PagePropsContext.Provider value={CODEWPAI_SETTINGS}>
 			<NotificationsProvider>
 				<Layout
-					title={__('CodeWP Helper', 'codewpai')}
+					title={__('CodeWP Helper', 'ai-for-wp')}
 					tabs={[
 						{
 							name: 'home',
-							title: __('Home', 'codewpai'),
+							title: __('Home', 'ai-for-wp'),
 						},
 						{
 							name: 'settings',
-							title: __('Settings', 'codewpai'),
+							title: __('Settings', 'ai-for-wp'),
 						},
 						{
 							name: 'snippets',
-							title: __('Snippets', 'codewpai'),
+							title: __('Snippets', 'ai-for-wp'),
 						},
 						{
 							name: 'logs',
-							title: __('Logs', 'codewpai'),
+							title: __('Logs', 'ai-for-wp'),
 						},
 					]}
 					selectedTab={selectedTab}
