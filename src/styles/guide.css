@@ -4,10 +4,19 @@
 	}
 	.components-guide__page {
 		padding: 0 16px;
+		padding-top: 47px;
+
+		img {
+			border-radius: 2px;
+		}
+
+		p {
+			height: 60px
+		}
 	}
 
 	.components-modal__content {
 		width: 100vw;
-		max-width: 560px;
+		max-width: 600px;
 	}
 }

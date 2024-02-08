@@ -6,7 +6,7 @@ Requires at least: 6.0
 Tested up to: 6.4.2
 Requires PHP: 7.2
 License: GPLv3
-Stable tag: 0.2.0
+Stable tag: 0.2.2
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 Connect your website to a CodeWP project, unlocking accurate AI code generation and chat features. 
@@ -57,3 +57,6 @@ Want to report a bug? Create an issue at the [wpai-inc/ai-for-wp](https://github
 - Logs page and functionality implemented. 
 - Improvements on the snippets page UI.
 - Added code preview for the snippets.
+
+= 0.2.2 =
+- Improvements on the Guide
