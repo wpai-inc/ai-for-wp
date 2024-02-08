@@ -31,7 +31,7 @@ export const TokenApiForm = () => {
 
     const onClickSaveToken = async () => {
         const data = await codewpaiRequest({
-            action: 'codewpai/save-api-token',
+            action: 'codewpai_save_api_token',
             data: {
                 token: project.token,
                 autoSynchronize: project.auto_synchronize,
@@ -45,7 +45,7 @@ export const TokenApiForm = () => {
         setProject({...project, auto_synchronize: value});
         if(project.token_placeholder) {
             const data = await codewpaiRequest({
-                action: 'codewpai/api-auto-synchronize-save',
+                action: 'codewpai_api_auto_synchronize_save',
                 data: {
                     autoSynchronize: value
                 },
@@ -108,7 +108,7 @@ export const TokenApiForm = () => {
                 <Flex direction='column' gap="2">
                     {project.project_id && project.project_name && (
                         <div>{__('Project', 'codewpai')}: <a
-                            href={pageProps.codewp_server + '/projects/' + project.project_id}
+                            href={pageProps.codewp_server + '/sites/' + project.project_id}
                             target="_blank"><strong>{project.project_name}</strong> <span
                             className="text-gray text-sm">({project.project_id})</span></a>
                         </div>

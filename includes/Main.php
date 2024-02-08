@@ -33,8 +33,8 @@ class Main
     public function deactivate()
     {
         // do something on plugin deactivation
-        delete_option('codewpai/api-token');
-        delete_option('codewpai/notice_visible');
+        delete_option('codewpai_api_token');
+        delete_option('codewpai_notice_visible');
     }
 
     public function bootstrap()

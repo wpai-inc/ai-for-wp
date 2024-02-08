@@ -164,7 +164,7 @@ Made with love 💚 by the <a href="https://codewp.ai/" target="_blank">CodeWP T
         $variables['codewp_server']  = $api_host;
         $variables['user']['name']   = $current_user->display_name;
         $variables['project']        = Settings::getSettingsFormData();
-        $variables['notice_visible'] = get_option('codewpai/notice_visible', 1);
+        $variables['notice_visible'] = get_option('codewpai_notice_visible', 1);
 
         return $variables;
     }

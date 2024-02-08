@@ -13,19 +13,19 @@ class Settings
     {
         try {
             if (! class_exists('\WP_Debug_Data')) {
-                require_once ABSPATH.'wp-admin/includes/class-wp-debug-data.php';
+                require_once ABSPATH . 'wp-admin/includes/class-wp-debug-data.php';
             }
             if (! class_exists('\WP_Site_Health')) {
-                require_once ABSPATH.'wp-admin/includes/class-wp-site-health.php';
+                require_once ABSPATH . 'wp-admin/includes/class-wp-site-health.php';
             }
             if (! function_exists('\get_core_updates')) {
-                require_once ABSPATH.'wp-admin/includes/update.php';
+                require_once ABSPATH . 'wp-admin/includes/update.php';
             }
             if (! function_exists('\get_dropins')) {
-                require_once ABSPATH.'wp-admin/includes/plugin.php';
+                require_once ABSPATH . 'wp-admin/includes/plugin.php';
             }
             if (! function_exists('\got_url_rewrite')) {
-                require_once ABSPATH.'wp-admin/includes/misc.php';
+                require_once ABSPATH . 'wp-admin/includes/misc.php';
             }
 
             $debug_data = \WP_Debug_Data::debug_data();
@@ -34,7 +34,6 @@ class Settings
             $debug_data['taxonomies'] = self::getTaxonomies();
 
             return $debug_data;
-
         } catch (\Exception $error) {
             return ['error' => $error->getMessage()];
         }
@@ -62,7 +61,7 @@ class Settings
         if (! empty($api_token_settings['synchronized_at'])) {
             $api_token_settings['synchronized_at'] = get_date_from_gmt(
                 $api_token_settings['synchronized_at'],
-                get_option('date_format').' '.get_option('time_format')
+                get_option('date_format') . ' ' . get_option('time_format')
             );
         }
 
@@ -104,7 +103,7 @@ class Settings
         $request = array(
             'method'  => $method,
             'headers' => array(
-                'Authorization' => 'Bearer '.($token ?: $api_key_settings['token']),
+                'Authorization' => 'Bearer ' . ($token ?: $api_key_settings['token']),
                 'Accept'        => 'application/json',
                 'Content-Type'  => 'application/json',
                 'referer'       => null, // Older version of WP are automatically adding this
@@ -116,9 +115,9 @@ class Settings
         $api_host = rtrim($api_host, '/');
 
 
-        $url = $api_host.'/api/'.'wp-site-project-synchronize';
+        $url = $api_host . '/api/' . 'wp-site-project-synchronize';
         if ($method === 'POST') {
-            $url = $api_host.'/api/'.'wp-site-projects';
+            $url = $api_host . '/api/' . 'wp-site-projects';
         }
 
         $response = wp_remote_request(
@@ -165,7 +164,7 @@ class Settings
         $data = array_merge($api_token_settings, $data);
 
         update_option(
-            'codewpai/api-token',
+            'codewpai_api_token',
             $data,
             false
         );
@@ -175,7 +174,7 @@ class Settings
     public static function get(): array
     {
         $settings = get_option(
-            'codewpai/api-token'
+            'codewpai_api_token'
         );
 
         if (! $settings) {
