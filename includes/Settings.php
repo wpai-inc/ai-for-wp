@@ -34,7 +34,6 @@ class Settings
             $debug_data['taxonomies'] = self::getTaxonomies();
 
             return $debug_data;
-
         } catch (\Exception $error) {
             return ['error' => $error->getMessage()];
         }
@@ -129,7 +128,7 @@ class Settings
         if (is_a($response, 'WP_Error')) {
             throw new \Exception(esc_html($response->get_error_message()));
         } elseif (401 === $response['response']['code']) {
-            throw new \Exception(esc_html(__('Your token is invalid. Please add a new one!', Main::TEXT_DOMAIN)));
+            throw new \Exception(esc_html(__('Your token is invalid. Please add a new one!', 'ai-for-wp')));
         } elseif (! in_array($response['response']['code'], [200, 201], true)) {
             $body = json_decode($response['body'], true);
             error_log(print_r($body, true));
@@ -165,7 +164,7 @@ class Settings
         $data = array_merge($api_token_settings, $data);
 
         update_option(
-            'codewpai/api-token',
+            'codewpai_api_token',
             $data,
             false
         );
@@ -175,7 +174,7 @@ class Settings
     public static function get(): array
     {
         $settings = get_option(
-            'codewpai/api-token'
+            'codewpai_api_token'
         );
 
         if (! $settings) {

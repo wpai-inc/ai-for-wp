@@ -24,3 +24,4 @@ psalm.xml
 README.md
 README-DEV.md
 webpack.config.mjs
+.DS_Store
