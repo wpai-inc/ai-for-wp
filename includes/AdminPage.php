@@ -16,11 +16,10 @@ class AdminPage
 
     public function adminMenu()
     {
-        
         $hook_name = add_submenu_page(
             'options-general.php',
-            __('CodeWP Helper', Main::TEXT_DOMAIN),
-            __('CodeWP Helper', Main::TEXT_DOMAIN),
+            __('CodeWP Helper', 'ai-for-wp'),
+            __('CodeWP Helper', 'ai-for-wp'),
             'manage_options',
             'ai-for-wp',
             [$this, 'adminPage']
@@ -37,7 +36,7 @@ class AdminPage
                 <?php
                 echo esc_html__(
                     'Warning: This options panel will not work properly without JavaScript, please enable it.',
-                    Main::TEXT_DOMAIN
+                    'ai-for-wp'
                 );
                 ?>
             </div>
@@ -50,7 +49,7 @@ class AdminPage
                 justify-content: center;
             }
         </style>
-        <div id="codewpai-ui-loading"><?php echo esc_html__('Loading…', Main::TEXT_DOMAIN); ?></div>
+        <div id="codewpai-ui-loading"><?php echo esc_html__('Loading…', 'ai-for-wp'); ?></div>
         <div id="codewpai-ui-settings"></div>
         <?php
     }
@@ -66,13 +65,13 @@ class AdminPage
         $screen->add_help_tab(
             array(
                 'id'      => 'codewpai_400_error_help_tab',
-                'title'   => __('400 Error?', Main::TEXT_DOMAIN),
+                'title'   => __('400 Error?', 'ai-for-wp'),
                 /* translators: %s: will be replaced by current site URL */
                 'content' => '<p>'
                              .sprintf(
                                  __(
                                      'Ensure that the site url, <strong>%s</strong>, is equal to the Project URL in CodeWP.',
-                                     Main::TEXT_DOMAIN
+                                     'ai-for-wp'
                                  ),
                                  get_site_url()
                              )
@@ -82,11 +81,11 @@ class AdminPage
         $screen->add_help_tab(
             array(
                 'id'      => 'codewpai_pro_user_help_tab',
-                'title'   => __('CodeWP Pro User?', Main::TEXT_DOMAIN),
+                'title'   => __('CodeWP Pro User?', 'ai-for-wp'),
                 'content' => '<p>'
                              .__(
                                  'Contact us and we\'ll walk you through the setup of this plugin.',
-                                 Main::TEXT_DOMAIN
+                                 'ai-for-wp'
                              )
                              .'</p>',
             )
@@ -165,7 +164,7 @@ Made with love 💚 by the <a href="https://codewp.ai/" target="_blank">CodeWP T
         $variables['codewp_server']  = $api_host;
         $variables['user']['name']   = $current_user->display_name;
         $variables['project']        = Settings::getSettingsFormData();
-        $variables['notice_visible'] = get_option('codewpai/notice_visible', 1);
+        $variables['notice_visible'] = get_option('codewpai_notice_visible', 1);
 
         return $variables;
     }

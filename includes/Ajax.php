@@ -6,21 +6,20 @@ use WpAi\CodeWpHelper\Utils\RegisterAjaxMethod;
 
 class Ajax
 {
-
     public function __construct()
     {
         new RegisterAjaxMethod(
-            'codewpai/save-api-token',
+            'codewpai_save_api_token',
             [$this, 'saveApiToken']
         );
 
         new RegisterAjaxMethod(
-            'codewpai/api-auto-synchronize-save',
+            'codewpai_api_auto_synchronize_save',
             [$this, 'saveAutoSynchronize']
         );
 
         new RegisterAjaxMethod(
-            'codewpai/notice-hide',
+            'codewpai_notice_hide',
             /**
              * Save the auto synchronize option
              */
@@ -36,7 +35,7 @@ class Ajax
         $api_key_settings = Settings::getSettingsFormData(true);
 
         if (empty($api_key_settings['token']) && (empty($token) || 48 !== strlen($token))) {
-            throw new \Exception(esc_html(__('Please enter a valid token', Main::TEXT_DOMAIN)));
+            throw new \Exception(esc_html(__('Please enter a valid token', 'ai-for-wp')));
         }
 
         $response = Settings::sendDataToCodewp('POST', $token);
@@ -96,7 +95,7 @@ class Ajax
     public function hideNotice(): array
     {
 
-        update_option('codewpai/notice_visible', 0, false);
+        update_option('codewpai_notice_visible', 0, false);
 
         return [
             'notice_visible' => false,

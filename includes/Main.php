@@ -5,15 +5,11 @@ namespace WpAi\CodeWpHelper;
 class Main
 {
     public const VERSION = '0.2.0';
-
-    public const TEXT_DOMAIN = 'codewpai';
-
+    public const TEXT_DOMAIN = 'ai-for-wp';
     public const API_HOST = 'https://app.codewp.ai';
 
     private $plugin_file;
-
     private $plugin_dir;
-
     public $snippets;
 
     public function __construct($plugin_file)
@@ -38,8 +34,8 @@ class Main
     public function deactivate()
     {
         // do something on plugin deactivation
-        delete_option('codewpai/api-token');
-        delete_option('codewpai/notice_visible');
+        delete_option('codewpai_api_token');
+        delete_option('codewpai_notice_visible');
     }
 
     public function errorHandler()

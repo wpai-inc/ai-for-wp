@@ -17,13 +17,13 @@ class Filters
     public function pluginLinks(array $links): array
     {
         $links[] = '<a href="'.esc_url(admin_url('options-general.php?page=ai-for-wp')).'">'
-                   .__('Settings', Main::TEXT_DOMAIN)
+                   .__('Settings', 'ai-for-wp')
                    .'</a>';
         $links[] = '<a href="https://codewp.ai/plugin-docs" target="_blank">'
-                   .__('Docs', Main::TEXT_DOMAIN)
+                   .__('Docs', 'ai-for-wp')
                    .'</a>';
         $links[] = '<a style="font-weight:bold;" href="https://app.codewp.ai/dashboard" target="_blank">'
-                   .__('App', Main::TEXT_DOMAIN)
+                   .__('App', 'ai-for-wp')
                    .'</a>';
 
         return $links;

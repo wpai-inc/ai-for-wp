@@ -7,7 +7,7 @@
     "build": "wp-scripts build --config webpack.config.mjs",
     "start": "wp-scripts start --config webpack.config.mjs",
     "hot": "wp-scripts start --config webpack.config.mjs --hot",
-    "make-pot": "wp i18n make-pot . --include=\"src,includes\" --domain=\"codewpai\" languages/codewpai.pot",
+    "make-pot": "wp i18n make-pot . --include=\"src,includes\" --domain=\"ai-for-wp\" languages/ai-for-wp.pot",
     "fix:prettier": "prettier --write \"**/*.*\"",
     "wp-dist-archive": "./bin/wp-dist-archive.sh"
   },
