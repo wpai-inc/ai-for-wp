@@ -1,10 +1,11 @@
 <?php
+
 /**
- * Plugin Name:       AI for WP
+ * Plugin Name:       CodeWP helper
  * Plugin URI:        https://github.com/wpai/codewpai
  * Description:       Connect with the CodeWP platform for instant troubleshooting and personalized code generation.
  *
- * Text Domain:       codewpai
+ * Text Domain:       ai-for-wp
  * Domain Path:       /languages
  *
  * Author:            WPAI, Inc.
@@ -20,7 +21,9 @@
  * @package           CodeWP Helper
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if (! defined('ABSPATH')) {
+    exit; // Exit if accessed directly
+}
 
 use WpAi\CodeWpHelper\Main;
 
