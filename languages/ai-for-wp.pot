@@ -2,20 +2,20 @@
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: AI for WP 0.1.0\n"
+"Project-Id-Version: CodeWP helper 0.1.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/ai-for-wp\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-02-08T14:50:05+00:00\n"
+"POT-Creation-Date: 2024-02-08T19:02:31+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.9.0\n"
 "X-Domain: ai-for-wp\n"
 
 #. Plugin Name of the plugin
-msgid "AI for WP"
+msgid "CodeWP helper"
 msgstr ""
 
 #. Plugin URI of the plugin
@@ -63,7 +63,7 @@ msgstr ""
 msgid "Contact us and we'll walk you through the setup of this plugin."
 msgstr ""
 
-#: includes/Ajax.php:39
+#: includes/Ajax.php:38
 msgid "Please enter a valid token"
 msgstr ""
 
@@ -79,7 +79,7 @@ msgstr ""
 msgid "App"
 msgstr ""
 
-#: includes/Settings.php:132
+#: includes/Settings.php:131
 msgid "Your token is invalid. Please add a new one!"
 msgstr ""
 

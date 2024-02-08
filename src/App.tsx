@@ -1,12 +1,12 @@
-import React, {useState} from 'react';
-import {__} from '@wordpress/i18n';
-import {Layout} from './components/Layout';
-import {Home} from './pages/Home';
-import {Settings} from './pages/Settings';
+import React, { useState } from 'react';
+import { __ } from '@wordpress/i18n';
+import { Layout } from './components/Layout';
+import { Home } from './pages/Home';
+import { Settings } from './pages/Settings';
 import './styles/styles.css';
-import {PagePropsContext} from './hooks/usePagePropsContext';
-import {SettingsType} from "./types";
-import {NotificationsProvider} from "./hooks/useNotificationsContext";
+import { PagePropsContext } from './hooks/usePagePropsContext';
+import { SettingsType } from './types';
+import { NotificationsProvider } from './hooks/useNotificationsContext';
 
 declare const CODEWPAI_SETTINGS: SettingsType;
 
@@ -16,24 +16,24 @@ const App = () => {
         <PagePropsContext.Provider value={CODEWPAI_SETTINGS}>
             <NotificationsProvider>
                 <Layout
-                    title={__('CodeWP Helper', 'codewpai')}
+                    title={__('CodeWP Helper', 'ai-for-wp')}
                     tabs={[
                         {
                             name: 'home',
-                            title: __('Home', 'codewpai')
+                            title: __('Home', 'ai-for-wp'),
                         },
                         {
                             name: 'settings',
-                            title: __('Settings', 'codewpai'),
+                            title: __('Settings', 'ai-for-wp'),
                         },
                     ]}
                     selectedTab={selectedTab}
                     setSelectedTab={setSelectedTab}
                 >
-                    {({selectedTab}) => (
+                    {({ selectedTab }) => (
                         <>
-                            {selectedTab === 'home' && <Home handleTabChange={setSelectedTab}/>}
-                            {selectedTab === 'settings' && <Settings/>}
+                            {selectedTab === 'home' && <Home handleTabChange={setSelectedTab} />}
+                            {selectedTab === 'settings' && <Settings />}
                         </>
                     )}
                 </Layout>
