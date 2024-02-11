@@ -13,19 +13,37 @@ class Filters
             'plugin_action_links_' . plugin_basename($this->plugin_file),
             [$this, 'pluginLinks']
         );
+        add_filter(
+            'install_plugin_complete_actions',
+            [$this, 'installPluginCompleteActions']
+        );
     }
     public function pluginLinks(array $links): array
     {
-        $links[] = '<a href="'.esc_url(admin_url('options-general.php?page=ai-for-wp')).'">'
-                   .__('Settings', 'ai-for-wp')
-                   .'</a>';
+        $links[] = '<a href="' . esc_url(admin_url('options-general.php?page=ai-for-wp')) . '">'
+                   . __('Settings', 'ai-for-wp')
+                   . '</a>';
         $links[] = '<a href="https://codewp.ai/plugin-docs" target="_blank">'
-                   .__('Docs', 'ai-for-wp')
-                   .'</a>';
+                   . __('Docs', 'ai-for-wp')
+                   . '</a>';
         $links[] = '<a style="font-weight:bold;" href="https://app.codewp.ai/dashboard" target="_blank">'
-                   .__('App', 'ai-for-wp')
-                   .'</a>';
+                   . __('App', 'ai-for-wp')
+                   . '</a>';
 
         return $links;
+    }
+
+    public function installPluginCompleteActions(array $actions): array
+    {
+        
+        if (defined('CWP_PLAGROUND') && CWP_PLAGROUND === true && !empty($actions['activate_plugin'])) {
+            $actions['activate_plugin'] = str_replace(
+                'target="_parent"',
+                '',
+                $actions['activate_plugin']
+            );
+        }
+
+        return $actions;
     }
 }
