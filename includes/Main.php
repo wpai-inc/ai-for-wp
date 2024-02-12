@@ -59,6 +59,11 @@ class Main
                 // Get the existing errors
                 $errors = file_exists(WP_CONTENT_DIR . '/debug.json') ? json_decode(file_get_contents(WP_CONTENT_DIR . '/debug.json'), true) : [];
 
+                // limit the number of errors saved to 100. If there are more than 100 errors, remove the oldest ones
+                if (count($errors) > 100) {
+                    $errors = array_slice($errors, count($errors) - 100);
+                }
+                
                 // Add the new error
                 $errors[] = [
                     'type' => $error['type'],
