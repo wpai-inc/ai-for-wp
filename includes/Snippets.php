@@ -16,7 +16,7 @@ class Snippets
         add_action('wp_ajax_codewpai_enable_snippet', [$this, 'ajaxEnableSnippet']);
         add_action('wp_ajax_codewpai_disable_snippet', [$this, 'ajaxDisableSnippet']);
 
-        $this->includeEnabledSnippets();
+        add_action('plugins_loaded', [$this, 'includeEnabledSnippets'], PHP_INT_MAX);
     }
 
     public function availableSnippets(): array
@@ -106,7 +106,7 @@ class Snippets
         }
     }
 
-    private function includeEnabledSnippets(): void
+    public function includeEnabledSnippets(): void
     {
         $enabled_snippets = $this->enabledSnippets();
         foreach ($enabled_snippets as $snippet => $enabled) {
