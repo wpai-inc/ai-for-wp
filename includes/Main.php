@@ -44,7 +44,6 @@ class Main
 
     public function errorHandler($errno, $errstr, $errfile, $errline)
     {
-        // register_shutdown_function(function () {
         $error = [
             'type' => $errno,
             'message' => $errstr,
@@ -95,15 +94,12 @@ class Main
                 }
             }
         }
-        // });
     }
 
     public function bootstrap()
     {
         set_error_handler([$this, 'errorHandler']);
-        // $this->errorHandler();
 
-        // do something on plugin bootstrap
         new Filters($this->plugin_file);
         new Ajax();
         new AdminPage($this->plugin_dir, $this->plugin_file);
