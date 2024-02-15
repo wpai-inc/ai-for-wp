@@ -1,8 +1,10 @@
 .DS_Store
 .idea
+.secrets
 /node_modules
 /vendor
 /build
+/plugin-builds
 
 
 .env
