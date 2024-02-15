@@ -60,3 +60,7 @@ Want to report a bug? Create an issue at the [wpai-inc/ai-for-wp](https://github
 
 = 0.2.2 =
 - Improvements on the Guide
+
+== 0.2.3 ==
+- Improvements on the Guide
+- Only keep the latest 100 errors in the logs

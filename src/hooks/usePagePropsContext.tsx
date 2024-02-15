@@ -1,7 +1,6 @@
 import {createContext, useContext} from "react";
-import {Settings} from "../types";
 
-export const PagePropsContext = createContext<Settings | undefined>(undefined);
+export const PagePropsContext = createContext(undefined);
 
 export function usePagePropsContext() {
     const pageProps = useContext(PagePropsContext);

@@ -1,6 +1,6 @@
 {
   "name": "@codewpai/codewpai",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "private": false,
   "homepage": "https://github.com/fnpen/wp-modern-settings-page-boilerplate",
   "scripts": {
@@ -12,6 +12,7 @@
     "wp-dist-archive": "./bin/wp-dist-archive.sh"
   },
   "dependencies": {
+    "js-cookie": "^3.0.5",
     "mini-css-extract-plugin": "^2.7.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

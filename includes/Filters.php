@@ -16,15 +16,15 @@ class Filters
     }
     public function pluginLinks(array $links): array
     {
-        $links[] = '<a href="'.esc_url(admin_url('options-general.php?page=ai-for-wp')).'">'
-                   .__('Settings', 'ai-for-wp')
-                   .'</a>';
+        $links[] = '<a href="' . esc_url(admin_url('options-general.php?page=ai-for-wp')) . '">'
+                   . __('Settings', 'ai-for-wp')
+                   . '</a>';
         $links[] = '<a href="https://codewp.ai/plugin-docs" target="_blank">'
-                   .__('Docs', 'ai-for-wp')
-                   .'</a>';
+                   . __('Docs', 'ai-for-wp')
+                   . '</a>';
         $links[] = '<a style="font-weight:bold;" href="https://app.codewp.ai/dashboard" target="_blank">'
-                   .__('App', 'ai-for-wp')
-                   .'</a>';
+                   . __('App', 'ai-for-wp')
+                   . '</a>';
 
         return $links;
     }

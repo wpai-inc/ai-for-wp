@@ -1,19 +1,34 @@
 import { Guide } from '@wordpress/components';
-import { useContext, useState } from 'react';
+import { forwardRef, useContext, useImperativeHandle, useState } from 'react';
 import { PagePropsContext } from '../hooks/usePagePropsContext';
+import Cookies from 'js-cookie';
 
-export default function CwpHelper() {
+const CwpHelper = forwardRef((props, ref) => {
 	const pageProps = useContext(PagePropsContext);
+	const cwp_playground_guide_cookie = Cookies.get('cwp_playground_guide');
 
-	const [playgroundGuideOpen, setPlaygroundGuideOpen] = useState(pageProps.playground_mode);
+	const [playgroundGuideOpen, setPlaygroundGuideOpen] = useState(
+		pageProps.playground_mode && cwp_playground_guide_cookie !== 'closed'
+	);
 
-    if (!playgroundGuideOpen) {
-        return null;
-    }
+	function onClosePlaygroundGuide() {
+		setPlaygroundGuideOpen(false);
+		Cookies.set('cwp_playground_guide', 'closed', { expires: 365 });
+	}
+
+	useImperativeHandle(ref, () => ({
+		openGuide() {
+			setPlaygroundGuideOpen(true);
+		},
+	}));
+
+	if (!playgroundGuideOpen) {
+		return null;
+	}
 
 	return (
 		<Guide
-			onFinish={() => setPlaygroundGuideOpen(false)}
+			onFinish={() => onClosePlaygroundGuide()}
 			className="codewpai-preview-guide"
 			pages={[
 				{
@@ -72,4 +87,6 @@ export default function CwpHelper() {
 			contentLabel={''}
 		/>
 	);
-}
+});
+
+export default CwpHelper;
