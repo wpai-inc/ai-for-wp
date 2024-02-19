@@ -1,4 +1,4 @@
-name: Deploy to WordPress.org
+name: Deploy to S3
 on:
   push:
     tags:
@@ -7,11 +7,31 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-     - uses: actions/checkout@master
+      - uses: actions/checkout@master
      
-     - uses: shallwefootball/s3-upload-action@master
-       with:
-         aws_key_id: ${{ secrets.AWS_KEY_ID }}
-         aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
-         aws_bucket: ${{ secrets.AWS_BUCKET }}
-         source_dir: 'dirname'
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv
+          coverage: none
+
+      - name: Setup WP-CLI
+        uses: godaddy-wordpress/setup-wp-cli@1
+      
+      - name: install wp dist-archive
+        run: wp --allow-root package install wp-cli/dist-archive-command
+
+      - name: npm run wp-dist-archive
+        run: |
+          npm run wp-dist-archive
+
+      - uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --acl public-read --follow-symlinks
+        env:
+          AWS_S3_BUCKET: ${{ secrets.AWS_BUCKET }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          SOURCE_DIR: ${{ secrets.SOURCE_DIR }}

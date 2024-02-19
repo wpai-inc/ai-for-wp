@@ -4,7 +4,7 @@ namespace WpAi\CodeWpHelper;
 
 class Main
 {
-    public const VERSION = '0.2.3';
+    public const VERSION = '0.2.4';
 
     public const TEXT_DOMAIN = 'ai-for-wp';
 

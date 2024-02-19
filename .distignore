@@ -4,6 +4,8 @@
 /src
 /tests
 /.git
+/.github
+/plugin-builds
 
 #Files
 .env.example
@@ -25,3 +27,4 @@ README.md
 README-DEV.md
 webpack.config.mjs
 .DS_Store
+.secrets
