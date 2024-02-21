@@ -45,12 +45,18 @@ class Snippets
         $enabled_snippets = $this->enabledSnippets();
         $all_snippets = array_map(function ($snippet) use ($enabled_snippets) {
             $snippet_filename = basename($snippet);
-            return [
+            $snippet = [
                 'name' => $snippet_filename,
-                'enabled' => isset($enabled_snippets[$snippet_filename]) && $enabled_snippets[$snippet_filename] === true,
+                'enabled' => isset($enabled_snippets[$snippet_filename]['enabled']) && $enabled_snippets[$snippet_filename]['enabled'] === true,
                 'code' => file_get_contents($snippet),
                 'language' => pathinfo($snippet, PATHINFO_EXTENSION),
             ];
+
+            if(!empty($enabled_snippets[$snippet_filename]['error'])){
+                $snippet['error'] = $enabled_snippets[$snippet_filename]['error'];
+            }
+            return $snippet;
+
         }, $all_snippets);
 
         return $all_snippets;
@@ -73,7 +79,9 @@ class Snippets
         if (! file_exists($this->plugin_dir . 'snippets/' . $snippet)) {
             return;
         }
-        $enabled_snippets[$snippet] = true;
+        $enabled_snippets[$snippet] = [
+            'enabled' => true
+        ];
         update_option('codewpai_enabled_snippets', $enabled_snippets);
     }
 
@@ -88,13 +96,15 @@ class Snippets
         wp_send_json(['error' => 'No snippet name provided']);
     }
 
-    public function disableSnippet(string $snippet): void
+    public function disableSnippet(string $snippet, array $error = []): void
     {
         $enabled_snippets = $this->enabledSnippets();
         if (! file_exists($this->plugin_dir . 'snippets/' . $snippet)) {
             return;
         }
-        $enabled_snippets[$snippet] = false;
+        $enabled_snippets[$snippet] = [
+            'enabled' => false
+        ];
         update_option('codewpai_enabled_snippets', $enabled_snippets);
     }
 
@@ -109,9 +119,9 @@ class Snippets
     public function includeEnabledSnippets(): void
     {
         $enabled_snippets = $this->enabledSnippets();
-        foreach ($enabled_snippets as $snippet => $enabled) {
+        foreach ($enabled_snippets as $snippet => $snippet_data) {
             $snippet_file = $this->plugin_dir . 'snippets/' . $snippet;
-            if (! empty($enabled) && file_exists($snippet_file)) {
+            if (! empty($snippet_data['enabled']) && file_exists($snippet_file)) {
                 $file_type = pathinfo($snippet_file, PATHINFO_EXTENSION);
                 if ($file_type === 'php') {
                     include_once $snippet_file;
@@ -142,4 +152,24 @@ class Snippets
 
         wp_send_json($snippets);
     }
+
+    public function enablePackage($packageData)
+    {
+        $packageData = json_decode(base64_decode($packageData), true);
+        //download the package from package_url to the snippets directory
+        $packagePath = $this->plugin_dir . 'snippets/' . $packageData['id'] . '.zip';
+        var_dump($packagePath);
+        var_dump(filesize($packagePath));
+
+        // unzip the package
+        $zip = new \ZipArchive();
+        $res = $zip->open($packagePath);
+        if ($res === TRUE) {
+            $zip->extractTo($this->plugin_dir . 'snippets/' . $packageData['id'] . '/');
+            $zip->close();
+        }
+        //list the files in the package and enable them
+        $packageFiles = glob($this->plugin_dir . 'snippets/' . $packageData['id'] . '/*');
+    }
+
 }
