@@ -42,63 +42,9 @@ class Main
         delete_option('codewpai_notice_visible');
     }
 
-    public function errorHandler($errno, $errstr, $errfile, $errline)
-    {
-        $error = [
-            'type' => $errno,
-            'message' => $errstr,
-            'file' => $errfile,
-            'line' => $errline,
-        ];
-
-        if (! defined('WP_CONTENT_DIR') && defined('CWP_PLAGROUND') && CWP_PLAGROUND === true) {
-            define('WP_CONTENT_DIR', '/wordpress/wp-content');
-        }
-
-        if ($error) {
-            $errors = file_exists(WP_CONTENT_DIR . '/debug.json')
-            ? json_decode(file_get_contents(WP_CONTENT_DIR . '/debug.json'), true)
-            : [];
-
-            // Get the existing errors
-            $errors = file_exists(WP_CONTENT_DIR . '/debug.json') ? json_decode(file_get_contents(WP_CONTENT_DIR . '/debug.json'), true) : [];
-
-            // limit the number of errors saved to 100. If there are more than 100 errors, remove the oldest ones
-            if (count($errors) > 100) {
-                $errors = array_slice($errors, count($errors) - 100);
-            }
-
-            // Add the new error
-            $errors[] = [
-                'type' => $error['type'],
-                'message' => $error['message'],
-                'file_name' => $error['file'],
-                'line' => $error['line'],
-            ];
-
-            // Save the errors
-            file_put_contents(WP_CONTENT_DIR . '/debug.json', json_encode($errors));
-
-            // If the error is from a snippet, disable it
-            // TODO: only disable the snippet if it's a fatal error
-            // TODO: display a message to the user that the snippet has been disabled
-            if (strpos($error['file'], 'snippets') !== false) {
-                // get file name
-                $snippet_file = pathinfo($error['file'], PATHINFO_BASENAME);
-                $snippets = get_option('codewpai_enabled_snippets', []);
-                if (!empty($snippets[$snippet_file])) {
-                    $snippets[$snippet_file] = false;
-                    update_option('codewpai_enabled_snippets', $snippets);
-                    // redirect to snippets page using JS
-                    echo '<script>window.location.href = "' . admin_url('options-general.php?page=ai-for-wp&tab=snippets') . '";</script>';
-                }
-            }
-        }
-    }
-
     public function bootstrap()
     {
-        set_error_handler([$this, 'errorHandler']);
+        new CwpaiErrorHandler();
 
         new Filters($this->plugin_file);
         new Ajax();
