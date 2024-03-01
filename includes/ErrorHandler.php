@@ -2,7 +2,7 @@
 
 namespace WpAi\CodeWpHelper;
 
-class CwpaiErrorHandler
+class ErrorHandler
 {
     public function __construct()
     {
@@ -38,7 +38,7 @@ class CwpaiErrorHandler
     public function errorLogger($error)
     {
 
-        if ($error) {
+        if ($error && $error['message']) {
             // Get the existing errors
             $errors = file_exists(WP_CONTENT_DIR . '/debug.json') ? json_decode(file_get_contents(WP_CONTENT_DIR . '/debug.json'), true) : [];
 
@@ -55,7 +55,6 @@ class CwpaiErrorHandler
 
             // If the error is from a snippet, disable it
             // TODO: only disable the snippet if it's a fatal error
-            // TODO: display a message to the user that the snippet has been disabled
             if (!empty($error['file_name']) && strpos($error['file_name'], 'snippets') !== false) {
                 // get file name
                 $snippet_file = pathinfo($error['file_name'], PATHINFO_BASENAME);
@@ -67,7 +66,7 @@ class CwpaiErrorHandler
                     ];
                     update_option('codewpai_enabled_snippets', $snippets);
                     // redirect to snippets page using JS
-                    echo '<script>window.location.href = "' . admin_url('options-general.php?page=ai-for-wp&tab=snippets') . '";</script>';
+                    echo '<script>window.location.href = "' . admin_url('options-general.php?page=ai-for-wp&tab=snippets&snippet_error=' . $snippet_file) . '";</script>';
                 }
             }
         }

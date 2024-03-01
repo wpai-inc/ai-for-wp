@@ -44,7 +44,7 @@ class Main
 
     public function bootstrap()
     {
-        new CwpaiErrorHandler();
+        new ErrorHandler();
 
         new Filters($this->plugin_file);
         new Ajax();
