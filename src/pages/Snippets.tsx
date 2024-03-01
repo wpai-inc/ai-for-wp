@@ -16,14 +16,43 @@ import {useContext, useEffect, useRef, useState} from 'react';
 import {LightAsync as SyntaxHighlighter} from 'react-syntax-highlighter';
 import {atomOneDark} from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import {PagePropsContext} from '../hooks/usePagePropsContext';
+import {useNotificationsContext} from "../hooks/useNotificationsContext";
 
 export const Snippets = () => {
   const [snippets, setSnippets] = useState([]);
   const [previewingCode, setPreviewingCode] = useState(false);
   const [previewSnippet, setPreviewSnippet] = useState({});
+  const [loading, setLoading] = useState(false);
   const pageProps = useContext(PagePropsContext);
   const guideRef = useRef(null);
   const [loadingSnippets, setLoadingSnippets] = useState(false);
+  const {addNotification} = useNotificationsContext();
+  const enabledNotification = (snippet_name) => __(`Snippet ${snippet_name} has been enabled`, 'codewpai')
+  const disabledNotification = (snippet_name) => __(`Snippet ${snippet_name} has been disabled`, 'codewpai');
+  const errorNotification = (snippet_name) => __(`Snippet ${snippet_name} has been disabled because it trows a fatal error`, 'codewpai');
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const snippetEnabled = urlParams.get('snippet_enabled');
+    if (snippetEnabled) {
+      addNotification(enabledNotification(snippetEnabled), 'default');
+      urlParams.delete('snippet_enabled');
+      window.history.replaceState({}, '', `${window.location.pathname}?${urlParams}`);
+    }
+    const snippetDisabled = urlParams.get('snippet_disabled');
+    if (snippetDisabled) {
+      addNotification(disabledNotification(snippetDisabled), 'default');
+      urlParams.delete('snippet_disabled');
+      window.history.replaceState({}, '', `${window.location.pathname}?${urlParams}`);
+    }
+    const snippetError = urlParams.get('snippet_error');
+    if (snippetError) {
+      addNotification(errorNotification(snippetError), 'error');
+      urlParams.delete('snippet_error');
+      window.history.replaceState({}, '', `${window.location.pathname}?${urlParams}`);
+      console.log(`${window.location.pathname}?${urlParams}`);
+    }
+  }, []);
 
   useEffect(() => {
     setLoadingSnippets(true);
@@ -36,14 +65,18 @@ export const Snippets = () => {
   }, []);
 
   function toggleSnippet(snippet_name, enabled) {
+    setLoading(true);
     let toggle_url = ajaxurl + '?action=codewpai_disable_snippet&snippet_name=' + snippet_name;
     if (!enabled) {
       toggle_url = ajaxurl + '?action=codewpai_enable_snippet&snippet_name=' + snippet_name;
     }
+
     fetch(toggle_url)
       .then((response) => response.json())
       .then((data) => {
         setSnippets(data);
+        addNotification(enabled ? disabledNotification(snippet_name) : enabledNotification(snippet_name), 'default');
+        setLoadingSnippets(false);
       });
   }
 
@@ -108,7 +141,7 @@ export const Snippets = () => {
               <tbody>
               {snippets.map((snippet) => (
                 <>
-                  <tr key={snippet.id}  style={snippet.error ? {backgroundColor: '#FFDCDC'} : {}}>
+                  <tr key={snippet.id} style={snippet.error ? {backgroundColor: '#FFDCDC'} : {}}>
                     <td>{snippet.name}</td>
                     <td>
                       <ToggleControl
@@ -117,6 +150,7 @@ export const Snippets = () => {
                         onChange={() =>
                           toggleSnippet(snippet.name, snippet.enabled)
                         }
+                        disabled={loading}
                         className="codewpai-mb-0"
                       />
                     </td>
