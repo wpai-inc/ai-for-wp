@@ -6,10 +6,10 @@ Requires at least: 6.0
 Tested up to: 6.4.2
 Requires PHP: 7.2
 License: GPLv3
-Stable tag: 0.2.2
+Stable tag: 0.2.4
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Connect your website to a CodeWP project, unlocking accurate AI code generation and chat features. 
+Connect your website to a CodeWP project, unlocking accurate AI code generation and chat features.
 
 == Description ==
 
@@ -54,7 +54,7 @@ Want to report a bug? Create an issue at the [wpai-inc/ai-for-wp](https://github
 - Added support for CSS and JS files. The CSS file will be added to the header and the JS file will be added to the footer.
 - Bugfixes and improvments on the snippets runner.
 - Tabs navigation will be persistent on the snippets page. A query parameter will be added to the URL to keep the selected tab.
-- Logs page and functionality implemented. 
+- Logs page and functionality implemented.
 - Improvements on the snippets page UI.
 - Added code preview for the snippets.
 

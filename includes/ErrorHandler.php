@@ -66,7 +66,8 @@ class ErrorHandler
                     ];
                     update_option('codewpai_enabled_snippets', $snippets);
                     // redirect to snippets page using JS
-                    echo '<script>window.location.href = "' . admin_url('options-general.php?page=ai-for-wp&tab=snippets&snippet_error=' . $snippet_file) . '";</script>';
+                    $admin_url = admin_url('options-general.php?page=ai-for-wp&tab=snippets&snippet_error=' . $snippet_file);
+                    echo '<script>console.log("Snippet has been disabled. Redirecting to ' . $admin_url . '"); window.location.href = "' . $admin_url . '";</script>';
                 }
             }
         }

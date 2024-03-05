@@ -10,51 +10,55 @@
 
 /* Fix to support markdown file */
 .codewpai-reset-styles {
-    & code {
-        display: inline-block;
-    }
+	& code {
+		display: inline-block;
+	}
 
-    & ul {
-        margin-left: 1em;
-        margin-right: 1em;
-        padding-left: 40px;
-        list-style: initial;
+	& ul {
+		margin-left: 1em;
+		margin-right: 1em;
+		padding-left: 40px;
+		list-style: initial;
 
-        & li {
-            line-height: 1.6;
-        }
-    }
+		& li {
+			line-height: 1.6;
+		}
+	}
 }
 
 .codewpai-spinner-wrap-overlay {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #ffffffa1;
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: #ffffffa1;
 }
 
 .codewpai-components-snackbar-list {
-    position: fixed;
-    top: 32px;
-    right: 32px;
-    display: flex;
-    flex-direction: column-reverse;
-    align-items: flex-end;
+	position: fixed;
+	top: 32px;
+	right: 32px;
+	display: flex;
+	flex-direction: column-reverse;
+	align-items: flex-end;
 }
 
 .codewpai-error-notification {
-    background: #ab0909;
+	background: #ab0909;
+}
+
+.codewpai-info-notification {
+	background: #646464;
 }
 
 .codewpai-default-notification {
-    background: #0E876A;
+	background: #0e876a;
 }
 
-.codewpai-api-key-field  input[type="text"] {
-    height: 36px;
+.codewpai-api-key-field input[type='text'] {
+	height: 36px;
 }
