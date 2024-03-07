@@ -2,6 +2,7 @@
 
 namespace WpAi\CodeWpHelper;
 
+use WpAi\CodeWpHelper\Main;
 use WpAi\CodeWpHelper\Utils\RegisterAjaxMethod;
 
 /**
@@ -119,6 +120,12 @@ class Ajax {
 	 * @return false[]
 	 */
 	public function hideNotice(): array {
+
+		if ( ! isset( $_REQUEST['_wpnonce'] )
+			|| ! wp_verify_nonce( sanitize_key( $_REQUEST['_wpnonce'] ), Main::nonce() )
+		) {
+			die( esc_html__( 'Security check', 'ai-for-wp' ) );
+		}
 
 		update_option( 'codewpai_notice_visible', 0, false );
 
