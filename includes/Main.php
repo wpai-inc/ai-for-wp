@@ -2,47 +2,54 @@
 
 namespace WpAi\CodeWpHelper;
 
-class Main
-{
-    const VERSION = '0.1.0';
-    const TEXT_DOMAIN = 'ai-for-wp';
-    const API_HOST = 'https://app.codewp.ai';
-    
-    private $plugin_file;
-    private $plugin_dir;
+class Main {
+	const VERSION     = '0.1.0';
+	const TEXT_DOMAIN = 'ai-for-wp';
+	const API_HOST    = 'https://app.codewp.ai';
 
-    public function __construct($plugin_file)
-    {
-        $this->plugin_file = $plugin_file;
-        $this->plugin_dir = plugin_dir_path($this->plugin_file);
-        register_activation_hook($this->plugin_file, [$this, 'activate']);
-        register_deactivation_hook($this->plugin_file, [$this, 'deactivate']);
-        $this->bootstrap();
-    }
+	private string $plugin_file;
+	private string $plugin_dir;
 
-    public static function nonce()
-    {
-        return self::TEXT_DOMAIN;
-    }
+	/**
+	 * Main constructor.
+	 *
+	 * @param string $plugin_file The path to the plugin file.
+	 */
+	public function __construct( string $plugin_file ) {
+		$this->plugin_file = $plugin_file;
+		$this->plugin_dir  = plugin_dir_path( $this->plugin_file );
+		register_deactivation_hook( $this->plugin_file, array( $this, 'deactivate' ) );
+		$this->bootstrap();
+	}
 
-    public function activate()
-    {
-        // do something on plugin activation
-    }
+	/**
+	 * Nonce key.
+	 *
+	 * @return string
+	 */
+	public static function nonce(): string {
+		return self::TEXT_DOMAIN;
+	}
 
-    public function deactivate()
-    {
-        // do something on plugin deactivation
-        delete_option('codewpai_api_token');
-        delete_option('codewpai_notice_visible');
-    }
+	/**
+	 * Cleanup on deactivation.
+	 *
+	 * @return void
+	 */
+	public function deactivate(): void {
+		delete_option( 'codewpai_api_token' );
+		delete_option( 'codewpai_notice_visible' );
+	}
 
-    public function bootstrap()
-    {
-        // do something on plugin bootstrap
-        new Filters($this->plugin_file);
-        new Ajax();
-        new AdminPage($this->plugin_dir, $this->plugin_file);
-        new Cron();
-    }
+	/**
+	 * Bootstrap the plugin.
+	 *
+	 * @return void
+	 */
+	public function bootstrap(): void {
+		new Filters( $this->plugin_file );
+		new Ajax();
+		new AdminPage( $this->plugin_dir, $this->plugin_file );
+		new Cron();
+	}
 }

@@ -1,13 +1,18 @@
 <?xml version="1.0"?>
-<ruleset name="codewp">
-    <file>includes</file>
-    <file>tests</file>
+<ruleset name="Ai For WP Plugin">
+    <description>Coding standards for Ai For WP Plugin</description>
 
-    <rule ref="PSR1"/>
-    <rule ref="PSR2"/>
-    <rule ref="PSR12"/>
-
-    <rule ref="Generic.Files.LineLength">
-        <severity>0</severity>
-    </rule>
+    <!-- Include the WordPress coding standards -->
+    <rule ref="WordPress">
+        <!-- Exclude specific rules -->
+		<exclude name="WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedNamespaceFound" />
+		<exclude name="WordPress.NamingConventions.ValidFunctionName.MethodNameInvalid" />
+		<exclude name="WordPress.Files.FileName.InvalidClassFileName" />
+		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
+		<exclude name="Squiz.PHP.CommentedOutCode.Found" />
+		<exclude name="Squiz.Commenting.FileComment.Missing" />
+		<exclude name="Squiz.Commenting.ClassComment.Missing" />
+		<exclude name="Squiz.Commenting.VariableComment.Missing" />
+		<exclude name="Squiz.Commenting.FunctionComment.Missing" />
+	</rule>
 </ruleset>

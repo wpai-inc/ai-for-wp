@@ -2,40 +2,51 @@
 
 namespace WpAi\CodeWpHelper;
 
-class Cron
-{
-    public function __construct()
-    {
-        add_action('codewpai_cron_synchronizer', [$this, 'synchronizerJob']);
-    }
+class Cron {
 
-    /**
-     * @throws \Exception
-     */
-    public function synchronizerJob()
-    {
+	/**
+	 *  Cron constructor.
+	 */
+	public function __construct() {
+		add_action( 'codewpai_cron_synchronizer', array( $this, 'synchronizerJob' ) );
+	}
 
-        $response_body = Settings::sendDataToCodewp('PATCH');
+	/**
+	 * Synchronize the project with CodeWP
+	 *
+	 * @throws \Exception If the token is not valid.
+	 */
+	public function synchronizerJob(): void {
 
-        Settings::save(
-            array(
-                'project_id'       => $response_body['id'],
-                'project_name'     => $response_body['name'],
-                'auto_synchronize' => true,
-                'synchronized_at'  => gmdate('Y-m-d H:i:s'),
-            )
-        );
-    }
+		$response_body = Settings::sendDataToCodewp( 'PATCH' );
 
-    public static function addCronJob()
-    {
-        if (! wp_next_scheduled('codewpai_cron_synchronizer')) {
-            wp_schedule_event(time(), 'daily', 'codewpai_cron_synchronizer');
-        }
-    }
+		Settings::save(
+			array(
+				'project_id'       => $response_body['id'],
+				'project_name'     => $response_body['name'],
+				'auto_synchronize' => true,
+				'synchronized_at'  => gmdate( 'Y-m-d H:i:s' ),
+			)
+		);
+	}
 
-    public static function removeCronJob()
-    {
-        wp_clear_scheduled_hook('codewpai_cron_synchronizer');
-    }
+	/**
+	 * Add the cron job.
+	 *
+	 * @return void
+	 */
+	public static function addCronJob(): void {
+		if ( ! wp_next_scheduled( 'codewpai_cron_synchronizer' ) ) {
+			wp_schedule_event( time(), 'daily', 'codewpai_cron_synchronizer' );
+		}
+	}
+
+	/**
+	 * Remove the cron job.
+	 *
+	 * @return void
+	 */
+	public static function removeCronJob(): void {
+		wp_clear_scheduled_hook( 'codewpai_cron_synchronizer' );
+	}
 }

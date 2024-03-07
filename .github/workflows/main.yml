@@ -1,0 +1,38 @@
+name: Deploy to S3
+on:
+  push:
+    tags:
+    - "*"
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+     
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv
+          coverage: none
+
+      - name: Setup WP-CLI
+        uses: godaddy-wordpress/setup-wp-cli@1
+      
+      - name: install wp dist-archive
+        run: wp --allow-root package install wp-cli/dist-archive-command
+
+      - name: npm run wp-dist-archive
+        run: |
+          npm run wp-dist-archive
+
+      - uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --acl public-read --follow-symlinks
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_S3_BUCKET: ${{ env.AWS_BUCKET }}
+          AWS_REGION: ${{ env.AWS_REGION }}
+          AWS_S3_ENDPOINT: ${{ env.AWS_S3_ENDPOINT }}
+          SOURCE_DIR: ${{ env.SOURCE_DIR }}
