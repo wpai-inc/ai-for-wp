@@ -5,6 +5,8 @@ on:
     types:
       - opened
       - synchronize
+  workflow_dispatch: # manual triggering
+
 permissions: write-all
 jobs:
   review:
