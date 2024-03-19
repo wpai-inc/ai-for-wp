@@ -33,6 +33,7 @@ export const TokenApiForm = () => {
     setIsSaving(true);
     const data = await codewpaiRequest({
       action: 'codewpai_save_api_token',
+      method: 'POST',
       data: {
         token: project.token,
         autoSynchronize: project.auto_synchronize,
@@ -48,6 +49,7 @@ export const TokenApiForm = () => {
     if (project.token_placeholder) {
       const data = await codewpaiRequest({
         action: 'codewpai_api_auto_synchronize_save',
+        method: 'POST',
         data: {
           autoSynchronize: value,
         },

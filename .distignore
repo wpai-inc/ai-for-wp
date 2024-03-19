@@ -1,7 +1,6 @@
 #Folders
 /bin
 /node_modules
-/src
 /tests
 /.git
 /.github

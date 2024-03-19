@@ -3,19 +3,24 @@
 
 namespace WpAi\CodeWpHelper;
 
-class Logs
-{
-    public function __construct()
-    {
-        add_action('wp_ajax_codewpai_logs', [ $this, 'getLogs' ]);
-    }
+use WpAi\CodeWpHelper\Utils\CodewpaiConfig;
+use WpAi\CodeWpHelper\Utils\CodewpaiFilesystem;
+use WpAi\CodeWpHelper\Utils\ErrorLogger;
 
-    public function getLogs()
-    {
-        $logs = file_exists(WP_CONTENT_DIR . '/debug.json')
-            ? json_decode(file_get_contents(WP_CONTENT_DIR . '/debug.json'), true)
-            : [];
+class Logs {
 
-        wp_send_json($logs);
-    }
+	public function __construct() {
+		add_action( 'wp_ajax_codewpai_logs', array( $this, 'getLogs' ) );
+	}
+
+	/**
+	 * Get the logs.
+	 *
+	 * @return void
+	 */
+	public function getLogs(): void {
+		$logs = ( new ErrorLogger() )->getErrors();
+
+		wp_send_json_success( $logs );
+	}
 }

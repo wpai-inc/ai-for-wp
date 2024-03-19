@@ -4,101 +4,128 @@ namespace WpAi\CodeWpHelper;
 
 use WpAi\CodeWpHelper\Utils\RegisterAjaxMethod;
 
-class Ajax
-{
-    public function __construct()
-    {
-        new RegisterAjaxMethod(
-            'codewpai_save_api_token',
-            [$this, 'saveApiToken']
-        );
+class Ajax {
+	public function __construct() {
 
-        new RegisterAjaxMethod(
-            'codewpai_api_auto_synchronize_save',
-            [$this, 'saveAutoSynchronize']
-        );
+		new RegisterAjaxMethod(
+			'codewpai_save_api_token',
+			[ $this, 'saveApiToken' ]
+		);
 
-        new RegisterAjaxMethod(
-            'codewpai_notice_hide',
-            /**
-             * Save the auto synchronize option
-             */
-            [$this, 'hideNotice']
-        );
-    }
+		new RegisterAjaxMethod(
+			'codewpai_api_auto_synchronize_save',
+			[ $this, 'saveAutoSynchronize' ]
+		);
 
-    public function saveApiToken(): array
-    {
+		new RegisterAjaxMethod(
+			'codewpai_notice_hide',
+			/**
+			 * Save the auto synchronize option
+			 */
+			[ $this, 'hideNotice' ]
+		);
+	}
 
-        $token = sanitize_text_field(wp_unslash($_POST['token'] ?? ''));
+	/**
+	 * Save the API token
+	 *
+	 * @throws \Exception If the token is not valid.
+	 */
+	public function saveApiToken(): array {
 
-        $api_key_settings = Settings::getSettingsFormData(true);
+		if (
+			! isset( $_REQUEST['_wpnonce'] )
+			|| ! wp_verify_nonce( sanitize_key( $_REQUEST['_wpnonce'] ), Main::nonce() )
+		) {
+			die( esc_html__( 'Security check', 'ai-for-wp' ) );
+		}
 
-        if (empty($api_key_settings['token']) && (empty($token) || 48 !== strlen($token))) {
-            throw new \Exception(esc_html(__('Please enter a valid token', 'ai-for-wp')));
-        }
+		$token = sanitize_text_field( wp_unslash( $_POST['token'] ?? '' ) );
 
-        $response = Settings::sendDataToCodewp('POST', $token);
+		$api_key_settings = Settings::getSettingsFormData( true );
 
-        Settings::save(
-            array(
-                'token'            => $token,
-                'project_id'       => $response['id'],
-                'project_name'     => $response['name'],
-                'auto_synchronize' => true,
-                'synchronized_at'  => gmdate('Y-m-d H:i:s'),
-            )
-        );
-        Cron::addCronJob();
+		if ( empty( $api_key_settings['token'] ) && ( empty( $token ) || 48 !== strlen( $token ) ) ) {
+			throw new \Exception( esc_html( __( 'Please enter a valid token', 'ai-for-wp' ) ) );
+		}
 
-        return Settings::getSettingsFormData();
-    }
+		$response = Settings::sendDataToCodewp( 'POST', $token );
 
-    /**
-     * Save the auto synchronize option
-     *
-     * @throws \Exception
-     */
-    public function saveAutoSynchronize(): array
-    {
+		Settings::save(
+			array(
+				'token'            => $token,
+				'project_id'       => $response['id'],
+				'project_name'     => $response['name'],
+				'auto_synchronize' => true,
+				'synchronized_at'  => gmdate( 'Y-m-d H:i:s' ),
+			)
+		);
+		Cron::addCronJob();
 
-        $auto_synchronize = 'true' === (sanitize_text_field(wp_unslash($_POST['autoSynchronize'] ?? '')));
+		return Settings::getSettingsFormData();
+	}
 
-        if (true === $auto_synchronize) {
-            $response = Settings::sendDataToCodewp('PATCH');
+	/**
+	 * Save the auto synchronize option
+	 *
+	 * @throws \Exception If the token is not valid.
+	 */
+	public function saveAutoSynchronize(): array {
 
-            Settings::save(
-                array(
-                    'project_id'       => $response['id'],
-                    'project_name'     => $response['name'],
-                    'auto_synchronize' => true,
-                    'synchronized_at'  => gmdate('Y-m-d H:i:s'),
-                )
-            );
+		if (
+			! isset( $_REQUEST['_wpnonce'] )
+			|| ! wp_verify_nonce( sanitize_key( $_REQUEST['_wpnonce'] ), Main::nonce() )
+		) {
+			die( esc_html__( 'Security check', 'ai-for-wp' ) );
+		}
 
-            Cron::addCronJob();
+		$auto_synchronize = 'true' === ( sanitize_text_field( wp_unslash( $_POST['autoSynchronize'] ?? '' ) ) );
 
-            return Settings::getSettingsFormData(false, 'Your project will be synchronized with CodeWP');
-        }
-        Settings::save(
-            array(
-                'auto_synchronize' => false,
-            )
-        );
+		if ( true === $auto_synchronize ) {
+			$response = Settings::sendDataToCodewp( 'PATCH' );
 
-        Cron::removeCronJob();
+			Settings::save(
+				array(
+					'project_id'       => $response['id'],
+					'project_name'     => $response['name'],
+					'auto_synchronize' => true,
+					'synchronized_at'  => gmdate( 'Y-m-d H:i:s' ),
+				)
+			);
 
-        return Settings::getSettingsFormData(false, 'Your project will not be synchronized with CodeWP anymore');
-    }
+			Cron::addCronJob();
+
+			return Settings::getSettingsFormData( false, __( 'Your project will be synchronized with CodeWP', 'ai-for-wp' ) );
+		}
+		Settings::save(
+			array(
+				'auto_synchronize' => false,
+			)
+		);
+
+		Cron::removeCronJob();
+
+		return Settings::getSettingsFormData( false, __( 'Your project will not be synchronized with CodeWP anymore', 'ai-for-wp' ) );
+	}
 
 
-    public function hideNotice(): array
-    {
+	/**
+	 * Hide the notice
+	 *
+	 * @return false[]
+	 */
+	public function hideNotice(): array {
 
-        update_option('codewpai_notice_visible', 0, false);
+		if (
+			! isset( $_REQUEST['_wpnonce'] )
+			|| ! wp_verify_nonce( sanitize_key( $_REQUEST['_wpnonce'] ), Main::nonce() )
+		) {
+			die( esc_html__( 'Security check', 'ai-for-wp' ) );
+		}
 
-        return [
-            'notice_visible' => false,
-        ];
-    }
+		update_option( 'codewpai_notice_visible', 0, false );
+
+		return [
+			'notice_visible' => false,
+		];
+	}
 }

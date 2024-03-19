@@ -2,74 +2,105 @@
 
 namespace WpAi\CodeWpHelper;
 
-class ErrorHandler
-{
-    public function __construct()
-    {
-        set_error_handler([$this, 'errorHandler']);
-        register_shutdown_function([$this, 'fatalErrorHandler']);
-    }
+use WpAi\CodeWpHelper\Utils\CodewpaiConfig;
+use WpAi\CodeWpHelper\Utils\CodewpaiFilesystem;
+use WpAi\CodeWpHelper\Utils\ErrorLogger;
+use WpAi\CodeWpHelper\Utils\PackagesManager;
 
-    public function errorHandler($errno, $errstr, $errfile, $errline)
-    {
-        $this->errorLogger([
-            'type' => $errno,
-            'message' => $errstr,
-            'file_name' => $errfile,
-            'line' => $errline,
-        ]);
-    }
+class ErrorHandler {
+	private array $config;
 
-    public function fatalErrorHandler()
-    {
-        $error = error_get_last();
+	public function __construct() {
+		//phpcs:ignore
+		set_error_handler( array( $this, 'errorHandler' ) );
+		register_shutdown_function( array( $this, 'fatalErrorHandler' ) );
+		$this->config = CodewpaiConfig::all();
+	}
 
-        if (!defined('WP_CONTENT_DIR') && defined('CWP_PLAGROUND') && CWP_PLAGROUND === true) {
-            define('WP_CONTENT_DIR', '/wordpress/wp-content');
-        }
+	/**
+	 * The error handler.
+	 *
+	 * @param $errno
+	 * @param $errstr
+	 * @param $errfile
+	 * @param $errline
+	 *
+	 * @return void
+	 */
+	public function errorHandler( $errno, $errstr, $errfile, $errline ): void {
+		$this->errorLogger(
+			array(
+				'type'      => $errno,
+				'message'   => $errstr,
+				'file_name' => $errfile,
+				'line'      => $errline,
+			)
+		);
+	}
 
-        if ($error) {
-            $error['file_name'] = $error['file'];
-            unset($error['file']);
-            $this->errorLogger($error);
-        }
-    }
+	/**
+	 * The fatal error handler.
+	 *
+	 * @return void
+	 */
+	public function fatalErrorHandler(): void {
+		$error = error_get_last();
 
-    public function errorLogger($error)
-    {
+		if ( ! defined( 'WP_CONTENT_DIR' ) && $this->config['in_playground'] ) {
+			define( 'WP_CONTENT_DIR', '/wordpress/wp-content' );
+		}
 
-        if ($error && $error['message']) {
-            // Get the existing errors
-            $errors = file_exists(WP_CONTENT_DIR . '/debug.json') ? json_decode(file_get_contents(WP_CONTENT_DIR . '/debug.json'), true) : [];
+		if ( $error ) {
+			$error['file_name'] = $error['file'];
+			unset( $error['file'] );
+			$this->errorLogger( $error );
+		}
+	}
 
-            // limit the number of errors saved to 100. If there are more than 100 errors, remove the oldest ones
-            if ($errors && count($errors) > 100) {
-                $errors = array_slice($errors, count($errors) - 100);
-            }
+	/**
+	 * Log the error to a file.
+	 * If the error is from a snippet, disable it.
+	 * Redirect to the snippets page if the error is from a snippet.
+	 *
+	 * @param array $error The error to log.
+	 *
+	 * @return void
+	 */
+	public function errorLogger( array $error ): void {
 
-            // Add the new error
-            $errors[] = $error;
+		if ( $error && $error['message'] ) {
 
-            // Save the errors
-            file_put_contents(WP_CONTENT_DIR . '/debug.json', json_encode($errors));
+			( new ErrorLogger() )->logErrors( $error );
 
-            // If the error is from a snippet, disable it
-            // TODO: only disable the snippet if it's a fatal error
-            if (!empty($error['file_name']) && strpos($error['file_name'], 'snippets') !== false) {
-                // get file name
-                $snippet_file = pathinfo($error['file_name'], PATHINFO_BASENAME);
-                $snippets     = get_option('codewpai_enabled_snippets', []);
-                if (!empty($snippets[$snippet_file])) {
-                    $snippets[$snippet_file] = [
-                        'enabled' => false,
-                        'error' => $error,
-                    ];
-                    update_option('codewpai_enabled_snippets', $snippets);
-                    // redirect to snippets page using JS
-                    $admin_url = admin_url('options-general.php?page=ai-for-wp&tab=snippets&snippet_error=' . $snippet_file);
-                    echo '<script>console.log("Snippet has been disabled. Redirecting to ' . $admin_url . '"); window.location.href = "' . $admin_url . '";</script>';
-                }
-            }
-        }
-    }
+			// If the error is from a snippet, disable it.
+			// @todo: only disable the snippet if it's a fatal error?!.
+			if ( ! empty( $error['file_name'] ) && $this->filenameIsInPackagesDir( $error['file_name'] ) ) {
+				$packages_manager = new PackagesManager( true );
+				$snippet          = $packages_manager->getSnippetByPath( $error['file_name'] );
+				if ( $snippet ) {
+					$packages_manager->setFileError(
+						$snippet['package_id'],
+						$snippet,
+						$error
+					);
+					$admin_url = $this->config['plugin_url'] . '&tab=packages&snippet_error=' . rawurlencode( $snippet['location'] );
+
+					// Redirect to the snippets page.
+					// phpcs:ignore
+					echo '<script>console.log("Snippet has been disabled. Redirecting to ' . $admin_url . '"); window.location.href = "' . $admin_url . '";</script>';
+				}
+			}
+		}
+	}
+
+	/**
+	 * Check if the filename is in the packages' directory.
+	 *
+	 * @param string $filename The filename to check.
+	 *
+	 * @return bool
+	 */
+	private function filenameIsInPackagesDir( string $filename ): bool {
+		return str_contains( $filename, $this->config['packages_dir'] );
+	}
 }

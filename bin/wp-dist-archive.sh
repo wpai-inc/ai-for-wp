@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # run composer in production mode
 composer install --no-dev --prefer-dist --optimize-autoloader
 npm install
@@ -26,7 +24,7 @@ if [ -n "$PLUGIN_FILE" ]; then
     fi
 
     cp "$PLUGIN_FILE" "$BUILDS_FOLDER/main.zip"
-  
+
     if [ -f "$BUILDS_FOLDER/$PLUGIN_FILENAME" ]; then
         rm "$BUILDS_FOLDER/$PLUGIN_FILENAME"
     fi

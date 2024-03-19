@@ -2,58 +2,44 @@
 
 namespace WpAi\CodeWpHelper;
 
-class Main
-{
-    public const VERSION = '0.2.5';
+use WpAi\CodeWpHelper\Utils\PackagesRunner;
 
-    public const TEXT_DOMAIN = 'ai-for-wp';
+class Main {
 
-    public const API_HOST = 'https://app.codewp.ai';
+	public const VERSION     = '0.2.5';
+	public const TEXT_DOMAIN = 'ai-for-wp';
+	public const API_HOST    = 'https://app.codewp.ai';
+	public Packages $packages;
 
-    private $plugin_file;
+	public function __construct( $plugin_file ) {
+		register_deactivation_hook( $plugin_file, array( $this, 'deactivate' ) );
+		new ErrorHandler();
+		new Filters();
+		new Ajax();
+		new AdminPage();
+		new Cron();
+		new Logs();
+		new PackagesRunner();
+		$this->packages = new Packages();
+	}
 
-    private $plugin_dir;
+	/**
+	 * Get the plugin nonce domain.
+	 *
+	 * @return string
+	 */
+	public static function nonce(): string {
+		return self::TEXT_DOMAIN;
+	}
 
-    public $snippets;
-
-    public function __construct($plugin_file)
-    {
-        $this->plugin_file = $plugin_file;
-        $this->plugin_dir = plugin_dir_path($this->plugin_file);
-        register_activation_hook($this->plugin_file, [$this, 'activate']);
-        register_deactivation_hook($this->plugin_file, [$this, 'deactivate']);
-        $this->bootstrap();
-    }
-
-    public static function nonce()
-    {
-        return self::TEXT_DOMAIN;
-    }
-
-    public function activate()
-    {
-        // do something on plugin activation
-    }
-
-    public function deactivate()
-    {
-        // do something on plugin deactivation
-        delete_option('codewpai_api_token');
-        delete_option('codewpai_notice_visible');
-    }
-
-    public function bootstrap()
-    {
-        new ErrorHandler();
-
-        new Filters($this->plugin_file);
-        new Ajax();
-        new AdminPage($this->plugin_dir, $this->plugin_file);
-        new Cron();
-
-        // This object can be used to manipulate snippets (playground functionality)
-        $this->snippets = new Snippets($this->plugin_dir);
-
-        new Logs();
-    }
+	/**
+	 * Actions to be performed on plugin deactivation
+	 *
+	 * @return void
+	 */
+	public function deactivate(): void {
+		delete_option( 'codewpai_api_token' );
+		delete_option( 'codewpai_notice_visible' );
+		delete_option( 'codewpai_packages' );
+	}
 }
