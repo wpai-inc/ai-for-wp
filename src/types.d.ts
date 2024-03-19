@@ -16,6 +16,45 @@ export type SettingsType = {
     project: Project
 }
 
+export type SnippetErrorType = {
+    file: string;
+    type: number;
+    line: number;
+    message: string;
+}
+
+export type SnippetType = {
+    name: string;
+    description: string;
+    code: string;
+    enabled: boolean;
+    error?: SnippetErrorType | null;
+}
+
+export type PackageFileType = {
+    id: string;
+    name: string;
+    content: string;
+    description: string;
+    path: string;
+    extension: string;
+    updated_at: string;
+    enabled: boolean;
+}
+
+export type PackageType = {
+    name: string;
+    description: string;
+    id: string;
+    project_id: string;
+    type: number;
+    updated_at: string;
+    files: PackageFileType[];
+    installed: boolean;
+    has_enabled_snippets: boolean;
+    update_available: boolean;
+}
+
 
 export type Notification = {
     id: string;

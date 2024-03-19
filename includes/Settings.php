@@ -2,242 +2,236 @@
 
 namespace WpAi\CodeWpHelper;
 
-class Settings
-{
-    /**
-     * Returns the debug data from the current WordPress installation
-     *
-     * @return array
-     */
-    public static function getDebugData(): array
-    {
-        try {
-            if (! class_exists('\WP_Debug_Data')) {
-                require_once ABSPATH.'wp-admin/includes/class-wp-debug-data.php';
-            }
-            if (! class_exists('\WP_Site_Health')) {
-                require_once ABSPATH.'wp-admin/includes/class-wp-site-health.php';
-            }
-            if (! function_exists('\get_core_updates')) {
-                require_once ABSPATH.'wp-admin/includes/update.php';
-            }
-            if (! function_exists('\get_dropins')) {
-                require_once ABSPATH.'wp-admin/includes/plugin.php';
-            }
-            if (! function_exists('\got_url_rewrite')) {
-                require_once ABSPATH.'wp-admin/includes/misc.php';
-            }
+class Settings {
 
-            $debug_data = \WP_Debug_Data::debug_data();
+	/**
+	 * Returns the debug data from the current WordPress installation
+	 *
+	 * @return array
+	 */
+	public static function getDebugData(): array {
+		try {
+			if ( ! class_exists( '\WP_Debug_Data' ) ) {
+				require_once ABSPATH . 'wp-admin/includes/class-wp-debug-data.php';
+			}
+			if ( ! class_exists( '\WP_Site_Health' ) ) {
+				require_once ABSPATH . 'wp-admin/includes/class-wp-site-health.php';
+			}
+			if ( ! function_exists( '\get_core_updates' ) ) {
+				require_once ABSPATH . 'wp-admin/includes/update.php';
+			}
+			if ( ! function_exists( '\get_dropins' ) ) {
+				require_once ABSPATH . 'wp-admin/includes/plugin.php';
+			}
+			if ( ! function_exists( '\got_url_rewrite' ) ) {
+				require_once ABSPATH . 'wp-admin/includes/misc.php';
+			}
 
-            $debug_data['cpts'] = self::getCpts();
-            $debug_data['taxonomies'] = self::getTaxonomies();
+			$debug_data = \WP_Debug_Data::debug_data();
 
-            return $debug_data;
-        } catch (\Exception $error) {
-            return ['error' => $error->getMessage()];
-        }
-    }
+			$debug_data['cpts']       = self::getCpts();
+			$debug_data['taxonomies'] = self::getTaxonomies();
 
-    /**
-     * Returns the data for the api key form
-     *
-     * @param  bool  $show_token  If true, the token will be shown.
-     * @param  string  $message  If not empty, the message will be shown.
-     *
-     * @return array
-     */
-    public static function getSettingsFormData(bool $show_token = false, string $message = ''): array
-    {
-        $api_token_settings = self::get();
+			return $debug_data;
+		} catch ( \Exception $error ) {
+			return array( 'error' => $error->getMessage() );
+		}
+	}
 
-        if (! empty($api_token_settings['token'])) {
-            $api_token_settings['token_placeholder'] = '************************************************';
-        }
-        if (! empty($api_token_settings['token']) && ! $show_token) {
-            $api_token_settings['token'] = '';
-        }
+	/**
+	 * Returns the data for the api key form
+	 *
+	 * @param bool   $show_token If true, the token will be shown.
+	 * @param string $message If not empty, the message will be shown.
+	 *
+	 * @return array
+	 */
+	public static function getSettingsFormData( bool $show_token = false, string $message = '' ): array {
+		$api_token_settings = self::get();
 
-        if (! empty($api_token_settings['synchronized_at'])) {
-            $api_token_settings['synchronized_at'] = get_date_from_gmt(
-                $api_token_settings['synchronized_at'],
-                get_option('date_format').' '.get_option('time_format')
-            );
-        }
+		if ( ! empty( $api_token_settings['token'] ) ) {
+			$api_token_settings['token_placeholder'] = '************************************************';
+		}
+		if ( ! empty( $api_token_settings['token'] ) && ! $show_token ) {
+			$api_token_settings['token'] = '';
+		}
 
-        if (! empty($message)) {
-            $api_token_settings['message'] = $message;
-        }
+		if ( ! empty( $api_token_settings['synchronized_at'] ) ) {
+			$api_token_settings['synchronized_at'] = get_date_from_gmt(
+				$api_token_settings['synchronized_at'],
+				get_option( 'date_format' ) . ' ' . get_option( 'time_format' )
+			);
+		}
 
+		if ( ! empty( $message ) ) {
+			$api_token_settings['message'] = $message;
+		}
 
-        return $api_token_settings;
-    }
+		return $api_token_settings;
+	}
 
 
-    /**
-     * Send data to CodeWP
-     *
-     * @param  string  $method  The method.
-     * @param  null  $token  The token.
-     *
-     * @return mixed
-     * @throws \Exception If the token is invalid.
-     */
-    public static function sendDataToCodewp($method = 'POST', $token = null)
-    {
-        $api_key_settings = Settings::getSettingsFormData(true);
+	/**
+	 * Send data to CodeWP
+	 *
+	 * @param string $method The method.
+	 * @param null   $token The token.
+	 *
+	 * @return mixed
+	 * @throws \Exception If the token is invalid.
+	 */
+	public static function sendDataToCodewp( $method = 'POST', $token = null ) {
+		$api_key_settings = self::getSettingsFormData( true );
 
-        $debug_data = Settings::getDebugData();
-        $body       = array(
-            'name'        => get_bloginfo('name'),
-            'description' => get_bloginfo('description'),
-            'debug_data'  => $debug_data,
-            'url'         => home_url(),
-        );
+		$debug_data = self::getDebugData();
+		$body       = array(
+			'name'        => get_bloginfo( 'name' ),
+			'description' => get_bloginfo( 'description' ),
+			'debug_data'  => $debug_data,
+			'url'         => home_url(),
+		);
 
-        $body['project'] = '';
-        if (isset($api_key_settings['project_id']) && $api_key_settings['project_id']) {
-            $body['project'] = $api_key_settings['project_id'];
-        }
+		$body['project'] = '';
+		if ( isset( $api_key_settings['project_id'] ) && $api_key_settings['project_id'] ) {
+			$body['project'] = $api_key_settings['project_id'];
+		}
 
-        $request = array(
-            'method'  => $method,
-            'headers' => array(
-                'Authorization' => 'Bearer '.($token ?: $api_key_settings['token']),
-                'Accept'        => 'application/json',
-                'Content-Type'  => 'application/json',
-                'referer'       => null, // Older version of WP are automatically adding this
-            ),
-            'body'    => json_encode($body),
-        );
+		$request = array(
+			'method'  => $method,
+			'headers' => array(
+				'Authorization' => 'Bearer ' . ( $token ?: $api_key_settings['token'] ),
+				'Accept'        => 'application/json',
+				'Content-Type'  => 'application/json',
+				'referer'       => null, // Older version of WP are automatically adding this.
+			),
+			'body'    => wp_json_encode( $body ),
+		);
 
-        $api_host = defined('CODEWPAI_API_HOST') ? CODEWPAI_API_HOST : Main::API_HOST;
-        $api_host = rtrim($api_host, '/');
+		$api_host = self::api_host();
 
+		$url = $api_host . '/api/wp-site-project-synchronize';
+		if ( 'POST' === $method ) {
+			$url = $api_host . '/api/wp-site-projects';
+		}
 
-        $url = $api_host.'/api/'.'wp-site-project-synchronize';
-        if ($method === 'POST') {
-            $url = $api_host.'/api/'.'wp-site-projects';
-        }
+		$response = wp_remote_request(
+			$url,
+			$request
+		);
 
-        $response = wp_remote_request(
-            $url,
-            $request
-        );
+		if ( is_a( $response, 'WP_Error' ) ) {
+			throw new \Exception( esc_html( $response->get_error_message() ) );
+		} elseif ( 401 === $response['response']['code'] ) {
+			throw new \Exception( esc_html( __( 'Your token is invalid. Please add a new one!', 'ai-for-wp' ) ) );
+		} elseif ( ! in_array( $response['response']['code'], array( 200, 201 ), true ) ) {
+			$body = json_decode( $response['body'], true );
+			if ( ! empty( $body['errors'] ) ) {
+				$messages = array();
+				array_walk_recursive(
+					$body['errors'],
+					function ( $a ) use ( &$messages ) {
+						$messages[] = $a;
+					}
+				);
+				throw new \Exception( esc_html( implode( ', ', $messages ) ) );
+			}
 
-        if (is_a($response, 'WP_Error')) {
-            throw new \Exception(esc_html($response->get_error_message()));
-        } elseif (401 === $response['response']['code']) {
-            throw new \Exception(esc_html(__('Your token is invalid. Please add a new one!', 'ai-for-wp')));
-        } elseif (! in_array($response['response']['code'], [200, 201], true)) {
-            $body = json_decode($response['body'], true);
-            error_log(print_r($body, true));
-            if (! empty($body['errors'])) {
-                $messages = array();
-                array_walk_recursive(
-                    $body['errors'],
-                    function ($a) use (&$messages) {
-                        $messages[] = $a;
-                    }
-                );
-                throw new \Exception(esc_html(implode(', ', $messages)));
-            }
+			throw new \Exception( esc_html( $body['response']['message'] ?? $body['message'] ?? 'Error' ) );
+		}
 
-            throw new \Exception(esc_html($body['response']['message'] ?? $body['message'] ?? 'Error'));
-        }
-
-        return json_decode($response['body'], true);
-    }
+		return json_decode( $response['body'], true );
+	}
 
 
-    /**
-     * Save settings
-     *
-     * @param  array  $data  The data.
-     *
-     * @return void
-     */
-    public static function save(array $data)
-    {
-        $api_token_settings = self::get();
-        ;
-        $data = array_merge($api_token_settings, $data);
+	/**
+	 * Save settings
+	 *
+	 * @param array $data The data.
+	 *
+	 * @return void
+	 */
+	public static function save( array $data ) {
+		$api_token_settings = self::get();
+		$data               = array_merge( $api_token_settings, $data );
 
-        update_option(
-            'codewpai_api_token',
-            $data,
-            false
-        );
-    }
+		update_option(
+			'codewpai_api_token',
+			$data,
+			false
+		);
+	}
 
 
-    public static function get(): array
-    {
-        $settings = get_option(
-            'codewpai_api_token'
-        );
+	public static function get(): array {
+		$settings = get_option(
+			'codewpai_api_token'
+		);
 
-        if (! $settings) {
-            $settings = array(
-                'token'             => '',
-                'token_placeholder' => '',
-                'project_id'        => '',
-                'project_name'      => '',
-                'auto_synchronize'  => true,
-                'synchronized_at'   => '',
-            );
-        }
+		if ( ! $settings ) {
+			$settings = array(
+				'token'             => '',
+				'token_placeholder' => '',
+				'project_id'        => '',
+				'project_name'      => '',
+				'auto_synchronize'  => true,
+				'synchronized_at'   => '',
+			);
+		}
 
-        return $settings;
-    }
+		return $settings;
+	}
 
-    /**
-     * return an array containing all the custom post types
-     *
-     * @return array
-     */
-    public static function getCpts()
-    {
-        $args = array(
-            'public'   => true,
-            '_builtin' => false,
-        );
+	/**
+	 * Return an array containing all the custom post types.
+	 *
+	 * @return array
+	 */
+	public static function getCpts() {
+		$args = array(
+			'public'   => true,
+			'_builtin' => false,
+		);
 
-        $post_types = get_post_types($args, 'objects');
+		$post_types = get_post_types( $args, 'objects' );
 
-        $post_types = array_map(
-            function ($post_type) {
-                unset($post_type->labels);
-                return $post_type;
-            },
-            $post_types
-        );
+		return array_map(
+			function ( $post_type ) {
+				unset( $post_type->labels );
 
-        return $post_types;
-    }
-    /**
-     * return an array containing all the custom taxonomies
-     *
-     * @return array
-     */
-    public static function getTaxonomies()
-    {
-        $args = array(
-            'public'   => true,
-            '_builtin' => false,
-        );
+				return $post_type;
+			},
+			$post_types
+		);
+	}
 
-        $taxonomies = get_taxonomies($args, 'objects');
+	/**
+	 * Return an array containing all the custom taxonomies.
+	 *
+	 * @return array
+	 */
+	public static function getTaxonomies(): array {
+		$args = array(
+			'public'   => true,
+			'_builtin' => false,
+		);
 
-        $taxonomies = array_map(
-            function ($taxonomy) {
-                unset($taxonomy->labels);
+		$taxonomies = get_taxonomies( $args, 'objects' );
 
-                return $taxonomy;
-            },
-            $taxonomies
-        );
+		$taxonomies = array_map(
+			function ( $taxonomy ) {
+				unset( $taxonomy->labels );
 
-        return $taxonomies;
-    }
+				return $taxonomy;
+			},
+			$taxonomies
+		);
+
+		return $taxonomies;
+	}
+
+	public static function api_host(): string {
+		$api_host = defined( 'CODEWPAI_API_HOST' ) ? CODEWPAI_API_HOST : Main::API_HOST;
+
+		return rtrim( $api_host, '/' );
+	}
 }

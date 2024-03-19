@@ -9,6 +9,7 @@ import {SettingsType} from "./types";
 import {NotificationsProvider} from "./hooks/useNotificationsContext";
 import { Snippets } from './pages/Snippets';
 import { Logs } from './pages/Logs';
+import {Packages} from "./pages/Packages";
 
 declare const CODEWPAI_SETTINGS: SettingsType;
 
@@ -38,8 +39,8 @@ const App = () => {
 							title: __('Settings', 'ai-for-wp'),
 						},
 						{
-							name: 'snippets',
-							title: __('Snippets', 'ai-for-wp'),
+							name: 'packages',
+							title: __('Packages', 'ai-for-wp'),
 						},
 						{
 							name: 'logs',
@@ -53,7 +54,7 @@ const App = () => {
 						<>
 							{selectedTab === 'home' && <Home handleTabChange={handleTabChange} />}
 							{selectedTab === 'settings' && <Settings />}
-							{selectedTab === 'snippets' && <Snippets />}
+							{selectedTab === 'packages' && <Packages />}
 							{selectedTab === 'logs' && <Logs />}
 						</>
 					)}

@@ -12,6 +12,7 @@ export const ClosableNotice = () => {
     const doHideNotice = () => {
         codewpaiRequest({
             action: 'codewpai_notice_hide',
+            method: 'POST',
             data: {},
             addNotification: () => {
             }

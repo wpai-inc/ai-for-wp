@@ -8,6 +8,8 @@ import {
 import { __ } from '@wordpress/i18n';
 import { useState, useEffect } from 'react';
 
+declare const ajaxurl: string;
+
 export const Logs = () => {
   const [errorLogs, setErrorLogs] = useState([]);
 
@@ -15,7 +17,7 @@ export const Logs = () => {
     fetch(ajaxurl + '?action=codewpai_logs')
       .then((response) => response.json())
       .then((data) => {
-        setErrorLogs(data);
+        setErrorLogs(data.data);
       });
   }, []);
 
