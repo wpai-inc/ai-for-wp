@@ -41,6 +41,7 @@ class PackagesRunner {
 	 * @param array $snippet
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	private function runSnippet( array $snippet ): void {
 		if ( ! empty( $snippet ) ) {
@@ -55,15 +56,21 @@ class PackagesRunner {
 						require_once $snippet_file;
 					} else {
 						// Set the file error.
+						$error = [
+							'file_name'    => $snippet_file,
+							'type'    => 4,
+							'line'    => 1,
+							'message' => 'The file does not start with the PHP open tag.',
+						];
+
 						( new PackagesManager( true ) )->setFileError(
 							$snippet['package_id'],
 							$snippet,
-							[
-								'file'    => $snippet['path'],
-								'type'    => 4,
-								'line'    => 1,
-								'message' => 'The file is not a PHP file.',
-							]
+							$error
+						);
+						$error_logger = new ErrorLogger();
+						$error_logger->logErrors(
+							$error
 						);
 					}
 				} else {
