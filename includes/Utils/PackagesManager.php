@@ -429,9 +429,7 @@ class PackagesManager {
 		$package_data = $this->prepareCodewpaiPackagesData( $package_data );
 
 		foreach ( $package_data['files'] as $file_key => $file ) {
-			if ( $file_id === $file['id'] ) {
 				$package_data['files'][ $file_key ]['enabled'] = true;
-			}
 		}
 		$package_data['installed']            = true;
 		$package_data['has_enabled_snippets'] = true;
