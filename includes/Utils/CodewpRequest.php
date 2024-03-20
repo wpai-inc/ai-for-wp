@@ -111,7 +111,7 @@ class CodewpRequest {
 
 		// Unzip $tmp_file_name to $download_folder.
 		if ( 1 === $package['type'] ) {
-			$unzip = CodewpaiFilesystem::unzip_file( $package_zip, WP_PLUGIN_DIR . '/' . $package_id );
+			$unzip = CodewpaiFilesystem::unzip_file( $package_zip, WP_PLUGIN_DIR . '/ai-for-wp-' . $package_id );
 		} else {
 			$unzip = CodewpaiFilesystem::unzip_file( $package_zip, $download_folder . $package_id );
 		}

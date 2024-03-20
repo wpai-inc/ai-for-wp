@@ -211,7 +211,7 @@ class PackagesManager {
 			}
 		}
 
-		return CodewpaiFilesystem::filesystem()->get_contents( $this->package_dir( $package ) . '/' . $snippet['path'] );
+		return CodewpaiFilesystem::filesystem()->get_contents( $this->packageDir( $package ) . '/' . $snippet['path'] );
 	}
 
 	/**
@@ -225,7 +225,7 @@ class PackagesManager {
 
 		$this->getAllCodewpaiPackages();
 		$package     = $this->packages['packages'][ $package_id ];
-		$package_dir = $this->package_dir( $package );
+		$package_dir = $this->packageDir( $package );
 
 		if ( CodewpaiFilesystem::filesystem()->exists( $package_dir ) ) {
 			CodewpaiFilesystem::filesystem()->delete( $package_dir, true );
@@ -280,7 +280,7 @@ class PackagesManager {
 	public function uninstallPackage( string $package_id ): static {
 
 		$package     = $this->packages['packages'][ $package_id ];
-		$package_dir = $this->package_dir( $package );
+		$package_dir = $this->packageDir( $package );
 
 		// if it is a plugin, deactivate the plugin.
 		if ( 1 === $package['type'] ) {
@@ -365,9 +365,9 @@ class PackagesManager {
 	 *
 	 * @return string
 	 */
-	private function package_dir( array $package ): string {
+	private function packageDir( array $package ): string {
 		if ( 1 === $package['type'] ) {
-			return WP_PLUGIN_DIR . '/' . $package['id'];
+			return WP_PLUGIN_DIR . '/ai-for-wp-' . $package['id'];
 		}
 
 		return CodewpaiConfig::get( 'packages_dir' ) . '/' . $package['id'];
@@ -395,15 +395,26 @@ class PackagesManager {
 
 	public function setFileError( string $package_id, array $snippet, array $error ): void {
 		$package             = $this->packages['packages'][ $package_id ];
+		$is_plugin 		 = 1 === $package['type'];
 		$data[ $package_id ] = $package;
 		foreach ( $package['files'] as $file_key => $file ) {
-			if ( $file['id'] === $snippet['id'] ) {
+			if ( $file['id'] === $snippet['id'] || $is_plugin ) {
 				$data[ $package_id ]['files'][ $file_key ]['enabled'] = false;
+			}
+			if ( $file['id'] === $snippet['id'] ) {
 				$data[ $package_id ]['files'][ $file_key ]['error']   = $error;
 			}
 		}
 
+		if($is_plugin){
+			$data[ $package_id ]['has_enabled_snippets'] = false;
+		}
+
 		$this->updatePackage( $package, $data );
+
+		if(1 === $package['type']) {
+			$this->deactivatePlugin($package);
+		}
 	}
 
 	public function getSnippetByPath( $path ) {
@@ -432,7 +443,7 @@ class PackagesManager {
 			if ( ! function_exists( 'activate_plugin' ) ) {
 				require_once ABSPATH . 'wp-admin/includes/plugin.php';
 			}
-			activate_plugins( $package['id'] . '/index.php' );
+			activate_plugins( 'ai-for-wp-' . $package['id'] . '/index.php' );
 		}
 	}
 
@@ -448,7 +459,7 @@ class PackagesManager {
 			if ( ! function_exists( 'deactivate_plugins' ) ) {
 				require_once ABSPATH . 'wp-admin/includes/plugin.php';
 			}
-			deactivate_plugins( $package['id'] . '/index.php' );
+			deactivate_plugins( 'ai-for-wp-' .$package['id'] . '/index.php' );
 		}
 	}
 
@@ -468,9 +479,7 @@ class PackagesManager {
 		$is_plugin    = 1 === $package_data['type'];
 
 		foreach ( $package_data['files'] as $file_key => $file ) {
-			if ( ! $is_plugin ) {
 				$package_data['files'][ $file_key ]['enabled'] = true;
-			}
 		}
 		$package_data['installed']            = true;
 		$package_data['has_enabled_snippets'] = true;
@@ -486,12 +495,10 @@ class PackagesManager {
 		update_option( 'codewpai_packages', $data );
 
 		$packages_dir = CodewpaiConfig::get( 'packages_dir' );
-		$package_dir  = $packages_dir . $package_data['id'];
 		$package_zip  = $packages_dir . $package_data['id'] . '.zip';
 
-		if ( $is_plugin ) {
-			$package_dir = WP_PLUGIN_DIR . '/' . $package_data['id'];
-		}
+		$package_dir  = $this->packageDir($package_data);
+
 		$files_list = glob( $packages_dir . '*' );
 		$zip_size   = filesize( $package_zip );
 
