@@ -116,7 +116,6 @@ class PackagesManager {
 				'id'          => $file['id'],
 				'name'        => $file['name'],
 				'path'        => $file['path'],
-				'location'    => $file['location'],
 				'extension'   => $file['extension'],
 				'description' => $file['description'],
 				'updated_at'  => $file['updated_at'],
@@ -459,7 +458,7 @@ class PackagesManager {
 
 		wp_delete_file( $package_zip );
 
-		return json_encode( [
+		return wp_json_encode( [
 			'packages_data'         => $package_data,
 			'packages_data_1'       => $data,
 			'package_folder_exists' => CodewpaiFilesystem::filesystem()->exists( $packages_dir . $package_data['id'] ),

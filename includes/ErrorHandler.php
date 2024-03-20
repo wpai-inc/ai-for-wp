@@ -83,7 +83,7 @@ class ErrorHandler {
 						$snippet,
 						$error
 					);
-					$admin_url = $this->config['plugin_url'] . '&tab=packages&snippet_error=' . rawurlencode( $snippet['location'] );
+					$admin_url = $this->config['plugin_url'] . '&tab=packages&snippet_error=' . rawurlencode( $snippet['package_id'] .'/'. $snippet['path'] );
 
 					// Redirect to the snippets page.
 					// phpcs:ignore
