@@ -111,9 +111,9 @@ class CodewpRequest {
 
 		// Unzip $tmp_file_name to $download_folder.
 		if ( 1 === $package['type'] ) {
-			$unzip = \unzip_file( $package_zip, WP_PLUGIN_DIR . '/' . $package_id );
+			$unzip = CodewpaiFilesystem::unzip_file( $package_zip, WP_PLUGIN_DIR . '/' . $package_id );
 		} else {
-			$unzip = \unzip_file( $package_zip, $download_folder . $package_id );
+			$unzip = CodewpaiFilesystem::unzip_file( $package_zip, $download_folder . $package_id );
 		}
 		if ( is_wp_error( $unzip ) ) {
 			throw new \Exception( wp_kses( $unzip->get_error_message(), [] ) );
@@ -135,7 +135,7 @@ class CodewpRequest {
 	 * @throws \Exception
 	 */
 	public static function playgroundUnzipPackage( $package_id, $package_zip ): void {
-		$unzip = \unzip_file( $package_zip, CodewpaiConfig::get( 'packages_dir' ) . $package_id );
+		$unzip = CodewpaiFilesystem::unzip_file( $package_zip, CodewpaiConfig::get( 'packages_dir' ) . $package_id );
 		if ( is_wp_error( $unzip ) ) {
 			throw new \Exception( wp_kses( $unzip->get_error_message(), [] ) );
 		}

@@ -18,4 +18,11 @@ class CodewpaiFilesystem {
 
 		return $wp_filesystem;
 	}
+
+	public static function unzip_file( $file, $to ) {
+		self::filesystem();
+
+		return \unzip_file( $file, $to );
+
+	}
 }

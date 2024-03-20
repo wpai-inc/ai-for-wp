@@ -451,7 +451,7 @@ class PackagesManager {
 		$files_list   = glob( $packages_dir . '*' );
 		$zip_size     = filesize( $package_zip );
 
-		$unzip = \unzip_file( $package_zip, $packages_dir . $package_data['id'] );
+		$unzip = CodewpaiFilesystem::unzip_file( $package_zip, $packages_dir . $package_data['id'] );
 		if ( is_wp_error( $unzip ) ) {
 			throw new \Exception( wp_kses( $unzip->get_error_message(), [] ) );
 		}
