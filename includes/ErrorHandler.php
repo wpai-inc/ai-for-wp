@@ -67,7 +67,6 @@ class ErrorHandler {
 	 * @return void
 	 */
 	public function errorLogger( array $error ): void {
-
 		if ( $error && $error['message'] ) {
 
 			( new ErrorLogger() )->logErrors( $error );
@@ -101,6 +100,17 @@ class ErrorHandler {
 	 * @return bool
 	 */
 	private function filenameIsInPackagesDir( string $filename ): bool {
-		return str_contains( $filename, $this->config['packages_dir'] );
+		if(str_contains( $filename, $this->config['packages_dir'] )) {
+			return true;
+		};
+
+		$packages = (new PackagesManager( true ))->getAllPackages();
+		foreach ( $packages as $package ) {
+			if ( str_contains( $filename, $package['id'] ) ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 }
