@@ -136,9 +136,9 @@ export const Packages = () => {
         setLoadingPackage(null);
     }
 
-    async function toggleAllSnippets(package_id: string, enabled: number) {
+    async function toggleAllSnippets(thePackage: PackageType, enabled: number) {
         setLoadingPackage({
-            package: package_id,
+            package: thePackage.id,
             action: 'enable',
             snippet: null
         });
@@ -146,7 +146,7 @@ export const Packages = () => {
             action: 'codewpai_toggle_all_snippets',
             method: 'get',
             data: {
-                'package_id': package_id,
+                'package_id': thePackage.id,
                 'enabled': enabled
             },
             addNotification
@@ -154,11 +154,20 @@ export const Packages = () => {
 
         if (data) {
             setAllPackages(data);
-            let notification = __('All package snippets have been enabled', 'codewpai');
-            if (!enabled) {
-                notification = __('All package snippets have been disabled', 'codewpai');
+
+            if(thePackage.type === 0){
+                if(enabled){
+                    addNotification(__('All package snippets have been enabled', 'codewpai'), 'default');
+                }else{
+                    addNotification(__('All package snippets have been disabled', 'codewpai'), 'info');
+                }
+            }else{
+                if(enabled){
+                    addNotification(__('Plugin has been enabled', 'codewpai'), 'default');
+                }else{
+                    addNotification(__('Plugin has been disabled', 'codewpai'), 'info');
+                }
             }
-            addNotification(notification, 'default');
         }
         setLoadingPackage(null);
     }
@@ -325,7 +334,7 @@ export const Packages = () => {
                                                             size="small"
                                                             label={thePackage.has_enabled_snippets ? __('Disable all snippets in this package', 'codewpai') : __('Enable all snippets in this package', 'codewpai')}
                                                             showTooltip={true}
-                                                            onClick={() => toggleAllSnippets(thePackage.id, thePackage.has_enabled_snippets ? 0 : 1)}
+                                                            onClick={() => toggleAllSnippets(thePackage, thePackage.has_enabled_snippets ? 0 : 1)}
                                                             disabled={loadingPackage && loadingPackage.package === thePackage.id}
                                                             isBusy={loadingPackage && loadingPackage.package === thePackage.id && loadingPackage.action === 'enable' && loadingPackage.snippet === null}
                                                         >
@@ -457,7 +466,7 @@ export const Packages = () => {
                                                     }
                                                 </tr>
                                                 {file.error && <tr>
-                                                    <td colSpan="3">
+                                                    <td colSpan={thePackage.type === 0 ? 3 : 2}>
                                                         <Notice status='error'
                                                                 isDismissible={false}>
                                                             <Flex>
