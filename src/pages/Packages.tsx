@@ -318,7 +318,7 @@ export const Packages = () => {
                                                     </FlexItem>
                                                 }
 
-                                                {thePackage.installed && thePackage.type === 0 &&
+                                                {thePackage.installed &&
                                                     <FlexItem>
                                                         <Button
                                                             variant="primary"
@@ -329,7 +329,12 @@ export const Packages = () => {
                                                             disabled={loadingPackage && loadingPackage.package === thePackage.id}
                                                             isBusy={loadingPackage && loadingPackage.package === thePackage.id && loadingPackage.action === 'enable' && loadingPackage.snippet === null}
                                                         >
-                                                            {thePackage.has_enabled_snippets ? __('Disable all', 'codewpai') : __('Enable all', 'codewpai')}
+                                                            { thePackage.type === 0 &&
+                                                                (thePackage.has_enabled_snippets ? __('Disable all', 'codewpai') : __('Enable all', 'codewpai'))
+                                                            }
+                                                            { thePackage.type === 1 &&
+                                                                (thePackage.has_enabled_snippets ? __('Disable plugin', 'codewpai') : __('Enable plugin', 'codewpai'))
+                                                            }
                                                         </Button>
                                                     </FlexItem>
                                                 }

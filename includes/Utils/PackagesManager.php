@@ -330,6 +330,12 @@ class PackagesManager {
 
 		$this->updatePackage( $package, $data );
 
+		if($enabled) {
+			$this->activatePlugin($package);
+		}else{
+			$this->deactivatePlugin($package);
+		}
+
 		return $this;
 	}
 
@@ -403,7 +409,7 @@ class PackagesManager {
 	public function getSnippetByPath( $path ) {
 		foreach ( $this->packages['packages'] as $package ) {
 			foreach ( $package['files'] as $file ) {
-				if ( str_contains($path, $package['id']) && str_ends_with( $path, $file['path'] ) ) {
+				if ( str_contains( $path, $package['id'] ) && str_ends_with( $path, $file['path'] ) ) {
 					$file['package_id'] = $package['id'];
 
 					return $file;
@@ -412,6 +418,38 @@ class PackagesManager {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Activate a plugin.
+	 *
+	 * @param $package
+	 *
+	 * @return void
+	 */
+	public function activatePlugin( $package ): void {
+		if ( 1 === $package['type'] ) {
+			if ( ! function_exists( 'activate_plugin' ) ) {
+				require_once ABSPATH . 'wp-admin/includes/plugin.php';
+			}
+			activate_plugins( $package['id'] . '/index.php' );
+		}
+	}
+
+	/**
+	 * Deactivate a plugin.
+	 *
+	 * @param $package
+	 *
+	 * @return void
+	 */
+	public function deactivatePlugin($package): void {
+		if ( 1 === $package['type'] ) {
+			if ( ! function_exists( 'deactivate_plugins' ) ) {
+				require_once ABSPATH . 'wp-admin/includes/plugin.php';
+			}
+			deactivate_plugins( $package['id'] . '/index.php' );
+		}
 	}
 
 	/**
@@ -427,9 +465,12 @@ class PackagesManager {
 
 		$package_data = json_decode( base64_decode( $package_data ), true );
 		$package_data = $this->prepareCodewpaiPackagesData( $package_data );
+		$is_plugin    = 1 === $package_data['type'];
 
 		foreach ( $package_data['files'] as $file_key => $file ) {
+			if ( ! $is_plugin ) {
 				$package_data['files'][ $file_key ]['enabled'] = true;
+			}
 		}
 		$package_data['installed']            = true;
 		$package_data['has_enabled_snippets'] = true;
@@ -445,23 +486,30 @@ class PackagesManager {
 		update_option( 'codewpai_packages', $data );
 
 		$packages_dir = CodewpaiConfig::get( 'packages_dir' );
+		$package_dir  = $packages_dir . $package_data['id'];
 		$package_zip  = $packages_dir . $package_data['id'] . '.zip';
-		$files_list   = glob( $packages_dir . '*' );
-		$zip_size     = filesize( $package_zip );
 
-		$unzip = CodewpaiFilesystem::unzip_file( $package_zip, $packages_dir . $package_data['id'] );
+		if ( $is_plugin ) {
+			$package_dir = WP_PLUGIN_DIR . '/' . $package_data['id'];
+		}
+		$files_list = glob( $packages_dir . '*' );
+		$zip_size   = filesize( $package_zip );
+
+		$unzip = CodewpaiFilesystem::unzip_file( $package_zip, $package_dir );
 		if ( is_wp_error( $unzip ) ) {
 			throw new \Exception( wp_kses( $unzip->get_error_message(), [] ) );
 		}
 
+		$this->activatePlugin( $package_data );
+
 		wp_delete_file( $package_zip );
 
 		return wp_json_encode( [
-			'packages_data'         => $package_data,
-			'packages_data_1'       => $data,
+			'package_data'          => $package_data,
+			'packages_data'         => $data,
 			'package_folder_exists' => CodewpaiFilesystem::filesystem()->exists( $packages_dir . $package_data['id'] ),
 			'zip_size'              => $zip_size,
-			'files_list_1'          => $files_list,
+			'package_dir_list'      => $files_list,
 			'files_list'            => glob( $packages_dir . $package_data['id'] . '/*' ),
 		] );
 
